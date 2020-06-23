@@ -20,9 +20,11 @@ app.get('/api/health-check', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/classify', (req, res, next) => {
-  classify(req.body)
-    .then(result => res.json(result.rows[0]))
+app.post('/api/classify', (req, res, next) => {
+  classify(req.body.logits, req.body.shape)
+    .then(result =>
+    // eslint-disable-next-line no-console
+      console.log(result))
     .catch(err => next(err));
 });
 

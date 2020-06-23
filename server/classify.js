@@ -2,19 +2,29 @@ const tf = require('@tensorflow/tfjs');
 require('@tensorflow/tfjs-node');
 const knnClassifier = require('@tensorflow-models/knn-classifier');
 
+const path = require('path');
 const fs = require('fs');
 
-const classify = async logits => {
+const datasetPath = path.join(__dirname, 'dataset.json');
+
+const classify = async (logits, shape) => {
   const classifier = knnClassifier.create();
-  const data = await fs.promises.readFile('./dataset.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    return data;
+  const data = await fs.promises.readFile(datasetPath, 'utf8');
+  const parseData = JSON.parse(data);
+  const tensors = parseData.map(([label, data, shape]) => {
+    return { [label]: tf.tensor2d(data, shape, 'float32') };
   });
-  classifier.setClassifierDataset(Object.fromEntries(JSON.parse(data).map(([label, data, shape]) => [label, tf.tensor(data, shape)])));
 
-  const predictions = await classifier.predictClass(logits);
+  const dataset = Object.assign({}, ...tensors);
+  classifier.setClassifierDataset(dataset);
 
-  return predictions;
+  const predictionTensor = tf.tensor(logits, shape, 'float32');
+
+  // eslint-disable-next-line no-console
+  console.log('predictionTensor', predictionTensor);
+  // const predictions = await classifier.predictClass(predictionTensor);
+
+  // return predictions;
 };
 
 module.exports = classify;
