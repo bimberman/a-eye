@@ -1,48 +1,68 @@
 import React from 'react';
-import * as ml5 from 'ml5';
+// import * as ml5 from 'ml5';
 
 class PredictPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modelLoaded: false
+      imagePath: '',
+      imageData: null
     };
-    this.imageRef = React.createRef();
+    this.uploadImageRef = React.createRef();
+    this.displayImageRef = React.createRef();
+    this.previewImage = this.previewImage.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
   }
 
-  sendLogits(image) {
-    const input = image.current;
-    const logits = this.extractor.infer(input);
-    // eslint-disable-next-line no-console
-    console.log(logits);
+  handleChange(e) {
+    this.previewImage(e);
+  }
+
+  previewImage(e) {
+    this.setState({
+      imagePath: URL.createObjectURL(event.target.files[0])
+    });
+
+  }
+
+  uploadImage(image) {
+
+    const imageData = new FormData();
+    const imageToUpload = this.uploadImageRef.current.files[0];
+    imageData.append('image', imageToUpload, imageToUpload.name);
+
     fetch('/api/classify', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        logits: Array.from(logits.dataSync()),
-        shape: logits.shape
+      body: imageData
+    })
+      .then(result => result.json())
+      .then(prediction => {
+        // eslint-disable-next-line no-console
+        console.log(prediction);
       })
-    });
-  }
+      .catch(err => console.error(err));
 
-  componentDidMount() {
-    this.extractor = ml5.featureExtractor('MobileNet', this.setState({ modelLoaded: true }));
   }
 
   render() {
-    const { modelLoaded } = this.state;
-    const disabled = !modelLoaded;
+    const { imagePath } = this.state;
+
     return (
-      <div>
-        <img src="/images/pug.jpg" ref={this.imageRef}
-          className='container-fluid'/>
+      <div className="container-fluid">
+        <div>
+          <img className="preview-image"
+            src={imagePath}
+            ref={this.displayImageRef}/>
+        </div>
+        <input type="file" id="fileElem" multiple accept="image/*"
+          ref={this.uploadImageRef}
+          onChange={this.handleChange}
+          name="image"/>
 
         <div className="col-md-4 col-lg-2">
           <button className="btn btn-primary btn-block"
-            onClick={() => this.sendLogits(this.imageRef)}
-            disabled={disabled}> Classify Image
+            onClick={this.uploadImage}> Upload Image
           </button>
         </div>
       </div>

@@ -1,12 +1,22 @@
 require('dotenv/config');
 const express = require('express');
-
+const path = require('path');
 const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
 const classify = require('./classify');
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'uploads'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 const app = express();
 
 app.use(staticMiddleware);
@@ -20,11 +30,9 @@ app.get('/api/health-check', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/classify', (req, res, next) => {
-  classify(req.body.logits, req.body.shape)
-    .then(result =>
-    // eslint-disable-next-line no-console
-      console.log(result))
+app.post('/api/classify', upload.single('image'), (req, res, next) => {
+  classify(path.join(__dirname, `uploads/${req.file.filename}`))
+    .then(result => res.status(200).json(result))
     .catch(err => next(err));
 });
 
