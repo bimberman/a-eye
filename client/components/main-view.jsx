@@ -18,29 +18,28 @@ class MainView extends React.Component {
             className={`btn btn-lg btn-block my-4
             my-dogs-button button`}
             onClick={handleView}>
-            My Dogs
+            <p className="p-0 m-0">My Dogs</p>
           </button>
-
-          <button type="button"
-            className={`btn btn-lg btn-block my-4
-            scan-button button`}
-            onClick={handleView}
-            data-toggle="button">
-            Scan
-          </button>
-
+          
           <button type="button"
             className={`btn btn-lg btn-block my-4
             upload-button button`}
             onClick={handleView}>
-            Upload
+            <p className="p-0 m-0">Scan</p>
+          </button>
+
+          <button type="button"
+            className={`btn btn-lg btn-block my-4
+            upload-button`}
+            onClick={handleView}>
+            <p className="p-0 m-0">Upload</p>
           </button>
 
           <button type="button"
             className={`btn btn-lg btn-block my-4
             browse-button button`}
             onClick={handleView}>
-            Browse
+            <p className="p-0 m-0">Browse</p>
           </button>
 
         </div>
