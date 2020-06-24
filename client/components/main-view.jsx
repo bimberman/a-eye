@@ -20,7 +20,7 @@ class MainView extends React.Component {
             onClick={handleView}>
             <p className="p-0 m-0">My Dogs</p>
           </button>
-          
+
           <button type="button"
             className={`btn btn-lg btn-block my-4
             upload-button button`}

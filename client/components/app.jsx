@@ -1,12 +1,14 @@
 import React from 'react';
 import MainView from './main-view';
+import OwnedDogs from './owned-dogs';
 import Loading from './loading';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'loading'
+      view: 'my-dogs',
+      userId: 5
     };
     this.handleView = this.handleView.bind(this);
   }
@@ -29,7 +31,7 @@ export default class App extends React.Component {
 
   // fake load to show loadscreen for now
   componentDidMount() {
-    setTimeout(() => this.setState({ view: 'main' }), 2000);
+    // setTimeout(() => this.setState({ view: 'main' }), 2000);
   }
 
   render() {
@@ -40,8 +42,11 @@ export default class App extends React.Component {
       case 'main':
         currentView = <MainView handleView={this.handleView} />;
         break;
+      case 'my-dogs':
+        currentView = <OwnedDogs userId={this.state.userId} />;
+        break;
       case 'loading':
-        currentView = <Loading/>;
+        currentView = <Loading />;
         break;
     }
 
