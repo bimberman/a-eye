@@ -1,25 +1,44 @@
 import React from 'react';
-
+import MainView from './main-view';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: null,
-      isLoading: true
+      view: 'main'
     };
+    this.handleView = this.handleView.bind(this);
   }
 
-  componentDidMount() {
-    fetch('/api/health-check')
-      .then(res => res.json())
-      .then(data => this.setState({ message: data.message || data.error }))
-      .catch(err => this.setState({ message: err.message }))
-      .finally(() => this.setState({ isLoading: false }));
+  handleView(e) {
+    const { classList } = e.target;
+    if (classList.contains('my-dogs-button')) {
+      return this.setState({ view: 'my-dogs' });
+    }
+    if (classList.contains('scan-button')) {
+      return this.setState({ view: 'scan' });
+    }
+    if (classList.contains('upload-button')) {
+      return this.setState({ view: 'upload' });
+    }
+    if (classList.contains('browse-button')) {
+      return this.setState({ view: 'browse' });
+    }
   }
 
   render() {
-    return this.state.isLoading
-      ? <h1>Testing connections...</h1>
-      : <h1>{this.state.message.toUpperCase()}</h1>;
+    const { view } = this.state;
+    let currentView = '';
+
+    switch (view) {
+      case 'main':
+        currentView = <MainView handleView={this.handleView} />;
+        break;
+    }
+
+    return (
+      <div className={'main-container container-fluid p-5'}>
+        {currentView}
+      </div>
+    );
   }
 }

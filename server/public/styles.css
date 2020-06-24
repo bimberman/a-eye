@@ -1,0 +1,5 @@
+
+.main-portrait{
+  object-fit: contain;
+  max-height: 75vw;
+}
