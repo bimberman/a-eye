@@ -7,7 +7,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'main',
+      view: 'my-dogs',
       userId: 5
     };
     this.handleView = this.handleView.bind(this);
@@ -31,7 +31,7 @@ export default class App extends React.Component {
 
   // fake load to show loadscreen for now
   componentDidMount() {
-    setTimeout(() => this.setState({ view: 'main' }), 2000);
+    // setTimeout(() => this.setState({ view: 'main' }), 2000);
   }
 
   render() {

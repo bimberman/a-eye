@@ -1,5 +1,5 @@
 import React from 'react';
-import { UncontrolledCollapse, Button, CardBody, Card } from 'reactstrap';
+import Accordion from './accordion';
 
 export default class OwnedDogs extends React.Component {
   constructor(props) {
@@ -18,29 +18,14 @@ export default class OwnedDogs extends React.Component {
 
   getDogInfo() {
     const dogs = this.state.ownedDogs.map(dog => {
+      const breedWords = dog.breed.split(' ');
+      const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
+      const capitalizedBreed = capitalizedWords.join(' ');
       return (
-        <div key={dog.name}>
-          <Button color="primary" id={dog.name} className='w-100 mt-1 d-flex justify-content-between button'>
-            <img src='' />
-            <p>{dog.name}</p>
-            <p>&#9660;</p>
-          </Button>
-          <UncontrolledCollapse toggler={`#${dog.name}`}>
-            <Card>
-              <CardBody>
-                {dog.breed}
-              </CardBody>
-            </Card>
-          </UncontrolledCollapse>
-        </div >
+        <Accordion key={dog.name} dogName={dog.name} breedName={capitalizedBreed} shortDescription={dog.shortDescription} />
       );
     });
-
-    return (
-      <div className='d-flex flex-column justify-content-center w-100'>
-        {dogs}
-      </div>
-    );
+    return dogs;
   }
 
   render() {
@@ -51,9 +36,11 @@ export default class OwnedDogs extends React.Component {
             <img src="./images/hello.jpg" alt=""
               className='rounded-circle img-thumbnail img-fluid' />
           </div>
-          {this.getDogInfo()}
+          <div className='d-flex flex-column w-100'>
+            {this.getDogInfo()}
+          </div>
         </div>
       )
-      : <h1>No Owned Dogs</h1>;
+      : <h1>No Saved Dogs</h1>;
   }
 }
