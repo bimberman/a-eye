@@ -32,6 +32,25 @@ app.get('/api/breeds', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/owned-dogs/:userId', (req, res, next) => {
+  const userId = [Number(req.params.userId)];
+  const sql = `
+    select "breed",
+           "imageUrl",
+           "shortDescription",
+           "longDescription",
+           "temperament",
+           "name",
+           "historicalUsage"
+      from "ownedDogs"
+      join "dogBreeds" using ("breedId")
+     where "userId" = $1;
+  `;
+  db.query(sql, userId)
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
