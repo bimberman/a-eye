@@ -1,6 +1,8 @@
 import React from 'react';
 import MainView from './main-view';
 import OwnedDogs from './owned-dogs';
+import Loading from './loading';
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +29,11 @@ export default class App extends React.Component {
     }
   }
 
+  // fake load to show loadscreen for now
+  componentDidMount() {
+    setTimeout(() => this.setState({ view: 'main' }), 2000);
+  }
+
   render() {
     const { view } = this.state;
     let currentView = '';
@@ -37,6 +44,9 @@ export default class App extends React.Component {
         break;
       case 'my-dogs':
         currentView = <OwnedDogs userId={this.state.userId} />;
+        break;
+      case 'loading':
+        currentView = <Loading />;
         break;
     }
 
