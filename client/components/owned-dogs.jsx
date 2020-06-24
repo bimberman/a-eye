@@ -22,7 +22,7 @@ export default class OwnedDogs extends React.Component {
       const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
       const capitalizedBreed = capitalizedWords.join(' ');
       return (
-        <Accordion key={dog.name} dogName={dog.name} breedName={capitalizedBreed} shortDescription={dog.shortDescription} />
+        <Accordion key={dog.name} imageUrl={dog.imageUrl} dogName={dog.name} breedName={capitalizedBreed} shortDescription={dog.shortDescription} />
       );
     });
     return dogs;
