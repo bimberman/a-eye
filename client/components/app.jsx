@@ -1,14 +1,16 @@
 import React from 'react';
 import MainView from './main-view';
 import Loading from './loading';
+import UploadPage from './upload-page';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'loading'
+      view: 'main'
     };
     this.handleView = this.handleView.bind(this);
+    this.setViewToMain = this.setViewToMain.bind(this);
   }
 
   handleView(e) {
@@ -20,7 +22,8 @@ export default class App extends React.Component {
       return this.setState({ view: 'scan' });
     }
     if (classList.contains('upload-button')) {
-      return this.setState({ view: 'upload' });
+      this.setState({ view: 'upload' });
+      return;
     }
     if (classList.contains('browse-button')) {
       return this.setState({ view: 'browse' });
@@ -28,8 +31,11 @@ export default class App extends React.Component {
   }
 
   // fake load to show loadscreen for now
-  componentDidMount() {
-    setTimeout(() => this.setState({ view: 'main' }), 2000);
+  // componentDidMount() {
+  //   setTimeout(() => this.setState({ view: 'main' }), 2000);
+  // }
+  setViewToMain() {
+    this.setState({ view: 'main' });
   }
 
   render() {
@@ -43,6 +49,8 @@ export default class App extends React.Component {
       case 'loading':
         currentView = <Loading/>;
         break;
+      case 'upload':
+        currentView = <UploadPage setViewToMain={this.setViewToMain}/>;
     }
 
     return (
