@@ -1,10 +1,12 @@
 import React from 'react';
 import MainView from './main-view';
+import Loading from './loading';
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'main'
+      view: 'loading'
     };
     this.handleView = this.handleView.bind(this);
   }
@@ -25,6 +27,11 @@ export default class App extends React.Component {
     }
   }
 
+  // fake load to show loadscreen for now
+  componentDidMount() {
+    setTimeout(() => this.setState({ view: 'main' }), 2000);
+  }
+
   render() {
     const { view } = this.state;
     let currentView = '';
@@ -32,6 +39,9 @@ export default class App extends React.Component {
     switch (view) {
       case 'main':
         currentView = <MainView handleView={this.handleView} />;
+        break;
+      case 'loading':
+        currentView = <Loading/>;
         break;
     }
 

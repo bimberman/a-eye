@@ -1,5 +1,37 @@
+body{
+  position: relative;
+}
+
+img{
+  object-fit: cover;
+}
+
+.loading-container{
+  top:0;
+  left: 0;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: #93F0E5;
+}
 
 .main-portrait{
-  object-fit: contain;
   max-height: 75vw;
+  border-width: 2px;
+}
+
+.button{
+  color: rgba(50, 50, 50);
+  background-color: #93F0E5;
+  transition: .8s;
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
+}
+
+.button:hover{
+  background-color: rgb(74, 148, 139)
+}
+
+.loading-gif{
+  width: 55vw;
+  height: 55vw;
 }

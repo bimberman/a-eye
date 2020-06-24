@@ -9,35 +9,36 @@ class MainView extends React.Component {
         <div className="main-portrait-container col-9">
           <img src="./images/hello.jpg" alt=""
             className={`rounded-circle img-thumbnail
-            img-fluid`} />
+            img-fluid main-portrait`} />
         </div>
 
         <div className='main-buttons-container d-flex flex-wrap'>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
-            my-dogs-button`}
+            className={`btn btn-lg btn-block my-4
+            my-dogs-button button`}
             onClick={handleView}>
             My Dogs
           </button>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
-            scan-button`}
-            onClick={handleView}>
+            className={`btn btn-lg btn-block my-4
+            scan-button button`}
+            onClick={handleView}
+            data-toggle="button">
             Scan
           </button>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
-            upload-button`}
+            className={`btn btn-lg btn-block my-4
+            upload-button button`}
             onClick={handleView}>
             Upload
           </button>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
-            browse-button`}
+            className={`btn btn-lg btn-block my-4
+            browse-button button`}
             onClick={handleView}>
             Browse
           </button>
