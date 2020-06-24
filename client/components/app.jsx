@@ -44,8 +44,8 @@ export default class App extends React.Component {
     this.setState({ view: view });
   }
 
-  toggleLoading() {
-
+  toggleLoading(status) {
+    this.setState({ isLoading: status });
   }
 
   render() {
@@ -64,7 +64,7 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className={'main-container container-fluid p-5'}>
+      <div className={'main-container container-fluid p-5 text-center'}>
         {currentView}
         {loadingScreen}
       </div>
