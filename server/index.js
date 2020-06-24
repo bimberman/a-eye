@@ -22,8 +22,15 @@ app.get('/api/health-check', (req, res, next) => {
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = [Number(req.params.userId)];
   const sql = `
-    select *
+    select "breed",
+           "imageUrl",
+           "shortDescription",
+           "longDescription",
+           "temperament",
+           "name",
+           "historicalUsage"
       from "ownedDogs"
+      join "dogBreeds" using ("breedId")
      where "userId" = $1;
   `;
   db.query(sql, userId)
