@@ -19,6 +19,19 @@ app.get('/api/health-check', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/breeds', (req, res, next) => {
+
+  const queryStr = req.body.breed
+    ? `select "breed"
+       from "dogBreeds"`
+    : `select *
+       from "dogBreeds"`;
+
+  db.query(queryStr)
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
