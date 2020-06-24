@@ -51,6 +51,24 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/owned-dogs/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const breedId = Number(req.body.breedId);
+  const name = req.body.name;
+
+  const sql = `
+    insert into "ownedDogs" ("userId","breedId", "name")
+         values ($1, $2, $3)
+      returning *;
+  `;
+
+  const values = [userId, breedId, name];
+
+  db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
