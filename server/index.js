@@ -1,11 +1,22 @@
 require('dotenv/config');
 const express = require('express');
-
+const path = require('path');
 const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
+const classify = require('./classify');
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'uploads'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 const app = express();
 
 app.use(staticMiddleware);
@@ -16,6 +27,12 @@ app.use(express.json());
 app.get('/api/health-check', (req, res, next) => {
   db.query('select \'successfully connected\' as "message"')
     .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
+app.post('/api/classify', upload.single('image'), (req, res, next) => {
+  classify(path.join(__dirname, `uploads/${req.file.filename}`))
+    .then(result => res.status(200).json(result))
     .catch(err => next(err));
 });
 
@@ -34,7 +51,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   // eslint-disable-next-line no-console
   console.log('Listening on port', process.env.PORT);
 });

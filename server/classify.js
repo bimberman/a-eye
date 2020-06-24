@@ -2,6 +2,7 @@ const tf = require('@tensorflow/tfjs');
 const mobilenet = require('@tensorflow-models/mobilenet');
 require('@tensorflow/tfjs-node');
 const knnClassifier = require('@tensorflow-models/knn-classifier');
+const path = require('path');
 
 const fs = require('fs');
 const jpeg = require('jpeg-js');
@@ -28,14 +29,6 @@ const imageByteArray = (image, numChannels) => {
   return values;
 };
 
-// const imageToInput = (image, numChannels) => {
-//   const values = imageByteArray(image, numChannels);
-//   const outShape = [image.height, image.width, numChannels];
-//   const input = tf.tensor3d(values, outShape, 'int32');
-
-//   return input;
-// };
-
 const image2Input = (image, numChannels) => {
   const values = imageByteArray(image, numChannels);
   const outShape = [image.height, image.width, numChannels];
@@ -44,31 +37,29 @@ const image2Input = (image, numChannels) => {
   return input;
 };
 
-const setToClasify = async path => {
+const datasetPath = path.join(__dirname, 'dataset.json');
+
+const classify = async path => {
   const mobilenetModel = await mobilenet.load();
   const img = readImage(path);
   const input = image2Input(img, NUMBER_OF_CHANNELS);
   const logits = mobilenetModel.infer(input, 'conv_preds');
 
-  classify(logits);
-};
-
-const classify = async logits => {
   const classifier = knnClassifier.create();
-  const data = await fs.promises.readFile('./dataset.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    return data;
+  const data = await fs.promises.readFile(datasetPath, 'utf8');
+  const parseData = JSON.parse(data);
+  const tensors = parseData.map(([label, data, shape]) => {
+    return { [label]: tf.tensor2d(data, shape, 'float32') };
   });
-  classifier.setClassifierDataset(Object.fromEntries(JSON.parse(data).map(([label, data, shape]) => [label, tf.tensor(data, shape)])));
+
+  const dataset = Object.assign({}, ...tensors);
+  classifier.setClassifierDataset(dataset);
+
+  // eslint-disable-next-line no-console
 
   const predictions = await classifier.predictClass(logits);
 
-  // eslint-disable-next-line no-console
-  console.log('classification results:', predictions);
+  return predictions;
 };
 
 module.exports = classify;
-
-if (process.argv.length !== 3) throw new Error('incorrect arguments: node script.js <IMAGE_FILE>');
-
-setToClasify(process.argv[2]);
