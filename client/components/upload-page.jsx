@@ -19,14 +19,18 @@ class UploadPage extends React.Component {
   }
 
   previewImage(e) {
+    const imagePath = event.target.files[0]
+      ? URL.createObjectURL(event.target.files[0])
+      : '';
     this.setState({
-      imagePath: URL.createObjectURL(event.target.files[0])
+      imagePath: imagePath
     });
 
   }
 
   uploadImage(image) {
-
+    const { toggleLoading } = this.props;
+    toggleLoading('true');
     const imageData = new FormData();
     const imageToUpload = this.uploadImageRef.current.files[0];
     imageData.append('image', imageToUpload, imageToUpload.name);
@@ -39,6 +43,7 @@ class UploadPage extends React.Component {
       .then(prediction => {
         // eslint-disable-next-line no-console
         console.log(prediction);
+        toggleLoading('true');
       })
       .catch(err => console.error(err));
 
@@ -46,6 +51,7 @@ class UploadPage extends React.Component {
 
   render() {
     const { imagePath } = this.state;
+    const { changeAppView } = this.props;
     const imagePreview = imagePath
       ? (<img className="preview-image"
         src={imagePath}
@@ -55,7 +61,8 @@ class UploadPage extends React.Component {
     return (
       <div className="container col-10 p-0">
         <div className="back-to-main p-0">
-          <i className="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left"
+            onClick={() => changeAppView('main')}></i>
         </div>
         <div className="preview-image-container">
           {imagePreview}
@@ -67,7 +74,8 @@ class UploadPage extends React.Component {
 
         <div className="col-md-4 col-lg-2">
           <button className="btn btn-primary btn-block"
-            onClick={this.uploadImage}> Upload Image
+            disabled={!imagePath}
+            onClick={this.uploadImage}> Classify Image
           </button>
         </div>
       </div>
