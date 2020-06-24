@@ -15,31 +15,31 @@ class MainView extends React.Component {
         <div className='main-buttons-container d-flex flex-wrap'>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
+            className={`btn btn-primary btn-lg btn-block my-4 turqoise border-0
             my-dogs-button`}
             onClick={handleView}>
-            My Dogs
+            <p className="p-0 m-0">My Dogs</p>
           </button>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
+            className={`btn btn-primary btn-lg btn-block my-4 turqoise border-0
             scan-button`}
             onClick={handleView}>
-            Scan
+            <p className="p-0 m-0">Scan</p>
           </button>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
+            className={`btn btn-primary btn-lg btn-block my-4 turqoise border-0
             upload-button`}
             onClick={handleView}>
-            Upload
+            <p className="p-0 m-0">Upload</p>
           </button>
 
           <button type="button"
-            className={`btn btn-primary btn-lg btn-block my-4
+            className={`btn btn-primary btn-lg btn-block my-4 turqoise border-0
             browse-button`}
             onClick={handleView}>
-            Browse
+            <p className="p-0 m-0">Browse</p>
           </button>
 
         </div>
