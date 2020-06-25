@@ -82,7 +82,24 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
 
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
-    .then(result => res.status(200).json(result))
+    .then(result => {
+      const label = result.label[0].toUpperCase() + result.label.substring(1);
+      const confidence = result.confidences[result.label];
+      const sql = `
+      select *
+        from "breeds"
+       where "name" = $1
+      `;
+      db.query(sql, [label])
+        .then(result => {
+          res.status(200).json({
+            label: label,
+            confidence: confidence,
+            info: result.rows[0]
+          });
+        })
+        .catch(err => next(err));
+    })
     .catch(err => next(err));
 });
 
