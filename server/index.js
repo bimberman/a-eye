@@ -92,11 +92,20 @@ app.post('/api/classify', upload.single('image'), (req, res, next) => {
       `;
       db.query(sql, [label])
         .then(result => {
-          res.status(200).json({
-            label: label,
-            confidence: confidence,
-            info: result.rows[0]
-          });
+          if (result.rows[0]) {
+            res.status(200).json({
+              label: label,
+              confidence: confidence,
+              info: result.rows[0]
+            });
+          } else {
+
+            res.status(200).json({
+              label: label,
+              confidence: confidence,
+              info: {}
+            });
+          }
         })
         .catch(err => next(err));
     })
