@@ -1,5 +1,6 @@
 import React from 'react';
 import MainView from './main-view';
+import OwnedDogs from './owned-dogs';
 import Loading from './loading';
 import BreedsView from './breeds-view';
 
@@ -51,8 +52,11 @@ export default class App extends React.Component {
       case 'main':
         currentView = <MainView handleView={this.handleView} />;
         break;
+      case 'my-dogs':
+        currentView = <OwnedDogs userId={this.state.userId} />;
+        break;
       case 'loading':
-        currentView = <Loading/>;
+        currentView = <Loading />;
         break;
       case 'browse':
         currentView = <BreedsView breeds={this.state.breeds}/>;

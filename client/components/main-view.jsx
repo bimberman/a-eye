@@ -21,6 +21,7 @@ class MainView extends React.Component {
             onClick={handleView}>
             My Dogs
           </button>
+
           <button type="button"
             className={`btn btn-lg btn-block my-4
             upload-button button`}
