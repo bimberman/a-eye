@@ -1,5 +1,4 @@
 import React from 'react';
-
 import DropDown from './breed';
 
 class UploadPage extends React.Component {
@@ -69,20 +68,22 @@ class UploadPage extends React.Component {
     const { imagePath, prediction } = this.state;
     const { changeAppView } = this.props;
     const { confidence, info } = prediction;
+    const noDataText = 'No data found on the database';
+    let predictionText;
+    let inputOrResult;
+
     const imagePreview = imagePath
       ? (<img src={imagePath}
         ref={this.displayImageRef}
         className={`rounded-circle img-thumbnail
-            img-fluid preview-image`}/>)
+            img-fluid preview-image`} />)
       : '';
 
-    let predictionText;
-    let inputOrResult;
     if (prediction) {
       predictionText = (
         <div>
           <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
-          <p>{info.shortDescription}</p>
+          <p>{info.shortDescription || noDataText}</p>
           <button className="btn btn-sm btn-light"
             onClick={this.resetImage}>
             <span>Try new image</span>
@@ -91,18 +92,18 @@ class UploadPage extends React.Component {
       );
       inputOrResult = (
         <div>
-          <DropDown breed={info.name}
+          <DropDown breed={prediction.label}
             shortDescription={predictionText}
-            imageUrl={info.imageUrl}>
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
           </DropDown>
 
           <DropDown breed={'History'}
-            shortDescription={info.historicalUsage}
-            imageUrl={info.imageUrl}>
+            shortDescription={info.historicalUsage || noDataText}
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
           </DropDown>
           <DropDown breed={'Temper'}
-            shortDescription={info.temperament}
-            imageUrl={info.imageUrl}>
+            shortDescription={info.temperament || noDataText}
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
           </DropDown>
         </div>
       );
