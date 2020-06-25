@@ -19,16 +19,16 @@ SET row_security = off;
 ALTER TABLE ONLY public."ownedDogs" DROP CONSTRAINT "ownedDogs_fk1";
 ALTER TABLE ONLY public."ownedDogs" DROP CONSTRAINT "ownedDogs_fk0";
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
-ALTER TABLE ONLY public."dogsBreeds" DROP CONSTRAINT "dogsBreeds_pk";
+ALTER TABLE ONLY public.breeds DROP CONSTRAINT "dogBreeds_pk";
 ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
 ALTER TABLE public."ownedDogs" ALTER COLUMN "ownedDogId" DROP DEFAULT;
-ALTER TABLE public."dogsBreeds" ALTER COLUMN "breedId" DROP DEFAULT;
+ALTER TABLE public.breeds ALTER COLUMN "breedId" DROP DEFAULT;
 DROP SEQUENCE public."users_userId_seq";
 DROP TABLE public.users;
 DROP SEQUENCE public."ownedDogs_ownedDogId_seq";
 DROP TABLE public."ownedDogs";
-DROP SEQUENCE public."dogsBreeds_breedId_seq";
-DROP TABLE public."dogsBreeds";
+DROP SEQUENCE public."dogBreeds_breedId_seq";
+DROP TABLE public.breeds;
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
@@ -64,12 +64,12 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: dogsBreeds; Type: TABLE; Schema: public; Owner: -
+-- Name: breeds; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public."dogsBreeds" (
+CREATE TABLE public.breeds (
     "breedId" integer NOT NULL,
-    breed text NOT NULL,
+    name text NOT NULL,
     "shortDescription" text NOT NULL,
     "longDescription" text NOT NULL,
     "imageUrl" text NOT NULL,
@@ -79,10 +79,10 @@ CREATE TABLE public."dogsBreeds" (
 
 
 --
--- Name: dogsBreeds_breedId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: dogBreeds_breedId_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."dogsBreeds_breedId_seq"
+CREATE SEQUENCE public."dogBreeds_breedId_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -92,10 +92,10 @@ CREATE SEQUENCE public."dogsBreeds_breedId_seq"
 
 
 --
--- Name: dogsBreeds_breedId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: dogBreeds_breedId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."dogsBreeds_breedId_seq" OWNED BY public."dogsBreeds"."breedId";
+ALTER SEQUENCE public."dogBreeds_breedId_seq" OWNED BY public.breeds."breedId";
 
 
 --
@@ -162,10 +162,10 @@ ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users."userId";
 
 
 --
--- Name: dogsBreeds breedId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: breeds breedId; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public."dogsBreeds" ALTER COLUMN "breedId" SET DEFAULT nextval('public."dogsBreeds_breedId_seq"'::regclass);
+ALTER TABLE ONLY public.breeds ALTER COLUMN "breedId" SET DEFAULT nextval('public."dogBreeds_breedId_seq"'::regclass);
 
 
 --
@@ -183,10 +183,12 @@ ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public.
 
 
 --
--- Data for Name: dogsBreeds; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: breeds; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."dogsBreeds" ("breedId", breed, "shortDescription", "longDescription", "imageUrl", temperament, "historicalUsage") FROM stdin;
+COPY public.breeds ("breedId", name, "shortDescription", "longDescription", "imageUrl", temperament, "historicalUsage") FROM stdin;
+2	Pug	Pugs have wrinkly, short-muzzled face, and curled tail. The breed has a fine, glossy coat that comes in a variety of colours, most often fawn or black, and a compact square body with well-developed muscles.	The Pug’s motto is the Latin phrase “multum in parvo” (a lot in a little)—an apt description of this small but muscular breed. They come in three colors: silver or apricot-fawn with a black face mask, or all black. The large round head, the big, sparkling eyes, and the wrinkled brow give Pugs a range of human-like expressions—surprise, happiness, curiosity—that have delighted owners for centuries. Pug owners say their breed is the ideal house dog. Pugs are happy in the city or country, with kids or old folks, as an only pet or in a pack. They enjoy their food, and care must be taken to keep them trim. They do best in moderate climates—not too hot, not too cold—but, with proper care, Pugs can be their adorable selves anywhere.	/images/pug.jpg	Charming, Mischievous, Loving	The Pug’s career as citizen of the world began sometime in the 1500s, when Dutch traders returned to Europe with specimens of the breed. Legend holds that the Pug became the mascot of Holland’s royal House of Orange when a Pug save the life of the Prince of Orange by barking to warn the prince of an attack on his camp by Spanish troops. When William and Mary of Orange arrived in England to assume the monarchy, their Pugs accompanied them and began a craze for the breed among the British.
+1	Dalmatian	Dalmatians have a white coat with black or liver color spots. They typically standing between 19 and 23 inches at the shoulder.	The Dalmatian is a distinctively spotted dog; poised and alert; strong, muscular and active; free of shyness; intelligent in expression; symmetrical in outline; and without exaggeration or coarseness. The Dalmatian is capable of great endurance, combined with fair amount of speed. Deviations from the described ideal should be penalized in direct proportion to the degree of the deviation.	/images/dalmatian.jpg	Reserved and dignified, Dals can be aloof with strangers and are dependable watchdogs. With their preferred humans, Dals are bright, loyal, and loving house dogs. They are strong, active athletes with great stamina—a wonderful partner for runners and hikers.	Dalmatians have a job description unique among AKC breeds: coach dog. Their traditional occupation was to trot beside horse-drawn coaches, and to guard the horses and rig when otherwise unattended. Dals were alongside the caravans of the Romani people, commonly known as gypsies, during their ceaseless wanderings around Europe. This association with the peripatetic Romani helps explain why Dal origins are so difficult to pin down—as with the gypsies themselves, the world was their home.
 \.
 
 
@@ -207,10 +209,10 @@ COPY public.users ("userId", username, email) FROM stdin;
 
 
 --
--- Name: dogsBreeds_breedId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: dogBreeds_breedId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."dogsBreeds_breedId_seq"', 1, false);
+SELECT pg_catalog.setval('public."dogBreeds_breedId_seq"', 2, true);
 
 
 --
@@ -228,11 +230,11 @@ SELECT pg_catalog.setval('public."users_userId_seq"', 1, false);
 
 
 --
--- Name: dogsBreeds dogsBreeds_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: breeds dogBreeds_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public."dogsBreeds"
-    ADD CONSTRAINT "dogsBreeds_pk" PRIMARY KEY ("breedId");
+ALTER TABLE ONLY public.breeds
+    ADD CONSTRAINT "dogBreeds_pk" PRIMARY KEY ("breedId");
 
 
 --
@@ -256,7 +258,7 @@ ALTER TABLE ONLY public."ownedDogs"
 --
 
 ALTER TABLE ONLY public."ownedDogs"
-    ADD CONSTRAINT "ownedDogs_fk1" FOREIGN KEY ("breedId") REFERENCES public."dogsBreeds"("breedId");
+    ADD CONSTRAINT "ownedDogs_fk1" FOREIGN KEY ("breedId") REFERENCES public.breeds("breedId");
 
 
 --

@@ -33,7 +33,7 @@ app.get('/api/health-check', (req, res, next) => {
 app.get('/api/breeds', (req, res, next) => {
 
   const queryStr = `select *
-                    from "dogBreeds"`;
+                    from "breeds"`;
 
   db.query(queryStr)
     .then(result => res.json(result.rows))
