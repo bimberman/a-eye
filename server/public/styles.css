@@ -31,8 +31,28 @@ img{
   box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
 }
 
+.custom-shadow{
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
+}
+
 .button:hover{
   background-color: rgb(74, 148, 139)
+}
+
+.custom-button{
+  background-color: #93F0E5;
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
+}
+
+.custom-button:hover:focus,
+.custom-button:hover{
+  background-color: rgb(74, 148, 139)
+}
+
+.custom-button:focus{
+  outline: 0;
+  background-color: #93F0E5;
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
 }
 
 .loading-gif{

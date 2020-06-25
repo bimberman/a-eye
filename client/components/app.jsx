@@ -2,13 +2,14 @@ import React from 'react';
 import MainView from './main-view';
 import OwnedDogs from './owned-dogs';
 import Loading from './loading';
+import BreedsView from './breeds-view';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'my-dogs',
-      userId: 5
+      view: 'loading',
+      breeds: []
     };
     this.handleView = this.handleView.bind(this);
   }
@@ -31,7 +32,16 @@ export default class App extends React.Component {
 
   // fake load to show loadscreen for now
   componentDidMount() {
-    // setTimeout(() => this.setState({ view: 'main' }), 2000);
+    this.getBreeds();
+    setTimeout(() => this.setState({ view: 'main' }), 2000);
+  }
+
+  getBreeds() {
+    fetch('/api/breeds')
+      .then(res => res.json())
+      .then(data => this.setState(prevState => {
+        return { ...prevState, breeds: data };
+      }));
   }
 
   render() {
@@ -47,6 +57,9 @@ export default class App extends React.Component {
         break;
       case 'loading':
         currentView = <Loading />;
+        break;
+      case 'browse':
+        currentView = <BreedsView breeds={this.state.breeds}/>;
         break;
     }
 

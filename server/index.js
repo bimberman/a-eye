@@ -21,11 +21,18 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/breeds', (req, res, next) => {
 
-  const queryStr = req.body.breed
-    ? `select "breed"
-       from "dogBreeds"`
-    : `select *
-       from "dogBreeds"`;
+  const queryStr = `select *
+                    from "dogBreeds"`;
+
+  db.query(queryStr)
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
+});
+
+app.get('/api/breeds', (req, res, next) => {
+
+  const queryStr = `select "breed"
+                    from "dogBreeds"`;
 
   db.query(queryStr)
     .then(result => res.json(result.rows))
