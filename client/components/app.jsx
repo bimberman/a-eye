@@ -36,6 +36,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: false });
+    this.getBreeds();
   }
 
   changeAppView(view) {
@@ -44,9 +45,6 @@ export default class App extends React.Component {
 
   toggleLoading(status) {
     this.setState({ isLoading: status });
-    this.getBreeds();
-    setTimeout(() => this.setState({ view: 'main' }), 2000);
-
   }
 
   getBreeds() {

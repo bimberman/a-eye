@@ -1,7 +1,6 @@
 import React from 'react';
-import {
-  Card, CardText, CardBody
-} from 'reactstrap';
+
+import DropDown from './breed';
 
 class UploadPage extends React.Component {
   constructor(props) {
@@ -69,8 +68,7 @@ class UploadPage extends React.Component {
   render() {
     const { imagePath, prediction } = this.state;
     const { changeAppView } = this.props;
-    const label = prediction.label;
-    const confidence = prediction.confidences;
+    const { confidence, info } = prediction;
     const imagePreview = imagePath
       ? (<img src={imagePath}
         ref={this.displayImageRef}
@@ -78,42 +76,58 @@ class UploadPage extends React.Component {
             img-fluid preview-image`}/>)
       : '';
 
-    const inputOrResult = prediction
-      ? (
+    let predictionText;
+    let inputOrResult;
+    if (prediction) {
+      predictionText = (
         <div>
-          <Card>
-            <CardBody className='p-1 predict-card'>
-              <CardText>Prediction: {prediction.label}</CardText>
-              <CardText>Confidence: {`%${(confidence[label] * 100).toFixed(2)}`}</CardText>
-              <button className="btn btn-sm btn-light"
-                onClick={this.resetImage}>
-                <span>Try new image</span>
-              </button>
-            </CardBody>
-          </Card>
-
+          <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
+          <p>{info.shortDescription}</p>
+          <button className="btn btn-sm btn-light"
+            onClick={this.resetImage}>
+            <span>Try new image</span>
+          </button>
         </div>
-      )
-      : (
+      );
+      inputOrResult = (
         <div>
-          <div className="col-md-4 col-lg-2">
-            <input type="file" accept="image/*"
-              ref={this.uploadImageRef}
-              onChange={this.handleChange}
-              name="image"
-              className="image-input"/>
-            <button className="btn btn-block button"
-              disabled={!imagePath}
-              onClick={this.uploadImage}> Classify Image
-            </button>
-          </div>
+          <DropDown breed={info.name}
+            shortDescription={predictionText}
+            imageUrl={info.imageUrl}>
+          </DropDown>
+
+          <DropDown breed={'History'}
+            shortDescription={info.historicalUsage}
+            imageUrl={info.imageUrl}>
+          </DropDown>
+          <DropDown breed={'Temper'}
+            shortDescription={info.temperament}
+            imageUrl={info.imageUrl}>
+          </DropDown>
+        </div>
+      );
+
+    } else {
+      inputOrResult = (
+
+        <div className="col-md-4 col-lg-2">
+          <input type="file" accept="image/*"
+            ref={this.uploadImageRef}
+            onChange={this.handleChange}
+            name="image"
+            className="image-input" />
+          <button className="btn btn-block button"
+            disabled={!imagePath}
+            onClick={this.uploadImage}> Classify Image
+          </button>
         </div>
 
       );
+    }
 
     return (
-      <div className="container col-10 p-0 text-center">
-        <div className="back-to-main p-0 text-left">
+      <div className="container p-0 d-flex flex-wrap justify-content-center">
+        <div className="back-to-main p-0 text-left col-12">
           <i className="fas fa-chevron-left"
             onClick={() => changeAppView('main')}></i>
         </div>

@@ -40,16 +40,6 @@ app.get('/api/breeds', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/breeds', (req, res, next) => {
-
-  const queryStr = `select "breed"
-                    from "dogBreeds"`;
-
-  db.query(queryStr)
-    .then(result => res.json(result.rows))
-    .catch(err => next(err));
-});
-
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = [Number(req.params.userId)];
   const sql = `
@@ -69,11 +59,28 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
-    .then(result => res.status(200).json(result))
+    .then(result => {
+      const label = result.label[0].toUpperCase() + result.label.substring(1);
+      const confidence = result.confidences[result.label];
+      const sql = `
+      select *
+        from "breeds"
+       where "name" = $1
+      `;
+      db.query(sql, [label])
+        .then(result => {
+          res.status(200).json({
+            label: label,
+            confidence: confidence,
+            info: result.rows[0]
+          });
+        })
+        .catch(err => next(err));
+    })
     .catch(err => next(err));
+});
 
 app.post('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = Number(req.params.userId);
