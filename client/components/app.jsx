@@ -15,7 +15,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      breeds: []
+      breeds: [],
+      userId: 1
     };
     this.toggleLoading = this.toggleLoading.bind(this);
   }

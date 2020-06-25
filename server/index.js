@@ -43,15 +43,15 @@ app.get('/api/breeds', (req, res, next) => {
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = [Number(req.params.userId)];
   const sql = `
-    select "breed",
+    select "breeds"."name" as "breed",
            "imageUrl",
            "shortDescription",
            "longDescription",
            "temperament",
-           "name",
+           "ownedDogs"."name",
            "historicalUsage"
       from "ownedDogs"
-      join "dogBreeds" using ("breedId")
+      join "breeds" using ("breedId")
      where "userId" = $1;
   `;
   db.query(sql, userId)
