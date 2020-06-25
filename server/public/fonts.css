@@ -1,19 +1,18 @@
 h1, h2, h3,
 h4, h5, h6,
-p{
+p, i{
   font-family: 'Montserrat', sans-serif;
   font-style: normal;
   color: rgb(50,50,50);
+  text-align: center;
 }
 
 .gray{
   color:gray;
-  background-color: white;
 }
 
 .lightgray{
   color:lightgray;
-  background-color: white;
 }
 
 .italic{
