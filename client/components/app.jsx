@@ -16,6 +16,8 @@ export default class App extends React.Component {
     this.state = {
       isLoading: true,
       breeds: [],
+      view: 'main',
+      isLoading: 'true',
       userId: 1
     };
     this.toggleLoading = this.toggleLoading.bind(this);
@@ -24,6 +26,7 @@ export default class App extends React.Component {
   componentDidMount() {
     this.getBreeds();
     this.setState({ isLoading: false });
+    this.getBreeds();
   }
 
   toggleLoading(status) {
@@ -41,6 +44,30 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { view, isLoading } = this.state;
+    let currentView = '';
+    const loadingScreen = isLoading
+      ? <Loading />
+      : '';
+    switch (view) {
+      case 'main':
+        currentView = <MainView handleView={this.handleView} />;
+        break;
+      case 'upload':
+        currentView = <UploadPage changeAppView={this.changeAppView}
+          toggleLoading={this.toggleLoading} />;
+        break;
+      case 'my-dogs':
+        currentView = <OwnedDogs userId={this.state.userId} />;
+        break;
+      case 'loading':
+        currentView = <Loading />;
+        break;
+      case 'browse':
+        currentView = <BreedsView breeds={this.state.breeds} />;
+        break;
+    }
+
     return (
       <Router>
         <Switch>

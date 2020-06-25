@@ -59,9 +59,56 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/owned-dogs/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const dogId = Number(req.body.dogId);
+  const dogName = req.body.name;
+
+  if (!dogName) return res.status(400).json({ error: 'name is required' });
+
+  const sql = `
+       update "ownedDogs"
+          set "name" = $1
+        where "userId" = $2
+          and "ownedDogId" = $3
+    returning *;
+  `;
+  const values = [dogName, userId, dogId];
+
+  db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
-    .then(result => res.status(200).json(result))
+    .then(result => {
+      const label = result.label[0].toUpperCase() + result.label.substring(1);
+      const confidence = result.confidences[result.label];
+      const sql = `
+      select *
+        from "breeds"
+       where "name" = $1
+      `;
+      db.query(sql, [label])
+        .then(result => {
+          if (result.rows[0]) {
+            res.status(200).json({
+              label: label,
+              confidence: confidence,
+              info: result.rows[0]
+            });
+          } else {
+
+            res.status(200).json({
+              label: label,
+              confidence: confidence,
+              info: {}
+            });
+          }
+        })
+        .catch(err => next(err));
+    })
     .catch(err => next(err));
 });
 

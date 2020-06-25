@@ -10,7 +10,7 @@ export default function Accordion(props) {
   return (
     <div>
       <Button color="primary" onClick={toggle} id={props.dogName} className='w-100 mt-4 d-flex justify-content-between button'>
-        <img src={props.imageUrl} />
+        <img src={props.imageUrl} height={50} />
         <h4>{props.dogName}</h4>
         {status === 'Opened'
           ? <p>&#9650;</p>

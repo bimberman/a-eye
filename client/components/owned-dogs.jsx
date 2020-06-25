@@ -13,13 +13,16 @@ export default class OwnedDogs extends React.Component {
   componentDidMount() {
     fetch(`/api/owned-dogs/${this.props.userId}`)
       .then(response => response.json())
-      .then(dogs => this.setState({ ownedDogs: dogs }))
+      .then(dogs => {
+        this.setState({ ownedDogs: dogs });
+      })
       .catch(err => console.error(err));
   }
 
   getDogInfo() {
     const dogs = this.state.ownedDogs.map(dog => {
-      const breedWords = dog.breed.split(' ');
+      const breed = dog.breed;
+      const breedWords = breed.split(' ');
       const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
       const capitalizedBreed = capitalizedWords.join(' ');
       return (
@@ -35,7 +38,7 @@ export default class OwnedDogs extends React.Component {
         <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
           <Header pageName="My Dogs" />
           <div className="main-portrait-container col-9">
-            <img src="./images/hello.jpg" alt=""
+            <img src="./images/user-icon.png" alt=""
               className='rounded-circle img-thumbnail img-fluid' />
           </div>
           <div className='d-flex flex-column w-100'>
