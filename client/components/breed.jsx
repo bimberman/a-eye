@@ -25,7 +25,7 @@ class Breed extends React.Component {
             <img src={this.props.imageUrl} alt=""
               className={'rounded-circle img-thumbnail img-fluid'} />
           </div>
-          <h4 className="col-6 p-0 m-0 d-flex align-items-center">
+          <h4 className="col-6 p-0 m-0 d-flex align-items-center left-text">
             {this.props.breed}
           </h4>
           <i className="fa fa-chevron-down col-2 d-flex align-items-center"></i>
