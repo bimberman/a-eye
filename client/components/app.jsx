@@ -1,7 +1,9 @@
 import React from 'react';
 import MainView from './main-view';
+import OwnedDogs from './owned-dogs';
 import Loading from './loading';
 import UploadPage from './upload-page';
+import BreedsView from './breeds-view';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -36,16 +38,23 @@ export default class App extends React.Component {
     this.setState({ isLoading: false });
   }
 
-  // fake load to show loadscreen for now
-  // componentDidMount() {
-  //   setTimeout(() => this.setState({ view: 'main' }), 2000);
-  // }
   changeAppView(view) {
     this.setState({ view: view });
   }
 
   toggleLoading(status) {
     this.setState({ isLoading: status });
+    this.getBreeds();
+    setTimeout(() => this.setState({ view: 'main' }), 2000);
+
+  }
+
+  getBreeds() {
+    fetch('/api/breeds')
+      .then(res => res.json())
+      .then(data => this.setState(prevState => {
+        return { ...prevState, breeds: data };
+      }));
   }
 
   render() {
@@ -61,6 +70,16 @@ export default class App extends React.Component {
       case 'upload':
         currentView = <UploadPage changeAppView={this.changeAppView}
           toggleLoading={this.toggleLoading}/>;
+        break;
+      case 'my-dogs':
+        currentView = <OwnedDogs userId={this.state.userId} />;
+        break;
+      case 'loading':
+        currentView = <Loading />;
+        break;
+      case 'browse':
+        currentView = <BreedsView breeds={this.state.breeds}/>;
+        break;
     }
 
     return (

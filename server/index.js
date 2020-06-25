@@ -32,11 +32,18 @@ app.get('/api/health-check', (req, res, next) => {
 
 app.get('/api/breeds', (req, res, next) => {
 
-  const queryStr = req.body.breed
-    ? `select "breed"
-       from "dogBreeds"`
-    : `select *
-       from "dogBreeds"`;
+  const queryStr = `select *
+                    from "dogBreeds"`;
+
+  db.query(queryStr)
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
+});
+
+app.get('/api/breeds', (req, res, next) => {
+
+  const queryStr = `select "breed"
+                    from "dogBreeds"`;
 
   db.query(queryStr)
     .then(result => res.json(result.rows))
@@ -62,9 +69,27 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
     .then(result => res.status(200).json(result))
+    .catch(err => next(err));
+
+app.post('/api/owned-dogs/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const breedId = Number(req.body.breedId);
+  const name = req.body.name;
+
+  const sql = `
+    insert into "ownedDogs" ("userId","breedId", "name")
+         values ($1, $2, $3)
+      returning *;
+  `;
+
+  const values = [userId, breedId, name];
+
+  db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
 });
 
