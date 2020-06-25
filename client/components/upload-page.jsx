@@ -1,4 +1,5 @@
 import React from 'react';
+import InfoDropDown from './info-dropdown';
 
 import {
   Card, CardText, CardBody
@@ -6,7 +7,6 @@ import {
 import Header from './header';
 
 import DropDown from './breed';
-
 
 class UploadPage extends React.Component {
   constructor(props) {
@@ -85,10 +85,13 @@ class UploadPage extends React.Component {
 
 
     const imagePreview = imagePath
-      ? (<img src={imagePath}
-        ref={this.displayImageRef}
-        className={`rounded-circle img-thumbnail
-            img-fluid preview-image`} />)
+      ? (<div>
+        <img src={imagePath}
+          ref={this.displayImageRef}
+          className={`rounded-circle img-thumbnail
+            img-fluid preview-image`} />
+      </div>
+      )
       : '';
 
     if (prediction) {
@@ -96,14 +99,16 @@ class UploadPage extends React.Component {
         <div>
           <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
           <p>{info.shortDescription || noDataText}</p>
-          <button className="btn btn-sm btn-light"
-            onClick={this.resetImage}>
-            <span>Try new image</span>
-          </button>
         </div>
       );
       inputOrResult = (
         <div>
+          <button className="btn btn-sm btn-light"
+            onClick={this.resetImage}>
+            <span>Try new image</span>
+          </button>
+          <InfoDropDown title={prediction.label}
+            description={predictionText}
 
           <div className="col-md-4 col-lg-2">
             <input type="file" accept="image/*"
@@ -120,22 +125,20 @@ class UploadPage extends React.Component {
           <DropDown breed={prediction.label}
             shortDescription={predictionText}
             imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </DropDown>
-
-          <DropDown breed={'History'}
-            shortDescription={info.historicalUsage || noDataText}
+          </
+            
+          <InfoDropDown title={'History'}
+            description={info.historicalUsage || noDataText}
             imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </DropDown>
-          <DropDown breed={'Temper'}
-            shortDescription={info.temperament || noDataText}
+          </InfoDropDown>
+          <InfoDropDown title={'Temper'}
+            description={info.temperament || noDataText}
             imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </DropDown>
-        </div>
-      );
+          </InfoDropDown>
+        </
 
     } else {
       inputOrResult = (
-
         <div className="col-md-4 col-lg-2">
           <input type="file" accept="image/*"
             ref={this.uploadImageRef}
@@ -148,7 +151,6 @@ class UploadPage extends React.Component {
           </button>
 
         </div>
-
       );
     }
 

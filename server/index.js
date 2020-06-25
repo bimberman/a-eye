@@ -40,6 +40,17 @@ app.get('/api/breeds', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/breeds/:breed', (req, res, next) => {
+
+  const queryStr = `select *
+                    from "breeds"
+                   where "name" = $1`;
+
+  db.query(queryStr, [req.params.breed])
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = [Number(req.params.userId)];
   const sql = `

@@ -4,6 +4,8 @@ import OwnedDogs from './owned-dogs';
 import Loading from './loading';
 import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
+import ViewInfo from './view-info';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,7 +20,8 @@ export default class App extends React.Component {
       breeds: [],
       view: 'main',
       isLoading: 'true',
-      userId: 1
+      userId: 1,
+      currentBreed: 'Pug'
     };
     this.toggleLoading = this.toggleLoading.bind(this);
   }
@@ -29,6 +32,13 @@ export default class App extends React.Component {
     this.getBreeds();
   }
 
+  changeAppView(view, currentBreed) {
+    this.setState({
+      view: view,
+      currentBreed: currentBreed
+    });
+  }
+        
   toggleLoading(status) {
     this.setState({ isLoading: status });
   }
@@ -44,7 +54,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { view, isLoading } = this.state;
+    const { view, isLoading, currentBreed } = this.state;
     let currentView = '';
     const loadingScreen = isLoading
       ? <Loading />
@@ -60,12 +70,13 @@ export default class App extends React.Component {
       case 'my-dogs':
         currentView = <OwnedDogs userId={this.state.userId} />;
         break;
-      case 'loading':
-        currentView = <Loading />;
-        break;
       case 'browse':
-        currentView = <BreedsView breeds={this.state.breeds} />;
+        currentView = <BreedsView breeds={this.state.breeds}
+          changeAppView={this.changeAppView}/>;
         break;
+      case 'view-info':
+        currentView = <ViewInfo currentBreed={currentBreed}
+          changeAppView={this.changeAppView}/>;
     }
 
     return (
