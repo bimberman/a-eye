@@ -32,6 +32,10 @@ img{
   background-color: #93EFE5;
 }
 
+.predict-card{
+  background-color:  #93EFE5;
+  color: rgba(50, 50, 50)
+}
 .main-portrait{
   max-height: 75vw;
   border-width: 2px;

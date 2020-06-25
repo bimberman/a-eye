@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+  Card, CardText, CardBody
+} from 'reactstrap';
 
 class UploadPage extends React.Component {
   constructor(props) {
@@ -12,6 +15,7 @@ class UploadPage extends React.Component {
     this.previewImage = this.previewImage.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
+    this.resetImage = this.resetImage.bind(this);
   }
 
   handleChange(e) {
@@ -26,6 +30,13 @@ class UploadPage extends React.Component {
       imagePath: imagePath
     });
 
+  }
+
+  resetImage() {
+    this.setState({
+      imagePath: '',
+      prediction: ''
+    });
   }
 
   uploadImage(image) {
@@ -50,6 +61,7 @@ class UploadPage extends React.Component {
       .catch(err => {
         console.error(err);
         toggleLoading(false);
+        this.setState({ prediction: '' });
       });
 
   }
@@ -69,18 +81,28 @@ class UploadPage extends React.Component {
     const inputOrResult = prediction
       ? (
         <div>
-          <p>Image is classified as {prediction.label}</p>
-          <p>Confidence: {`%${(confidence[label] * 100).toFixed(2)}`}</p>
+          <Card>
+            <CardBody className='p-1 predict-card'>
+              <CardText>Prediction: {prediction.label}</CardText>
+              <CardText>Confidence: {`%${(confidence[label] * 100).toFixed(2)}`}</CardText>
+              <button className="btn btn-sm btn-light"
+                onClick={this.resetImage}>
+                <span>Try new image</span>
+              </button>
+            </CardBody>
+          </Card>
+
         </div>
       )
       : (
         <div>
-          <input type="file" accept="image/*"
-            ref={this.uploadImageRef}
-            onChange={this.handleChange}
-            name="image"/>
           <div className="col-md-4 col-lg-2">
-            <button className="btn btn-primary btn-block"
+            <input type="file" accept="image/*"
+              ref={this.uploadImageRef}
+              onChange={this.handleChange}
+              name="image"
+              className="image-input"/>
+            <button className="btn btn-block button"
               disabled={!imagePath}
               onClick={this.uploadImage}> Classify Image
             </button>
