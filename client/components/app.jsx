@@ -2,16 +2,19 @@ import React from 'react';
 import MainView from './main-view';
 import OwnedDogs from './owned-dogs';
 import Loading from './loading';
+import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'loading',
-      breeds: []
+      view: 'main',
+      isLoading: 'true'
     };
     this.handleView = this.handleView.bind(this);
+    this.changeAppView = this.changeAppView.bind(this);
+    this.toggleLoading = this.toggleLoading.bind(this);
   }
 
   handleView(e) {
@@ -23,17 +26,27 @@ export default class App extends React.Component {
       return this.setState({ view: 'scan' });
     }
     if (classList.contains('upload-button')) {
-      return this.setState({ view: 'upload' });
+      this.setState({ view: 'upload' });
+      return;
     }
     if (classList.contains('browse-button')) {
       return this.setState({ view: 'browse' });
     }
   }
 
-  // fake load to show loadscreen for now
   componentDidMount() {
+    this.setState({ isLoading: false });
+  }
+
+  changeAppView(view) {
+    this.setState({ view: view });
+  }
+
+  toggleLoading(status) {
+    this.setState({ isLoading: status });
     this.getBreeds();
     setTimeout(() => this.setState({ view: 'main' }), 2000);
+
   }
 
   getBreeds() {
@@ -45,12 +58,18 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { view } = this.state;
+    const { view, isLoading } = this.state;
     let currentView = '';
-
+    const loadingScreen = isLoading
+      ? <Loading/>
+      : '';
     switch (view) {
       case 'main':
         currentView = <MainView handleView={this.handleView} />;
+        break;
+      case 'upload':
+        currentView = <UploadPage changeAppView={this.changeAppView}
+          toggleLoading={this.toggleLoading}/>;
         break;
       case 'my-dogs':
         currentView = <OwnedDogs userId={this.state.userId} />;
@@ -64,8 +83,9 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className={'main-container container-fluid p-5'}>
+      <div className={'main-container container-fluid p-5 text-center'}>
         {currentView}
+        {loadingScreen}
       </div>
     );
   }
