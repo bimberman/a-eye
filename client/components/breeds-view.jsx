@@ -18,7 +18,7 @@ class BreedsView extends React.Component {
   render() {
     const breedsView = this.state.breeds.map(breed => {
       return <Breed key={breed.breedId}
-        breed={breed.breed}
+        breed={breed.name}
         shortDescription={breed.shortDescription}
         longDescription={breed.longDescription}
         imageUrl={breed.imageUrl}
