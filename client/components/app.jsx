@@ -6,38 +6,28 @@ import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 import ViewInfo from './view-info';
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
+      breeds: [],
       view: 'main',
       isLoading: 'true',
       userId: 1,
       currentBreed: 'Pug'
     };
-    this.handleView = this.handleView.bind(this);
-    this.changeAppView = this.changeAppView.bind(this);
     this.toggleLoading = this.toggleLoading.bind(this);
   }
 
-  handleView(e) {
-    const { classList } = e.target;
-    if (classList.contains('my-dogs-button')) {
-      return this.setState({ view: 'my-dogs' });
-    }
-    if (classList.contains('scan-button')) {
-      return this.setState({ view: 'scan' });
-    }
-    if (classList.contains('upload-button')) {
-      this.setState({ view: 'upload' });
-      return;
-    }
-    if (classList.contains('browse-button')) {
-      return this.setState({ view: 'browse' });
-    }
-  }
-
   componentDidMount() {
+    this.getBreeds();
     this.setState({ isLoading: false });
     this.getBreeds();
   }
@@ -48,17 +38,19 @@ export default class App extends React.Component {
       currentBreed: currentBreed
     });
   }
-
+        
   toggleLoading(status) {
     this.setState({ isLoading: status });
   }
 
   getBreeds() {
-    fetch('/api/breeds')
-      .then(res => res.json())
-      .then(data => this.setState(prevState => {
-        return { ...prevState, breeds: data };
-      }));
+    if (!this.state.breeds.length) {
+      fetch('/api/breeds')
+        .then(res => res.json())
+        .then(data => this.setState(prevState => {
+          return { ...prevState, breeds: data };
+        }));
+    }
   }
 
   render() {
@@ -88,10 +80,30 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className={'main-container container-fluid p-5 text-center'}>
-        {currentView}
-        {loadingScreen}
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <MainView />
+          </Route>
+          <Route path="/MyDogs">
+            <OwnedDogs userId={this.state.userId} />
+          </Route>
+          <Route path="/Scan">
+            <div>
+              <h2>Scan</h2>
+            </div>
+          </Route>
+          <Route path="/Upload">
+            <UploadPage changeAppView={this.changeAppView} />
+          </Route>
+          <Route path="/Browse">
+            <BreedsView breeds={this.state.breeds} />
+          </Route>
+          <Route path="/Loading">
+            <Loading />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }

@@ -1,6 +1,13 @@
 import React from 'react';
 import InfoDropDown from './info-dropdown';
 
+import {
+  Card, CardText, CardBody
+} from 'reactstrap';
+import Header from './header';
+
+import DropDown from './breed';
+
 class UploadPage extends React.Component {
   constructor(props) {
     super(props);
@@ -66,11 +73,16 @@ class UploadPage extends React.Component {
 
   render() {
     const { imagePath, prediction } = this.state;
+
+    const label = prediction.label;
+    const confidence = prediction.confidences;
+
     const { changeAppView } = this.props;
     const { confidence, info } = prediction;
     const noDataText = 'No data found on the database';
     let predictionText;
     let inputOrResult;
+
 
     const imagePreview = imagePath
       ? (<div>
@@ -97,9 +109,24 @@ class UploadPage extends React.Component {
           </button>
           <InfoDropDown title={prediction.label}
             description={predictionText}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
 
+          <div className="col-md-4 col-lg-2">
+            <input type="file" accept="image/*"
+              ref={this.uploadImageRef}
+              onChange={this.handleChange}
+              name="image"
+              className="image-input"/>
+            <button className="btn btn-block custom-button"
+              disabled={!imagePath}
+              onClick={this.uploadImage}> Classify Image
+            </button>
+          </div>
+
+          <DropDown breed={prediction.label}
+            shortDescription={predictionText}
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
+          </
+            
           <InfoDropDown title={'History'}
             description={info.historicalUsage || noDataText}
             imageUrl={info.imageUrl || './images/user-icon.png'}>
@@ -108,8 +135,7 @@ class UploadPage extends React.Component {
             description={info.temperament || noDataText}
             imageUrl={info.imageUrl || './images/user-icon.png'}>
           </InfoDropDown>
-        </div>
-      );
+        </
 
     } else {
       inputOrResult = (
@@ -123,17 +149,18 @@ class UploadPage extends React.Component {
             disabled={!imagePath}
             onClick={this.uploadImage}> Classify Image
           </button>
+
         </div>
       );
     }
 
     return (
-      <div className="container p-0 d-flex flex-wrap justify-content-center">
-        <div className="back-to-main p-0 text-left col-12">
-          <i className="fas fa-chevron-left"
-            onClick={() => changeAppView('main')}></i>
-        </div>
+      <div className="container p-0">
+        <Header pageName="Upload"/>
+        <div className="preview-image-container row d-flex justify-content-center text-center">======
+      
         <div className="preview-image-container text-center">
+
           {imagePreview}
         </div>
         {inputOrResult}

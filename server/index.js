@@ -128,11 +128,9 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
   const breedId = Number(req.body.breedId);
   const name = req.body.name;
 
-  const sql = `
-    insert into "ownedDogs" ("userId","breedId", "name")
-         values ($1, $2, $3)
-      returning *;
-  `;
+  const sql = `insert into "ownedDogs" ("userId","breedId", "name")
+               values ($1, $2, $3)
+               returning *`;
 
   const values = [userId, breedId, name];
 
