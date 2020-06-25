@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Card, CardText, CardBody
 } from 'reactstrap';
+import Header from './header';
 
 class UploadPage extends React.Component {
   constructor(props) {
@@ -68,7 +69,6 @@ class UploadPage extends React.Component {
 
   render() {
     const { imagePath, prediction } = this.state;
-    const { changeAppView } = this.props;
     const label = prediction.label;
     const confidence = prediction.confidences;
     const imagePreview = imagePath
@@ -102,7 +102,7 @@ class UploadPage extends React.Component {
               onChange={this.handleChange}
               name="image"
               className="image-input"/>
-            <button className="btn btn-block button"
+            <button className="btn btn-block custom-button"
               disabled={!imagePath}
               onClick={this.uploadImage}> Classify Image
             </button>
@@ -112,12 +112,9 @@ class UploadPage extends React.Component {
       );
 
     return (
-      <div className="container col-10 p-0 text-center">
-        <div className="back-to-main p-0 text-left">
-          <i className="fas fa-chevron-left"
-            onClick={() => changeAppView('main')}></i>
-        </div>
-        <div className="preview-image-container text-center">
+      <div className="container p-0">
+        <Header pageName="Upload"/>
+        <div className="preview-image-container row d-flex justify-content-center text-center">
           {imagePreview}
         </div>
         {inputOrResult}

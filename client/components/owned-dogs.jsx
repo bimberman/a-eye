@@ -1,5 +1,6 @@
 import React from 'react';
 import Accordion from './accordion';
+import Header from './header';
 
 export default class OwnedDogs extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class OwnedDogs extends React.Component {
     return this.state.ownedDogs.length > 0
       ? (
         <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
+          <Header pageName="My Dogs" />
           <div className="main-portrait-container col-9">
             <img src="./images/hello.jpg" alt=""
               className='rounded-circle img-thumbnail img-fluid' />
@@ -41,6 +43,6 @@ export default class OwnedDogs extends React.Component {
           </div>
         </div>
       )
-      : <h1>No Saved Dogs</h1>;
+      : <Header pageName="My Dogs" />;
   }
 }

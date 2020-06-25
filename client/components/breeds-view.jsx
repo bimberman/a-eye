@@ -1,5 +1,6 @@
 import React from 'react';
 import Breed from './breed';
+import Header from './header';
 
 class BreedsView extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class BreedsView extends React.Component {
   }
 
   componentDidMount() {
+
     this.setState(prevState => {
       return { ...prevState, breeds: this.props.breeds };
     });
@@ -27,6 +29,7 @@ class BreedsView extends React.Component {
       ></Breed>;
     });
     return <div>
+      <Header pageName="Breeds"/>
       {breedsView}
     </div>;
   }

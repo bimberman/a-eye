@@ -58,6 +58,7 @@ img{
 
 .custom-button{
   background-color: #93F0E5;
+  border: 0;
   box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
 }
 
