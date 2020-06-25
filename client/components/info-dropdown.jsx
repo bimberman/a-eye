@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 
-class Breed extends React.Component {
+class InfoDropDown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +17,6 @@ class Breed extends React.Component {
   }
 
   render() {
-    const { changeAppView } = this.props;
     return <div>
       <Button className="btn my-2 custom-button"
         onClick={this.setIsOpen} type="button">
@@ -27,7 +26,7 @@ class Breed extends React.Component {
               className={'rounded-circle img-thumbnail img-fluid'} />
           </div>
           <h4 className="col-6 p-0 m-0 d-flex align-items-center">
-            {this.props.breed}
+            {this.props.title}
           </h4>
           <i className="fa fa-chevron-down col-2 d-flex align-items-center"></i>
         </Card>
@@ -35,12 +34,8 @@ class Breed extends React.Component {
       <Collapse isOpen={this.state.isOpen}>
         <Card className="custom-shadow">
           <CardBody>
-            {this.props.shortDescription}
+            {this.props.description}
           </CardBody>
-          <button className="btn btn-sm btn-light"
-            onClick={() => changeAppView('view-info', this.props.breed)}>
-            <span>View more</span>
-          </button>
         </Card>
       </Collapse>
     </div>;
@@ -48,4 +43,4 @@ class Breed extends React.Component {
 
 }
 
-export default Breed;
+export default InfoDropDown;
