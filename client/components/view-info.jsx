@@ -41,6 +41,10 @@ class ViewInfo extends React.Component {
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
+        <button className="btn btn-sm btn-light"
+          onClick={() => changeAppView('browse')}>
+          <span>Back to browse</span>
+        </button>
       </div>
     );
   }
