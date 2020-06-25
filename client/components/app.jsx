@@ -10,7 +10,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       view: 'main',
-      isLoading: 'true'
+      isLoading: 'true',
+      userId: 1
     };
     this.handleView = this.handleView.bind(this);
     this.changeAppView = this.changeAppView.bind(this);
@@ -36,6 +37,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: false });
+    this.getBreeds();
   }
 
   changeAppView(view) {
@@ -44,9 +46,6 @@ export default class App extends React.Component {
 
   toggleLoading(status) {
     this.setState({ isLoading: status });
-    this.getBreeds();
-    setTimeout(() => this.setState({ view: 'main' }), 2000);
-
   }
 
   getBreeds() {
@@ -61,7 +60,7 @@ export default class App extends React.Component {
     const { view, isLoading } = this.state;
     let currentView = '';
     const loadingScreen = isLoading
-      ? <Loading/>
+      ? <Loading />
       : '';
     switch (view) {
       case 'main':
@@ -69,7 +68,7 @@ export default class App extends React.Component {
         break;
       case 'upload':
         currentView = <UploadPage changeAppView={this.changeAppView}
-          toggleLoading={this.toggleLoading}/>;
+          toggleLoading={this.toggleLoading} />;
         break;
       case 'my-dogs':
         currentView = <OwnedDogs userId={this.state.userId} />;
@@ -78,7 +77,7 @@ export default class App extends React.Component {
         currentView = <Loading />;
         break;
       case 'browse':
-        currentView = <BreedsView breeds={this.state.breeds}/>;
+        currentView = <BreedsView breeds={this.state.breeds} />;
         break;
     }
 
