@@ -64,20 +64,17 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = Number(req.params.userId);
   const dogId = Number(req.body.dogId);
   const dogName = req.body.name;
-
   if (!dogName) return res.status(400).json({ error: 'name is required' });
 
   const sql = `
        update "ownedDogs"
           set "name" = $1
         where "userId" = $2
-          and "ownedDogId" = $3
-    returning *;
+          and "ownedDogId" = $3    
   `;
   const values = [dogName, userId, dogId];
 
   db.query(sql, values)
-    .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
 });
 

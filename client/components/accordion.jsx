@@ -27,20 +27,19 @@ export default function Accordion(props) {
   return (
     <div>
       <Button
-        color="primary"
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         onClick={toggle}
         id={props.dogName}
-        className='w-100 mt-4 d-flex justify-content-between button'
+        className='w-100 mt-4 d-flex flex-nowrap justify-content-between align-items-center btn button row mx-0'
       >
-        <img src={props.imageUrl} height={50} />
-        <h4>{props.dogName}</h4>
+        <img src={props.imageUrl} className='col-4 rounded-circle' />
+        <h4 className='col-6'>{props.dogName}</h4>
         {status === 'Opened'
-          ? <p>&#9650;</p>
-          : <p>&#9660;</p>}
+          ? <p className='col-2'>&#9650;</p>
+          : <p className='col-2'>&#9660;</p>}
       </Button>
       <Collapse isOpen={collapse}
         onEntered={onEntered}

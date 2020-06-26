@@ -11,9 +11,36 @@ export default class OwnedDogs extends React.Component {
     };
     this.handleLongPress = this.handleLongPress.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
+    this.getDogInfo();
+  }
+
+  handleChange(e) {
+    this.setState({ value: e.currentTarget.value });
+  }
+
+  handleUpdate(e) {
+    fetch(`/api/owned-dogs/${this.props.userId}`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dogId: this.state.selectedDog[0],
+        name: this.state.value
+      })
+    })
+      .catch(err => console.error(err));
+
+    this.setState({ selectedDog: null, value: '' });
+
+    this.getDogInfo();
+  }
+
+  getDogInfo() {
     fetch(`/api/owned-dogs/${this.props.userId}`)
       .then(response => response.json())
       .then(dogs => {
@@ -22,11 +49,7 @@ export default class OwnedDogs extends React.Component {
       .catch(err => console.error(err));
   }
 
-  handleChange(e) {
-    this.setState({ value: e.currentTarget.value });
-  }
-
-  getDogInfo() {
+  renderDogInfo() {
     const dogs = this.state.ownedDogs.map(dog => {
       const breed = dog.breed;
       const breedWords = breed.split(' ');
@@ -49,13 +72,14 @@ export default class OwnedDogs extends React.Component {
       ? (
         <div>
           <div className='d-flex align-items-baseline w-100'>
-            <label htmlFor='editInput'>
-              <input className='input' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
+            <button className='btn button close-button m-1'><i className="fas fa-times"></i></button>
+            <label htmlFor='col-8 editInput'>
+              <input className='input form-control' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
             </label>
-            <button className='custom-button'>Update</button>
+            <button onClick={this.handleUpdate} className='btn button m-1'>Update</button>
           </div>
           {dogs}
-        </div>
+        </div >
       )
       : dogs;
   }
@@ -77,7 +101,7 @@ export default class OwnedDogs extends React.Component {
               className='rounded-circle img-thumbnail img-fluid' />
           </div>
           <div className='d-flex flex-column w-100'>
-            {this.getDogInfo()}
+            {this.renderDogInfo()}
           </div>
         </div>
       )
