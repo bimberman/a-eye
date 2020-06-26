@@ -16,44 +16,15 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-ALTER TABLE ONLY public."ownedDogs" DROP CONSTRAINT "ownedDogs_fk1";
-ALTER TABLE ONLY public."ownedDogs" DROP CONSTRAINT "ownedDogs_fk0";
-ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
-ALTER TABLE ONLY public.breeds DROP CONSTRAINT "dogBreeds_pk";
-ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
-ALTER TABLE public."ownedDogs" ALTER COLUMN "ownedDogId" DROP DEFAULT;
-ALTER TABLE public.breeds ALTER COLUMN "breedId" DROP DEFAULT;
-DROP SEQUENCE public."users_userId_seq";
-DROP TABLE public.users;
-DROP SEQUENCE public."ownedDogs_ownedDogId_seq";
-DROP TABLE public."ownedDogs";
-DROP SEQUENCE public."dogBreeds_breedId_seq";
-DROP TABLE public.breeds;
-DROP EXTENSION plpgsql;
-DROP SCHEMA public;
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA public;
-
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -64,7 +35,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: breeds; Type: TABLE; Schema: public; Owner: -
+-- Name: breeds; Type: TABLE; Schema: public; Owner: dev
 --
 
 CREATE TABLE public.breeds (
@@ -78,8 +49,10 @@ CREATE TABLE public.breeds (
 );
 
 
+ALTER TABLE public.breeds OWNER TO dev;
+
 --
--- Name: dogBreeds_breedId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: dogBreeds_breedId_seq; Type: SEQUENCE; Schema: public; Owner: dev
 --
 
 CREATE SEQUENCE public."dogBreeds_breedId_seq"
@@ -91,15 +64,17 @@ CREATE SEQUENCE public."dogBreeds_breedId_seq"
     CACHE 1;
 
 
+ALTER TABLE public."dogBreeds_breedId_seq" OWNER TO dev;
+
 --
--- Name: dogBreeds_breedId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: dogBreeds_breedId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dev
 --
 
 ALTER SEQUENCE public."dogBreeds_breedId_seq" OWNED BY public.breeds."breedId";
 
 
 --
--- Name: ownedDogs; Type: TABLE; Schema: public; Owner: -
+-- Name: ownedDogs; Type: TABLE; Schema: public; Owner: dev
 --
 
 CREATE TABLE public."ownedDogs" (
@@ -110,8 +85,10 @@ CREATE TABLE public."ownedDogs" (
 );
 
 
+ALTER TABLE public."ownedDogs" OWNER TO dev;
+
 --
--- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE; Schema: public; Owner: dev
 --
 
 CREATE SEQUENCE public."ownedDogs_ownedDogId_seq"
@@ -123,15 +100,17 @@ CREATE SEQUENCE public."ownedDogs_ownedDogId_seq"
     CACHE 1;
 
 
+ALTER TABLE public."ownedDogs_ownedDogId_seq" OWNER TO dev;
+
 --
--- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dev
 --
 
 ALTER SEQUENCE public."ownedDogs_ownedDogId_seq" OWNED BY public."ownedDogs"."ownedDogId";
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
+-- Name: users; Type: TABLE; Schema: public; Owner: dev
 --
 
 CREATE TABLE public.users (
@@ -141,8 +120,10 @@ CREATE TABLE public.users (
 );
 
 
+ALTER TABLE public.users OWNER TO dev;
+
 --
--- Name: users_userId_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: users_userId_seq; Type: SEQUENCE; Schema: public; Owner: dev
 --
 
 CREATE SEQUENCE public."users_userId_seq"
@@ -154,36 +135,38 @@ CREATE SEQUENCE public."users_userId_seq"
     CACHE 1;
 
 
+ALTER TABLE public."users_userId_seq" OWNER TO dev;
+
 --
--- Name: users_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: users_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dev
 --
 
 ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users."userId";
 
 
 --
--- Name: breeds breedId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: breeds breedId; Type: DEFAULT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public.breeds ALTER COLUMN "breedId" SET DEFAULT nextval('public."dogBreeds_breedId_seq"'::regclass);
 
 
 --
--- Name: ownedDogs ownedDogId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: ownedDogs ownedDogId; Type: DEFAULT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public."ownedDogs" ALTER COLUMN "ownedDogId" SET DEFAULT nextval('public."ownedDogs_ownedDogId_seq"'::regclass);
 
 
 --
--- Name: users userId; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users userId; Type: DEFAULT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public."users_userId_seq"'::regclass);
 
 
 --
--- Data for Name: breeds; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: breeds; Type: TABLE DATA; Schema: public; Owner: dev
 --
 
 COPY public.breeds ("breedId", name, "shortDescription", "longDescription", "imageUrl", temperament, "historicalUsage") FROM stdin;
@@ -193,44 +176,46 @@ COPY public.breeds ("breedId", name, "shortDescription", "longDescription", "ima
 
 
 --
--- Data for Name: ownedDogs; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: ownedDogs; Type: TABLE DATA; Schema: public; Owner: dev
 --
 
 COPY public."ownedDogs" ("ownedDogId", "userId", "breedId", name) FROM stdin;
+1	1	2	Doggo
 \.
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: dev
 --
 
 COPY public.users ("userId", username, email) FROM stdin;
+1	Serin	serin@email.com
 \.
 
 
 --
--- Name: dogBreeds_breedId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: dogBreeds_breedId_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
 SELECT pg_catalog.setval('public."dogBreeds_breedId_seq"', 2, true);
 
 
 --
--- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public."ownedDogs_ownedDogId_seq"', 1, false);
-
-
---
--- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('public."users_userId_seq"', 1, false);
+SELECT pg_catalog.setval('public."ownedDogs_ownedDogId_seq"', 1, true);
 
 
 --
--- Name: breeds dogBreeds_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
+--
+
+SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
+
+
+--
+-- Name: breeds dogBreeds_pk; Type: CONSTRAINT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public.breeds
@@ -238,7 +223,7 @@ ALTER TABLE ONLY public.breeds
 
 
 --
--- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pk; Type: CONSTRAINT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public.users
@@ -246,7 +231,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: ownedDogs ownedDogs_fk0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ownedDogs ownedDogs_fk0; Type: FK CONSTRAINT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public."ownedDogs"
@@ -254,7 +239,7 @@ ALTER TABLE ONLY public."ownedDogs"
 
 
 --
--- Name: ownedDogs ownedDogs_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ownedDogs ownedDogs_fk1; Type: FK CONSTRAINT; Schema: public; Owner: dev
 --
 
 ALTER TABLE ONLY public."ownedDogs"
@@ -262,7 +247,7 @@ ALTER TABLE ONLY public."ownedDogs"
 
 
 --
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dev
 --
 
 GRANT ALL ON SCHEMA public TO PUBLIC;
