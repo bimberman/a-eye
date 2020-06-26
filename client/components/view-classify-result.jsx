@@ -15,14 +15,15 @@ class ViewClassifyResult extends React.Component {
     const { info } = this.props.prediction;
     fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
       .then(res => res.json())
-      .then(data => this.setState({ imageUrls: data.message }));
+      .then(data => this.setState({ imageUrls: data.message }))
+      .catch(err => console.error(err));
   }
 
   render() {
     const { info, confidence, label, imagePath } = this.props.prediction;
     const noDataText = 'No data found in the database.';
     let relatedImages;
-    if (this.state.imageUrls) {
+    if (this.state.imageUrls && this.state.imageUrls !== 'Breed not found (master breed does not exist)') {
       relatedImages = this.state.imageUrls.map((url, index) => {
         return (
           <img src={url} key={index}
@@ -31,12 +32,14 @@ class ViewClassifyResult extends React.Component {
         );
       });
     }
+
     const predictionText = (
       <div>
         <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
         <p>{info.shortDescription || noDataText}</p>
       </div>
     );
+
     const result = (
       <div className="d-flex flex-wrap justify-content-center">
         <div className="preview-image-container text-center">
@@ -69,7 +72,7 @@ class ViewClassifyResult extends React.Component {
         </InfoDropDown>
 
         <InfoDropDown title={'Photos'}
-          description={relatedImages}
+          description={relatedImages || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
 
