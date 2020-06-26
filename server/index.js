@@ -40,6 +40,17 @@ app.get('/api/breeds', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/breeds/:breed', (req, res, next) => {
+
+  const queryStr = `select *
+                    from "breeds"
+                   where "name" = $1`;
+
+  db.query(queryStr, [req.params.breed])
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = [Number(req.params.userId)];
   const sql = `
@@ -92,6 +103,36 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/review', (req, res, next) => {
+  const { userId, classifiedBreedId, suggestedBreedId, imageUrl } = req.body;
+
+  if (!userId) return res.status(404).json({ error: 'A userId is required' });
+  if (!classifiedBreedId) return res.status(404).json({ error: 'A classified breedId is required' });
+  if (!suggestedBreedId) return res.status(404).json({ error: 'A suggested breedId is required' });
+  if (!imageUrl) return res.status(404).json({ error: 'A imageUrl is required' });
+
+  if (isNaN(parseInt(userId)) || userId <= 0) {
+    return res.status(404).json({ error: 'userId must be a positive integer' });
+  }
+  if (isNaN(parseInt(classifiedBreedId)) || classifiedBreedId <= 0) {
+    return res.status(404).json({ error: 'The classified breedId must be a positive integer' });
+  }
+  if (isNaN(parseInt(suggestedBreedId)) || suggestedBreedId <= 0) {
+    return res.status(404).json({ error: 'The suggested breedId must be a positive integer' });
+  }
+
+  const sql = `
+      INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
+      values ($1, $2, $3, $4)
+      returning "reviewId";
+  `;
+  const values = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
+
+  db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
     .then(result => {
@@ -129,11 +170,9 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
   const breedId = Number(req.body.breedId);
   const name = req.body.name;
 
-  const sql = `
-    insert into "ownedDogs" ("userId","breedId", "name")
-         values ($1, $2, $3)
-      returning *;
-  `;
+  const sql = `insert into "ownedDogs" ("userId","breedId", "name")
+               values ($1, $2, $3)
+               returning *`;
 
   const values = [userId, breedId, name];
 

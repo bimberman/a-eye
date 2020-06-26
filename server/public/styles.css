@@ -13,10 +13,14 @@ img{
   object-fit: contain;
   height: 100%;
   width: 100%;
+  min-height: 250px;
+  max-height: 250px;
 }
 .preview-image-container{
   height: 250px;
   width: 250px;
+  min-height: 250px;
+
 }
 
 .loading-container{
@@ -60,6 +64,7 @@ img{
 
 .custom-button{
   background-color: #93F0E5;
+  border: 0;
   box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
 }
 

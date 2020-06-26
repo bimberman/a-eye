@@ -4,44 +4,43 @@ import OwnedDogs from './owned-dogs';
 import Loading from './loading';
 import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
+import ViewInfo from './view-info';
+import ViewClassifyResult from './view-classify-result';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: 'false',
+      breeds: [],
       view: 'main',
-      isLoading: 'true',
-      userId: 1
+      userId: 1,
+      currentBreed: 'Pug',
+      prediction: ''
     };
-    this.handleView = this.handleView.bind(this);
-    this.changeAppView = this.changeAppView.bind(this);
     this.toggleLoading = this.toggleLoading.bind(this);
-  }
-
-  handleView(e) {
-    const { classList } = e.target;
-    if (classList.contains('my-dogs-button')) {
-      return this.setState({ view: 'my-dogs' });
-    }
-    if (classList.contains('scan-button')) {
-      return this.setState({ view: 'scan' });
-    }
-    if (classList.contains('upload-button')) {
-      this.setState({ view: 'upload' });
-      return;
-    }
-    if (classList.contains('browse-button')) {
-      return this.setState({ view: 'browse' });
-    }
+    this.changePredictionState = this.changePredictionState.bind(this);
+    this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
   }
 
   componentDidMount() {
-    this.setState({ isLoading: false });
     this.getBreeds();
+    this.setState({ isLoading: false });
   }
 
-  changeAppView(view) {
-    this.setState({ view: view });
+  changePredictionState(prediction) {
+    this.setState({
+      prediction: prediction
+    });
+  }
+
+  changeCurrentBreed(breed) {
+    this.setState({ currentBreed: breed });
   }
 
   toggleLoading(status) {
@@ -49,18 +48,20 @@ export default class App extends React.Component {
   }
 
   getBreeds() {
-    fetch('/api/breeds')
-      .then(res => res.json())
-      .then(data => this.setState(prevState => {
-        return { ...prevState, breeds: data };
-      }));
+    if (!this.state.breeds.length) {
+      fetch('/api/breeds')
+        .then(res => res.json())
+        .then(data => this.setState(prevState => {
+          return { ...prevState, breeds: data };
+        }));
+    }
   }
 
   render() {
-    const { view, isLoading } = this.state;
-    let currentView = '';
-    const loadingScreen = isLoading
-      ? <Loading />
+    const loadPage = this.state.isLoading
+      ? (<div>
+        <Loading />
+      </div>)
       : '';
     switch (view) {
       case 'main':
@@ -82,10 +83,37 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className={'main-container container-fluid p-5 text-center'}>
-        {currentView}
-        {loadingScreen}
-      </div>
+      <Router>
+        <Switch>
+
+          <Route exact path="/">
+            <MainView />
+          </Route>
+          <Route path="/MyDogs">
+            <OwnedDogs userId={this.state.userId} />
+          </Route>
+          <Route path="/Scan">
+            <div>
+              <h2>Scan</h2>
+            </div>
+          </Route>
+          <Route path="/Upload">
+            <UploadPage changePredictionState={this.changePredictionState}
+              toggleLoading={this.toggleLoading} />
+            {loadPage}
+          </Route>
+          <Route path="/Browse">
+            <BreedsView breeds={this.state.breeds}
+              changeCurrentBreed={this.changeCurrentBreed}/>
+          </Route>
+          <Route path="/ViewInfo">
+            <ViewInfo currentBreed={this.state.currentBreed}/>
+          </Route>
+          <Route path="/ViewClassifyResult">
+            <ViewClassifyResult prediction={this.state.prediction} />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
