@@ -18,7 +18,7 @@ class BreedsView extends React.Component {
   }
 
   render() {
-    const { changeAppView } = this.props;
+    const { changeCurrentBreed } = this.props;
     const breedsView = this.state.breeds.map(breed => {
       return <Breed key={breed.breedId}
         breed={breed.name}
@@ -27,7 +27,7 @@ class BreedsView extends React.Component {
         imageUrl={breed.imageUrl}
         temperament={breed.temperament}
         historicalUsage={breed.historicalUsage}
-        changeAppView={changeAppView}
+        changeCurrentBreed={changeCurrentBreed}
       ></Breed>;
     });
     return <div>

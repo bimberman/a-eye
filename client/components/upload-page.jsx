@@ -1,12 +1,7 @@
 import React from 'react';
-import InfoDropDown from './info-dropdown';
+import { Redirect } from 'react-router-dom';
 
-import {
-  Card, CardText, CardBody
-} from 'reactstrap';
 import Header from './header';
-
-import DropDown from './breed';
 
 class UploadPage extends React.Component {
   constructor(props) {
@@ -20,7 +15,6 @@ class UploadPage extends React.Component {
     this.previewImage = this.previewImage.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
-    this.resetImage = this.resetImage.bind(this);
   }
 
   handleChange(e) {
@@ -34,55 +28,39 @@ class UploadPage extends React.Component {
     this.setState({
       imagePath: imagePath
     });
-
-  }
-
-  resetImage() {
-    this.setState({
-      imagePath: '',
-      prediction: ''
-    });
   }
 
   uploadImage(image) {
-    const { toggleLoading } = this.props;
-    toggleLoading('true');
-
+    const { toggleLoading, changePredictionState } = this.props;
     const imageData = new FormData();
     const imageToUpload = this.uploadImageRef.current.files[0];
     imageData.append('image', imageToUpload, imageToUpload.name);
 
+    toggleLoading(true);
     fetch('/api/classify', {
       method: 'POST',
       body: imageData
     })
       .then(result => result.json())
       .then(prediction => {
-        // eslint-disable-next-line no-console
-        console.log(prediction);
-        toggleLoading(false);
-        this.setState({ prediction: prediction });
+        prediction.imagePath = this.state.imagePath;
+        changePredictionState(prediction);
       })
       .catch(err => {
         console.error(err);
+      })
+      .finally(() => {
         toggleLoading(false);
-        this.setState({ prediction: '' });
+        this.setState({ gotResult: true });
       });
-
   }
 
   render() {
-    const { imagePath, prediction } = this.state;
+    const { imagePath, gotResult } = this.state;
 
-    const label = prediction.label;
-    const confidence = prediction.confidences;
-
-    const { changeAppView } = this.props;
-    const { confidence, info } = prediction;
-    const noDataText = 'No data found on the database';
-    let predictionText;
-    let inputOrResult;
-
+    const redirect = gotResult
+      ? <Redirect to="/ViewClassifyResult" />
+      : '';
 
     const imagePreview = imagePath
       ? (<div>
@@ -90,80 +68,30 @@ class UploadPage extends React.Component {
           ref={this.displayImageRef}
           className={`rounded-circle img-thumbnail
             img-fluid preview-image`} />
-      </div>
-      )
+      </div>)
       : '';
 
-    if (prediction) {
-      predictionText = (
-        <div>
-          <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
-          <p>{info.shortDescription || noDataText}</p>
+    return (
+      <div className="container p-0 d-flex flex-wrap justify-content-center">
+        <div className="back-to-main p-0 text-left col-12">
+          <Header pageName="Upload"/>
+          {redirect}
         </div>
-      );
-      inputOrResult = (
-        <div>
-          <button className="btn btn-sm btn-light"
-            onClick={this.resetImage}>
-            <span>Try new image</span>
-          </button>
-          <InfoDropDown title={prediction.label}
-            description={predictionText}
-
-          <div className="col-md-4 col-lg-2">
-            <input type="file" accept="image/*"
-              ref={this.uploadImageRef}
-              onChange={this.handleChange}
-              name="image"
-              className="image-input"/>
-            <button className="btn btn-block custom-button"
-              disabled={!imagePath}
-              onClick={this.uploadImage}> Classify Image
-            </button>
-          </div>
-
-          <DropDown breed={prediction.label}
-            shortDescription={predictionText}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </
-            
-          <InfoDropDown title={'History'}
-            description={info.historicalUsage || noDataText}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
-          <InfoDropDown title={'Temper'}
-            description={info.temperament || noDataText}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
-        </
-
-    } else {
-      inputOrResult = (
+        <div className="preview-image-container text-center">
+          {imagePreview}
+        </div>
         <div className="col-md-4 col-lg-2">
           <input type="file" accept="image/*"
             ref={this.uploadImageRef}
             onChange={this.handleChange}
             name="image"
             className="image-input" />
+
           <button className="btn btn-block button"
             disabled={!imagePath}
             onClick={this.uploadImage}> Classify Image
           </button>
-
         </div>
-      );
-    }
-
-    return (
-      <div className="container p-0">
-        <Header pageName="Upload"/>
-        <div className="preview-image-container row d-flex justify-content-center text-center">======
-      
-        <div className="preview-image-container text-center">
-
-          {imagePreview}
-        </div>
-        {inputOrResult}
       </div>
     );
   }

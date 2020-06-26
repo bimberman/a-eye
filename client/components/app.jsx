@@ -5,7 +5,7 @@ import Loading from './loading';
 import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 import ViewInfo from './view-info';
-
+import ViewClassifyResult from './view-classify-result';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,29 +16,33 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: 'false',
       breeds: [],
       view: 'main',
-      isLoading: 'true',
       userId: 1,
-      currentBreed: 'Pug'
+      currentBreed: 'Pug',
+      prediction: ''
     };
     this.toggleLoading = this.toggleLoading.bind(this);
+    this.changePredictionState = this.changePredictionState.bind(this);
+    this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
   }
 
   componentDidMount() {
     this.getBreeds();
     this.setState({ isLoading: false });
-    this.getBreeds();
   }
 
-  changeAppView(view, currentBreed) {
+  changePredictionState(prediction) {
     this.setState({
-      view: view,
-      currentBreed: currentBreed
+      prediction: prediction
     });
   }
-        
+
+  changeCurrentBreed(breed) {
+    this.setState({ currentBreed: breed });
+  }
+
   toggleLoading(status) {
     this.setState({ isLoading: status });
   }
@@ -54,34 +58,16 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { view, isLoading, currentBreed } = this.state;
-    let currentView = '';
-    const loadingScreen = isLoading
-      ? <Loading />
+    const loadPage = this.state.isLoading
+      ? (<div>
+        <Loading />
+      </div>)
       : '';
-    switch (view) {
-      case 'main':
-        currentView = <MainView handleView={this.handleView} />;
-        break;
-      case 'upload':
-        currentView = <UploadPage changeAppView={this.changeAppView}
-          toggleLoading={this.toggleLoading} />;
-        break;
-      case 'my-dogs':
-        currentView = <OwnedDogs userId={this.state.userId} />;
-        break;
-      case 'browse':
-        currentView = <BreedsView breeds={this.state.breeds}
-          changeAppView={this.changeAppView}/>;
-        break;
-      case 'view-info':
-        currentView = <ViewInfo currentBreed={currentBreed}
-          changeAppView={this.changeAppView}/>;
-    }
 
     return (
       <Router>
         <Switch>
+
           <Route exact path="/">
             <MainView />
           </Route>
@@ -94,13 +80,19 @@ export default class App extends React.Component {
             </div>
           </Route>
           <Route path="/Upload">
-            <UploadPage changeAppView={this.changeAppView} />
+            <UploadPage changePredictionState={this.changePredictionState}
+              toggleLoading={this.toggleLoading} />
+            {loadPage}
           </Route>
           <Route path="/Browse">
-            <BreedsView breeds={this.state.breeds} />
+            <BreedsView breeds={this.state.breeds}
+              changeCurrentBreed={this.changeCurrentBreed}/>
           </Route>
-          <Route path="/Loading">
-            <Loading />
+          <Route path="/ViewInfo">
+            <ViewInfo currentBreed={this.state.currentBreed}/>
+          </Route>
+          <Route path="/ViewClassifyResult">
+            <ViewClassifyResult prediction={this.state.prediction} />
           </Route>
         </Switch>
       </Router>
