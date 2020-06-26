@@ -86,7 +86,9 @@ export default class OwnedDogs extends React.Component {
           dogId={dog.ownedDogId}
           breedId={dog.breedId}
           breedName={capitalizedBreed}
-          shortDescription={dog.shortDescription} />
+          shortDescription={dog.shortDescription}
+          changeCurrentBreed={this.props.changeCurrentBreed}
+        />
       );
     });
 
