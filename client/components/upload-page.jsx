@@ -13,12 +13,7 @@ class UploadPage extends React.Component {
     this.uploadImageRef = React.createRef();
     this.displayImageRef = React.createRef();
     this.previewImage = this.previewImage.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
-  }
-
-  handleChange(e) {
-    this.previewImage(e);
   }
 
   previewImage(e) {
@@ -63,12 +58,14 @@ class UploadPage extends React.Component {
       : '';
 
     const imagePreview = imagePath
-      ? (<div>
-        <img src={imagePath}
-          ref={this.displayImageRef}
-          className={`rounded-circle img-thumbnail
-            img-fluid preview-image`} />
-      </div>)
+      ? (
+        <div>
+          <img src={imagePath}
+            ref={this.displayImageRef}
+            className={`rounded-circle img-thumbnail
+                        img-fluid preview-image`} />
+        </div>
+      )
       : '';
 
     return (
@@ -83,7 +80,7 @@ class UploadPage extends React.Component {
         <div className="col-md-4 col-lg-2">
           <input type="file" accept="image/*"
             ref={this.uploadImageRef}
-            onChange={this.handleChange}
+            onChange={this.previewImage}
             name="image"
             className="image-input" />
 

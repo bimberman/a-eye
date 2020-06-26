@@ -11,7 +11,6 @@ class BreedsView extends React.Component {
   }
 
   componentDidMount() {
-
     this.setState(prevState => {
       return { ...prevState, breeds: this.props.breeds };
     });
