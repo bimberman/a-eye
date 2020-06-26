@@ -30,9 +30,11 @@ class BreedsView extends React.Component {
         changeCurrentBreed={changeCurrentBreed}
       ></Breed>;
     });
-    return <div>
+    return <div className="d-flex align-items-center flex-column">
       <Header pageName="Breeds"/>
-      {breedsView}
+      <div className="col-11">
+        {breedsView}
+      </div>
     </div>;
   }
 

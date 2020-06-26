@@ -13,7 +13,7 @@ class MainView extends React.Component {
             img-fluid main-portrait`} />
         </div>
 
-        <div className='main-buttons-container d-flex justify-content-center flex-wrap'>
+        <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>
           <Link type="button" to="/MyDogs"
             className={'btn btn-lg btn-block my-4 button'}>
             <p className="p-0 m-0 my-dogs-view">My Dogs</p>
