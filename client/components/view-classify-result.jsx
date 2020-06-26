@@ -13,10 +13,12 @@ class ViewClassifyResult extends React.Component {
 
   componentDidMount() {
     const { info } = this.props.prediction;
-    fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
-      .then(res => res.json())
-      .then(data => this.setState({ imageUrls: data.message }))
-      .catch(err => console.error(err));
+    if (Object.entries(info).length !== 0) {
+      fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
+        .then(res => res.json())
+        .then(data => this.setState({ imageUrls: data.message }))
+        .catch(err => console.error(err));
+    }
   }
 
   render() {
