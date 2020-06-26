@@ -1,10 +1,11 @@
 import React from 'react';
 import Header from './header';
 import InfoDropDown from './info-dropdown';
+import { Link } from 'react-router-dom';
 
 class ViewClassifyResult extends React.Component {
   render() {
-    const { info, confidence } = this.props.prediction;
+    const { info, confidence, label, imagePath } = this.props.prediction;
     const noDataText = 'No data found in the database.';
     const predictionText = (
       <div>
@@ -13,12 +14,22 @@ class ViewClassifyResult extends React.Component {
       </div>
     );
     const result = (
-      <div>
-        <button className="btn btn-sm btn-light"
-          onClick={this.resetImage}>
-          <span>Try new image</span>
-        </button>
-        <InfoDropDown title={prediction.label}
+      <div className="d-flex flex-wrap justify-content-center">
+        <div className="preview-image-container text-center">
+          <img src={imagePath}
+            className={`rounded-circle img-thumbnail
+            img-fluid preview-image`} />
+        </div>
+
+        <div className="col-12 text-center">
+          <Link className="btn btn-sm btn-light"
+            onClick={this.resetImage}
+            to="/Upload">
+            <span>Try new image</span>
+          </Link>
+        </div>
+
+        <InfoDropDown title={label}
           description={predictionText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
@@ -27,10 +38,12 @@ class ViewClassifyResult extends React.Component {
           description={info.historicalUsage || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
+
         <InfoDropDown title={'Temper'}
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
+
       </div>
     );
     return (

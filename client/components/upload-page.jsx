@@ -1,5 +1,4 @@
 import React from 'react';
-import InfoDropDown from './info-dropdown';
 import { Redirect } from 'react-router-dom';
 
 import Header from './header';
@@ -16,7 +15,6 @@ class UploadPage extends React.Component {
     this.previewImage = this.previewImage.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
-    this.resetImage = this.resetImage.bind(this);
   }
 
   handleChange(e) {
@@ -30,18 +28,10 @@ class UploadPage extends React.Component {
     this.setState({
       imagePath: imagePath
     });
-
-  }
-
-  resetImage() {
-    this.setState({
-      imagePath: '',
-      prediction: ''
-    });
   }
 
   uploadImage(image) {
-    const { toggleLoading } = this.props;
+    const { toggleLoading, changePredictionState } = this.props;
     const imageData = new FormData();
     const imageToUpload = this.uploadImageRef.current.files[0];
     imageData.append('image', imageToUpload, imageToUpload.name);
@@ -53,23 +43,22 @@ class UploadPage extends React.Component {
     })
       .then(result => result.json())
       .then(prediction => {
-        // eslint-disable-next-line no-console
-        console.log(prediction);
-        this.setState({ prediction: prediction });
+        prediction.imagePath = this.state.imagePath;
+        changePredictionState(prediction);
       })
       .catch(err => {
         console.error(err);
       })
       .finally(() => {
         toggleLoading(false);
+        this.setState({ gotResult: true });
       });
   }
 
   render() {
-    const { imagePath, prediction } = this.state;
-    const { confidence, info } = prediction;
-    const noDataText = 'No data found on the database';
-    const redirect = prediction
+    const { imagePath, gotResult } = this.state;
+
+    const redirect = gotResult
       ? <Redirect to="/ViewClassifyResult" />
       : '';
 
@@ -79,8 +68,7 @@ class UploadPage extends React.Component {
           ref={this.displayImageRef}
           className={`rounded-circle img-thumbnail
             img-fluid preview-image`} />
-      </div>
-      )
+      </div>)
       : '';
 
     return (

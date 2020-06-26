@@ -5,13 +5,12 @@ import Loading from './loading';
 import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 import ViewInfo from './view-info';
-
+import ViewClassifyResult from './view-classify-result';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom';
-import ViewClassifyResult from './view-classify-result';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +24,8 @@ export default class App extends React.Component {
       prediction: ''
     };
     this.toggleLoading = this.toggleLoading.bind(this);
+    this.changePredictionState = this.changePredictionState.bind(this);
+    this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
   }
 
   componentDidMount() {
@@ -32,10 +33,14 @@ export default class App extends React.Component {
     this.setState({ isLoading: false });
   }
 
-  changeAppState(prediction) {
+  changePredictionState(prediction) {
     this.setState({
       prediction: prediction
     });
+  }
+
+  changeCurrentBreed(breed) {
+    this.setState({ currentBreed: breed });
   }
 
   toggleLoading(status) {
@@ -62,7 +67,7 @@ export default class App extends React.Component {
     return (
       <Router>
         <Switch>
-          {loadPage}
+
           <Route exact path="/">
             <MainView />
           </Route>
@@ -75,20 +80,19 @@ export default class App extends React.Component {
             </div>
           </Route>
           <Route path="/Upload">
-            <UploadPage changeAppView={this.changeAppView}
+            <UploadPage changePredictionState={this.changePredictionState}
               toggleLoading={this.toggleLoading} />
+            {loadPage}
           </Route>
           <Route path="/Browse">
-            <BreedsView breeds={this.state.breeds} />
-          </Route>
-          <Route path="/Loading">
-            <Loading/>
+            <BreedsView breeds={this.state.breeds}
+              changeCurrentBreed={this.changeCurrentBreed}/>
           </Route>
           <Route path="/ViewInfo">
             <ViewInfo currentBreed={this.state.currentBreed}/>
           </Route>
           <Route path="/ViewClassifyResult">
-            <ViewClassifyResult currentBreed={this.state.currentBreed} />
+            <ViewClassifyResult prediction={this.state.prediction} />
           </Route>
         </Switch>
       </Router>

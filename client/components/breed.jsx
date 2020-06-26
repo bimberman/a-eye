@@ -1,5 +1,6 @@
 import React from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 class Breed extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Breed extends React.Component {
   }
 
   render() {
-    const { changeAppView } = this.props;
+    const { changeCurrentBreed } = this.props;
     return <div>
       <Button className="btn my-2 custom-button"
         onClick={this.setIsOpen} type="button">
@@ -37,10 +38,10 @@ class Breed extends React.Component {
           <CardBody>
             {this.props.shortDescription}
           </CardBody>
-          <button className="btn btn-sm btn-light"
-            onClick={() => changeAppView('view-info', this.props.breed)}>
+          <Link className="btn btn-sm btn-light" to="/ViewInfo"
+            onClick={() => changeCurrentBreed(this.props.breed)}>
             <span>View more</span>
-          </button>
+          </Link>
         </Card>
       </Collapse>
     </div>;

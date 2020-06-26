@@ -1,5 +1,6 @@
 import React from 'react';
 import InfoDropDown from './info-dropdown';
+import Header from './header';
 
 class ViewInfo extends React.Component {
   constructor(props) {
@@ -19,20 +20,15 @@ class ViewInfo extends React.Component {
   }
 
   render() {
-    const { changeAppView } = this.props;
     const { info } = this.state;
     const noDataText = 'No data found on the database.';
     return (
       <div>
-        <div className="back-to-main p-0 text-left col-12">
-          <i className="fas fa-chevron-left"
-            onClick={() => changeAppView('main')}></i>
-        </div>
+        <Header pageName="Breeds" />
         <InfoDropDown title={ info.name }
           description={info.shortDescription}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-
         <InfoDropDown title={'History'}
           description={info.historicalUsage || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
@@ -41,10 +37,6 @@ class ViewInfo extends React.Component {
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-        <button className="btn btn-sm btn-light"
-          onClick={() => changeAppView('browse')}>
-          <span>Back to browse</span>
-        </button>
       </div>
     );
   }
