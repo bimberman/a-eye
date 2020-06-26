@@ -96,22 +96,20 @@ export default class OwnedDogs extends React.Component {
 
     dogs = this.sortByKey(dogs, 'key');
 
-    return this.state.isLoading
-      ? <Loading />
-      : this.state.selectedDog
-        ? (
-          <div>
-            <div className='d-flex align-items-baseline w-100'>
-              <button onClick={this.cancelEdit} className='btn button close-button m-1'><i className="fas fa-times"></i></button>
-              <label htmlFor='col-8 editInput'>
-                <input className='input form-control' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
-              </label>
-              <button onClick={this.handleUpdate} className='btn button m-1'>Update</button>
-            </div>
-            {dogs}
-          </div >
-        )
-        : dogs;
+    return this.state.selectedDog
+      ? (
+        <div>
+          <div className='d-flex align-items-baseline w-100'>
+            <button onClick={this.cancelEdit} className='btn button close-button m-1'><i className="fas fa-times"></i></button>
+            <label htmlFor='col-8 editInput'>
+              <input className='input form-control' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
+            </label>
+            <button onClick={this.handleUpdate} className='btn button m-1'>Update</button>
+          </div>
+          {dogs}
+        </div >
+      )
+      : dogs;
   }
 
   handleLongPress(dogId, dogName, breedId) {
