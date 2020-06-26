@@ -63,25 +63,6 @@ export default class App extends React.Component {
         <Loading />
       </div>)
       : '';
-    switch (view) {
-      case 'main':
-        currentView = <MainView handleView={this.handleView} />;
-        break;
-      case 'upload':
-        currentView = <UploadPage changeAppView={this.changeAppView}
-          toggleLoading={this.toggleLoading} />;
-        break;
-      case 'my-dogs':
-        currentView = <OwnedDogs userId={this.state.userId} changeAppView={this.changeAppView} />;
-        break;
-      case 'loading':
-        currentView = <Loading />;
-        break;
-      case 'browse':
-        currentView = <BreedsView breeds={this.state.breeds} />;
-        break;
-    }
-
     return (
       <Router>
         <Switch>
@@ -90,7 +71,7 @@ export default class App extends React.Component {
             <MainView />
           </Route>
           <Route path="/MyDogs">
-            <OwnedDogs userId={this.state.userId} />
+            <OwnedDogs userId={this.state.userId} changeCurrentBreed={this.changeCurrentBreed} />
           </Route>
           <Route path="/Scan">
             <div>
@@ -104,10 +85,10 @@ export default class App extends React.Component {
           </Route>
           <Route path="/Browse">
             <BreedsView breeds={this.state.breeds}
-              changeCurrentBreed={this.changeCurrentBreed}/>
+              changeCurrentBreed={this.changeCurrentBreed} />
           </Route>
           <Route path="/ViewInfo">
-            <ViewInfo currentBreed={this.state.currentBreed}/>
+            <ViewInfo currentBreed={this.state.currentBreed} />
           </Route>
           <Route path="/ViewClassifyResult">
             <ViewClassifyResult prediction={this.state.prediction} />

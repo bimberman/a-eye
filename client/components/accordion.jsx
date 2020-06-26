@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default function Accordion(props) {
   const [startLongPress, setStartLongPress] = useState(false);
@@ -50,6 +51,10 @@ export default function Accordion(props) {
             <p>Breed: {props.breedName}</p>
             <p>Short Description: {props.shortDescription}</p>
           </CardBody>
+          <Link className="btn btn-sm btn-light" to="/ViewInfo"
+            onClick={() => props.changeCurrentBreed(props.breedName)}>
+            <span>{`Learn more about ${props.breedName}s`}</span>
+          </Link>
         </Card>
       </Collapse>
     </div >
