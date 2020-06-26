@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
 
 export default function Accordion(props) {
+  const [startLongPress, setStartLongPress] = useState(false);
   const [collapse, setCollapse] = useState(false);
   const [status, setStatus] = useState('Closed');
   const onEntered = () => setStatus('Opened');
   const onExited = () => setStatus('Closed');
   const toggle = () => setCollapse(!collapse);
+  const onMouseDown = () => setStartLongPress(true);
+  const onMouseUp = () => setStartLongPress(false);
+  const onTouchStart = () => setStartLongPress(true);
+  const onTouchEnd = () => setStartLongPress(false);
+
+  useEffect(() => {
+    let timerId;
+    if (startLongPress) {
+      timerId = setTimeout(() => props.callback(props.dogId, props.dogName, props.breedId), 300);
+    }
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [props.callback, 300, startLongPress]);
+
   return (
     <div>
-      <Button color="primary" onClick={toggle} id={props.dogName} className='w-100 mt-4 d-flex justify-content-between button'>
-        <img src={props.imageUrl} height={50} />
-        <h4>{props.dogName}</h4>
+      <Button
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onClick={toggle}
+        id={props.dogName}
+        className='w-100 mt-4 d-flex flex-nowrap justify-content-between align-items-center btn button row mx-0'
+      >
+        <img src={props.imageUrl} className='col-4 rounded-circle' />
+        <h4 className='col-6'>{props.dogName}</h4>
         {status === 'Opened'
-          ? <p>&#9650;</p>
-          : <p>&#9660;</p>}
+          ? <p className='col-2'>&#9650;</p>
+          : <p className='col-2'>&#9660;</p>}
       </Button>
       <Collapse isOpen={collapse}
         onEntered={onEntered}

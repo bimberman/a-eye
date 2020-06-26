@@ -63,6 +63,24 @@ export default class App extends React.Component {
         <Loading />
       </div>)
       : '';
+    switch (view) {
+      case 'main':
+        currentView = <MainView handleView={this.handleView} />;
+        break;
+      case 'upload':
+        currentView = <UploadPage changeAppView={this.changeAppView}
+          toggleLoading={this.toggleLoading} />;
+        break;
+      case 'my-dogs':
+        currentView = <OwnedDogs userId={this.state.userId} changeAppView={this.changeAppView} />;
+        break;
+      case 'loading':
+        currentView = <Loading />;
+        break;
+      case 'browse':
+        currentView = <BreedsView breeds={this.state.breeds} />;
+        break;
+    }
 
     return (
       <Router>
