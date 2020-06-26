@@ -35,14 +35,16 @@ export default class OwnedDogs extends React.Component {
   render() {
     return this.state.ownedDogs.length > 0
       ? (
-        <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
+        <div>
           <Header pageName="My Dogs" />
-          <div className="main-portrait-container col-9">
-            <img src="./images/user-icon.png" alt=""
-              className='rounded-circle img-thumbnail img-fluid' />
-          </div>
-          <div className='d-flex flex-column w-100'>
-            {this.getDogInfo()}
+          <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
+            <div className="main-portrait-container col-9">
+              <img src="./images/user-icon.png" alt=""
+                className='rounded-circle img-thumbnail img-fluid' />
+            </div>
+            <div className='d-flex flex-column w-100'>
+              {this.getDogInfo()}
+            </div>
           </div>
         </div>
       )

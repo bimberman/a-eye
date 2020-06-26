@@ -17,7 +17,7 @@ class InfoDropDown extends React.Component {
   }
 
   render() {
-    return <div>
+    return <div className="col-11 mb-4">
       <Button className="btn my-2 custom-button"
         onClick={this.setIsOpen} type="button">
         <Card className="row bg-transparent border-0 d-flex flex-row">
