@@ -78,3 +78,14 @@ img{
   width: 55vw;
   height: 55vw;
 }
+
+.input{
+  color: rgba(100, 100, 100);
+  background-color: #93F0E5;
+  transition: .8s;
+  box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
+}
+
+.input:focus{  
+  outline: 0;
+}

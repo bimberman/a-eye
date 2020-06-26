@@ -49,7 +49,8 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
            "longDescription",
            "temperament",
            "ownedDogs"."name",
-           "historicalUsage"
+           "historicalUsage", 
+           "ownedDogId"
       from "ownedDogs"
       join "breeds" using ("breedId")
      where "userId" = $1;

@@ -71,7 +71,7 @@ export default class App extends React.Component {
           toggleLoading={this.toggleLoading} />;
         break;
       case 'my-dogs':
-        currentView = <OwnedDogs userId={this.state.userId} />;
+        currentView = <OwnedDogs userId={this.state.userId} changeAppView={this.changeAppView} />;
         break;
       case 'loading':
         currentView = <Loading />;

@@ -5,8 +5,12 @@ export default class OwnedDogs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ownedDogs: []
+      ownedDogs: [],
+      selectedDog: null,
+      value: ''
     };
+    this.handleLongPress = this.handleLongPress.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -18,6 +22,10 @@ export default class OwnedDogs extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleChange(e) {
+    this.setState({ value: e.currentTarget.value });
+  }
+
   getDogInfo() {
     const dogs = this.state.ownedDogs.map(dog => {
       const breed = dog.breed;
@@ -27,21 +35,33 @@ export default class OwnedDogs extends React.Component {
       return (
         <Accordion
           key={dog.name}
-          callback={() => {
-            // eslint-disable-next-line no-console
-            console.log('CALLBACK');
-          }}
+          callback={this.handleLongPress}
+          getDogName={this.getDogName}
           imageUrl={dog.imageUrl}
           dogName={dog.name}
+          dogId={dog.ownedDogId}
           breedName={capitalizedBreed}
           shortDescription={dog.shortDescription} />
       );
     });
-    return dogs;
+
+    return this.state.selectedDog
+      ? (
+        <div>
+          <div className='d-flex align-items-baseline w-100'>
+            <label htmlFor='editInput'>
+              <input className='input' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
+            </label>
+            <button className='custom-button'>Update</button>
+          </div>
+          {dogs}
+        </div>
+      )
+      : dogs;
   }
 
-  editDogInfo() {
-
+  handleLongPress(dogId, dogName) {
+    this.setState({ selectedDog: [dogId, dogName] });
   }
 
   render() {
