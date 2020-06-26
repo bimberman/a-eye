@@ -4,9 +4,33 @@ import InfoDropDown from './info-dropdown';
 import { Link } from 'react-router-dom';
 
 class ViewClassifyResult extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      imageUrls: ''
+    };
+  }
+
+  componentDidMount() {
+    const { info } = this.props.prediction;
+    fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
+      .then(res => res.json())
+      .then(data => this.setState({ imageUrls: data.message }));
+  }
+
   render() {
     const { info, confidence, label, imagePath } = this.props.prediction;
     const noDataText = 'No data found in the database.';
+    let relatedImages;
+    if (this.state.imageUrls) {
+      relatedImages = this.state.imageUrls.map((url, index) => {
+        return (
+          <img src={url} key={index}
+            className={`img-thumbnail
+             img-fluid view-info-image`} />
+        );
+      });
+    }
     const predictionText = (
       <div>
         <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
@@ -41,6 +65,11 @@ class ViewClassifyResult extends React.Component {
 
         <InfoDropDown title={'Temper'}
           description={info.temperament || noDataText}
+          imageUrl={info.imageUrl || './images/user-icon.png'}>
+        </InfoDropDown>
+
+        <InfoDropDown title={'Photos'}
+          description={relatedImages}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
 
