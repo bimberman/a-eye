@@ -66,15 +66,25 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
   const dogName = req.body.name;
   if (!dogName) return res.status(400).json({ error: 'name is required' });
 
-  const sql = `
-       update "ownedDogs"
+  const sql = ` 
+      update "ownedDogs"
           set "name" = $1
-        where "userId" = $2
-          and "ownedDogId" = $3    
+         from "breeds"
+       where "userId" = $2
+          and "ownedDogId" = $3
+    returning "breeds"."name" as "breed",
+              "imageUrl",
+              "shortDescription",
+              "longDescription",
+              "temperament",
+              "ownedDogs"."name",
+              "historicalUsage", 
+              "ownedDogId";        
   `;
   const values = [dogName, userId, dogId];
 
   db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
 });
 
