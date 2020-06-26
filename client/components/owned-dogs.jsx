@@ -29,25 +29,29 @@ export default class OwnedDogs extends React.Component {
   }
 
   handleUpdate(e) {
-    fetch(`/api/owned-dogs/${this.props.userId}`, {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        dogId: this.state.selectedDog[0],
-        name: this.state.value,
-        breedId: this.state.selectedDog[2]
+    if (this.state.value) {
+      fetch(`/api/owned-dogs/${this.props.userId}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          dogId: this.state.selectedDog[0],
+          name: this.state.value,
+          breedId: this.state.selectedDog[2]
+        })
       })
-    })
-      .then(response => response.json())
-      .then(dog => {
-        const dogs = this.state.ownedDogs;
-        this.sortByKey(dogs, 'ownedDogId');
-        dogs.splice(dog.ownedDogId - 1, 1, dog);
-        this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
-      })
-      .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(dog => {
+          const dogs = this.state.ownedDogs;
+          this.sortByKey(dogs, 'ownedDogId');
+          dogs.splice(dog.ownedDogId - 1, 1, dog);
+          this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
+        })
+        .catch(err => console.error(err));
+    } else {
+      this.setState({ selectedDog: null, value: '' });
+    }
   }
 
   sortByKey(array, key) {
@@ -112,12 +116,8 @@ export default class OwnedDogs extends React.Component {
     return this.state.ownedDogs.length > 0
       ? (
         <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
-        <div className="p-0 text-left col-12">
+          <div className="p-0 text-left col-12">
             <Header pageName="My Dogs" />
-          </div>
-          <div className="back-to-main p-0 text-left col-12">
-            <i className="fas fa-chevron-left"
-              onClick={() => this.props.changeAppView('main')}></i>
           </div>
           <div className="main-portrait-container col-9">
             <img src="./images/user-icon.png" alt=""
