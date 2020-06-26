@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 const Header = props => {
   const history = useHistory();
   return (
-    <div className="d-flex justify-content-start">
+    <div className="d-flex justify-content-start col-12">
       <Button className="btn m-2 bg-transparent border-0"
         onClick={() => history.goBack()} type="button">
         <i className="fa fa-chevron-left fa-2x col-2 d-flex align-items-center"></i>
