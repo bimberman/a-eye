@@ -11,17 +11,18 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import ViewClassifyResult from './view-classify-result';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: 'false',
       breeds: [],
       view: 'main',
-      isLoading: 'true',
       userId: 1,
-      currentBreed: 'Pug'
+      currentBreed: 'Pug',
+      prediction: ''
     };
     this.toggleLoading = this.toggleLoading.bind(this);
   }
@@ -29,16 +30,14 @@ export default class App extends React.Component {
   componentDidMount() {
     this.getBreeds();
     this.setState({ isLoading: false });
-    this.getBreeds();
   }
 
-  changeAppView(view, currentBreed) {
+  changeAppState(prediction) {
     this.setState({
-      view: view,
-      currentBreed: currentBreed
+      prediction: prediction
     });
   }
-        
+
   toggleLoading(status) {
     this.setState({ isLoading: status });
   }
@@ -54,34 +53,16 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { view, isLoading, currentBreed } = this.state;
-    let currentView = '';
-    const loadingScreen = isLoading
-      ? <Loading />
+    const loadPage = this.state.isLoading
+      ? (<div>
+        <Loading />
+      </div>)
       : '';
-    switch (view) {
-      case 'main':
-        currentView = <MainView handleView={this.handleView} />;
-        break;
-      case 'upload':
-        currentView = <UploadPage changeAppView={this.changeAppView}
-          toggleLoading={this.toggleLoading} />;
-        break;
-      case 'my-dogs':
-        currentView = <OwnedDogs userId={this.state.userId} />;
-        break;
-      case 'browse':
-        currentView = <BreedsView breeds={this.state.breeds}
-          changeAppView={this.changeAppView}/>;
-        break;
-      case 'view-info':
-        currentView = <ViewInfo currentBreed={currentBreed}
-          changeAppView={this.changeAppView}/>;
-    }
 
     return (
       <Router>
         <Switch>
+          {loadPage}
           <Route exact path="/">
             <MainView />
           </Route>
@@ -94,13 +75,20 @@ export default class App extends React.Component {
             </div>
           </Route>
           <Route path="/Upload">
-            <UploadPage changeAppView={this.changeAppView} />
+            <UploadPage changeAppView={this.changeAppView}
+              toggleLoading={this.toggleLoading} />
           </Route>
           <Route path="/Browse">
             <BreedsView breeds={this.state.breeds} />
           </Route>
           <Route path="/Loading">
-            <Loading />
+            <Loading/>
+          </Route>
+          <Route path="/ViewInfo">
+            <ViewInfo currentBreed={this.state.currentBreed}/>
+          </Route>
+          <Route path="/ViewClassifyResult">
+            <ViewClassifyResult currentBreed={this.state.currentBreed} />
           </Route>
         </Switch>
       </Router>
