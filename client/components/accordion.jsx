@@ -16,7 +16,7 @@ export default function Accordion(props) {
   useEffect(() => {
     let timerId;
     if (startLongPress) {
-      timerId = setTimeout(() => props.callback(props.dogId, props.dogName), 300);
+      timerId = setTimeout(() => props.callback(props.dogId, props.dogName, props.breedId), 300);
     }
 
     return () => {

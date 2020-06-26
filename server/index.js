@@ -50,7 +50,8 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
            "temperament",
            "ownedDogs"."name",
            "historicalUsage", 
-           "ownedDogId"
+           "ownedDogId",
+           "breedId"
       from "ownedDogs"
       join "breeds" using ("breedId")
      where "userId" = $1;
@@ -64,14 +65,16 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = Number(req.params.userId);
   const dogId = Number(req.body.dogId);
   const dogName = req.body.name;
+  const dogBreed = req.body.breedId;
   if (!dogName) return res.status(400).json({ error: 'name is required' });
 
   const sql = ` 
       update "ownedDogs"
           set "name" = $1
          from "breeds"
-       where "userId" = $2
+        where "userId" = $2
           and "ownedDogId" = $3
+          and "breeds"."breedId" = $4
     returning "breeds"."name" as "breed",
               "imageUrl",
               "shortDescription",
@@ -81,7 +84,7 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
               "historicalUsage", 
               "ownedDogId";        
   `;
-  const values = [dogName, userId, dogId];
+  const values = [dogName, userId, dogId, dogBreed];
 
   db.query(sql, values)
     .then(result => res.json(result.rows[0]))

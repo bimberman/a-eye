@@ -12,10 +12,15 @@ export default class OwnedDogs extends React.Component {
     this.handleLongPress = this.handleLongPress.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.cancelEdit = this.cancelEdit.bind(this);
   }
 
   componentDidMount() {
     this.getDogInfo();
+  }
+
+  cancelEdit() {
+    this.setState({ selectedDog: null, value: '' });
   }
 
   handleChange(e) {
@@ -30,14 +35,25 @@ export default class OwnedDogs extends React.Component {
       },
       body: JSON.stringify({
         dogId: this.state.selectedDog[0],
-        name: this.state.value
+        name: this.state.value,
+        breedId: this.state.selectedDog[2]
       })
     })
+      .then(response => response.json())
+      .then(dog => {
+        const dogs = this.state.ownedDogs;
+        this.sortByKey(dogs, 'ownedDogId');
+        dogs.splice(dog.ownedDogId - 1, 1, dog);
+        this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
+      })
       .catch(err => console.error(err));
+  }
 
-    this.setState({ selectedDog: null, value: '' });
-
-    this.getDogInfo();
+  sortByKey(array, key) {
+    return array.sort(function (a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
   }
 
   getDogInfo() {
@@ -50,29 +66,32 @@ export default class OwnedDogs extends React.Component {
   }
 
   renderDogInfo() {
-    const dogs = this.state.ownedDogs.map(dog => {
+    let dogs = this.state.ownedDogs.map(dog => {
       const breed = dog.breed;
       const breedWords = breed.split(' ');
       const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
       const capitalizedBreed = capitalizedWords.join(' ');
       return (
         <Accordion
-          key={dog.name}
+          key={dog.ownedDogId}
           callback={this.handleLongPress}
           getDogName={this.getDogName}
           imageUrl={dog.imageUrl}
           dogName={dog.name}
           dogId={dog.ownedDogId}
+          breedId={dog.breedId}
           breedName={capitalizedBreed}
           shortDescription={dog.shortDescription} />
       );
     });
 
+    dogs = this.sortByKey(dogs, 'key');
+
     return this.state.selectedDog
       ? (
         <div>
           <div className='d-flex align-items-baseline w-100'>
-            <button className='btn button close-button m-1'><i className="fas fa-times"></i></button>
+            <button onClick={this.cancelEdit} className='btn button close-button m-1'><i className="fas fa-times"></i></button>
             <label htmlFor='col-8 editInput'>
               <input className='input form-control' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
             </label>
@@ -84,8 +103,8 @@ export default class OwnedDogs extends React.Component {
       : dogs;
   }
 
-  handleLongPress(dogId, dogName) {
-    this.setState({ selectedDog: [dogId, dogName] });
+  handleLongPress(dogId, dogName, breedId) {
+    this.setState({ selectedDog: [dogId, dogName, breedId] });
   }
 
   render() {
