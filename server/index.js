@@ -81,7 +81,8 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
               "longDescription",
               "temperament",
               "ownedDogs"."name",
-              "historicalUsage", 
+              "historicalUsage",
+              "breeds"."breedId", 
               "ownedDogId";        
   `;
   const values = [dogName, userId, dogId, dogBreed];
