@@ -181,6 +181,24 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/owned-dogs/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const dogId = Number(req.body.dogId);
+
+  const sql = `
+    delete from "ownedDogs"
+          where "ownedDogId" = $1
+            and "userId" = $2
+      returning *;
+  `;
+
+  const values = [dogId, userId];
+
+  db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
