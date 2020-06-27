@@ -10,6 +10,7 @@ export default class SaveDog extends React.Component {
   }
 
   addDog() {
+    if (!this.props.name) return;
     const dog = {
       breedId: this.props.breedId,
       name: this.props.name
@@ -28,8 +29,8 @@ export default class SaveDog extends React.Component {
 
   render() {
     return (this.state.data
-      ? <button disabled={true} onClick={this.addDog} className='btn btn-lg btn-block my-4 button' type='button'>Save</button>
-      : <button onClick={this.addDog} className='btn btn-lg btn-block my-4 button' type='button'>Save</button>
+      ? <button disabled={true} className='btn btn-secondary my-4' type='button'>Saved</button>
+      : <button onClick={this.addDog} className='btn btn-secondary my-4' type='button'>Save</button>
     );
   }
 }
