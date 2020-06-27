@@ -86,7 +86,6 @@ img{
 
 .input{
   color: rgba(100, 100, 100);
-  background-color: whitesmoke;
   transition: .8s;
   box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.5);
   border: none;
@@ -95,7 +94,6 @@ img{
 
 .input:focus{  
   outline: 0;
-  background-color: #6db4ac;
 }
 
 .close-button{
