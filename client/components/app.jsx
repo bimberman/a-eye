@@ -91,7 +91,7 @@ export default class App extends React.Component {
             <ViewInfo currentBreed={this.state.currentBreed} />
           </Route>
           <Route path="/ViewClassifyResult">
-            <ViewClassifyResult prediction={this.state.prediction} />
+            <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
           </Route>
         </Switch>
       </Router>

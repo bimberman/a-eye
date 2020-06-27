@@ -100,11 +100,11 @@ export default class OwnedDogs extends React.Component {
       ? (
         <div>
           <div className='d-flex align-items-baseline w-100'>
-            <button onClick={this.cancelEdit} className='btn button close-button m-1'><i className="fas fa-times"></i></button>
+            <button onClick={this.cancelEdit} className='btn close-button m-1'><i className="fas fa-times"></i></button>
             <label htmlFor='col-8 editInput'>
-              <input className='input form-control' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
+              <input className='form-control btn-light' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
             </label>
-            <button onClick={this.handleUpdate} className='btn button m-1'>Update</button>
+            <button onClick={this.handleUpdate} className='btn m-1 btn-secondary'>Update</button>
           </div>
           {dogs}
         </div >
