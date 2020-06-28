@@ -8,7 +8,7 @@ class MainView extends React.Component {
       <div className={`container-fluid d-flex justify-content-center
       flex-wrap align-content-between`}>
         <div className="main-portrait-container col-9">
-          <img src="./images/pug.jpg" alt=""
+          <img src="./images/frenchie.jpg" alt=""
             className={`rounded-circle img-thumbnail
             img-fluid main-portrait`} />
         </div>

@@ -31,9 +31,9 @@ app.get('/api/health-check', (req, res, next) => {
 });
 
 app.get('/api/breeds', (req, res, next) => {
-
   const queryStr = `select *
-                    from "breeds"`;
+                      from "breeds"
+                  order by "name" asc`;
 
   db.query(queryStr)
     .then(result => res.json(result.rows))
@@ -60,7 +60,7 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
            "longDescription",
            "temperament",
            "ownedDogs"."name",
-           "historicalUsage", 
+           "historicalUsage",
            "ownedDogId",
            "breedId"
       from "ownedDogs"
@@ -79,7 +79,7 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
   const dogBreed = req.body.breedId;
   if (!dogName) return res.status(400).json({ error: 'name is required' });
 
-  const sql = ` 
+  const sql = `
       update "ownedDogs"
           set "name" = $1
          from "breeds"
@@ -93,8 +93,8 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
               "temperament",
               "ownedDogs"."name",
               "historicalUsage",
-              "breeds"."breedId", 
-              "ownedDogId";        
+              "breeds"."breedId",
+              "ownedDogId";
   `;
   const values = [dogName, userId, dogId, dogBreed];
 
@@ -127,7 +127,6 @@ app.put('/api/review', (req, res, next) => {
       returning "reviewId";
   `;
   const values = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
-
   db.query(sql, values)
     .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
@@ -136,7 +135,15 @@ app.put('/api/review', (req, res, next) => {
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
     .then(result => {
-      const label = result.label[0].toUpperCase() + result.label.substring(1);
+      let label;
+      if (result.label.split(' ').length === 1) {
+        label = result.label[0].toUpperCase() + result.label.substring(1);
+      } else {
+        const splitLabel = result.label.split(' ');
+        label = splitLabel.map(word => {
+          return word[0].toUpperCase() + word.substring(1);
+        }).join(' ');
+      }
       const confidence = result.confidences[result.label];
       const sql = `
       select *
