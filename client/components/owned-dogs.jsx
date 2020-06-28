@@ -2,6 +2,7 @@ import React from 'react';
 import Accordion from './accordion';
 import Header from './header';
 import Loading from './loading';
+import DeleteModal from './delete-modal';
 
 export default class OwnedDogs extends React.Component {
   constructor(props) {
@@ -15,6 +16,8 @@ export default class OwnedDogs extends React.Component {
     this.handleLongPress = this.handleLongPress.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
   }
 
@@ -54,6 +57,14 @@ export default class OwnedDogs extends React.Component {
     } else {
       this.setState({ selectedDog: null, value: '' });
     }
+  }
+
+  confirmDelete(e) {
+
+  }
+
+  handleDelete(e) {
+
   }
 
   sortByKey(array, key) {
@@ -98,7 +109,7 @@ export default class OwnedDogs extends React.Component {
 
     return this.state.selectedDog
       ? (
-        <div>
+        <div className='text-center'>
           <div className='d-flex align-items-baseline w-100'>
             <button onClick={this.cancelEdit} className='btn close-button m-1'><i className="fas fa-times"></i></button>
             <label htmlFor='col-8 editInput'>
@@ -106,6 +117,7 @@ export default class OwnedDogs extends React.Component {
             </label>
             <button onClick={this.handleUpdate} className='btn m-1 btn-secondary'>Update</button>
           </div>
+          <DeleteModal buttonLabel={`Delete ${this.state.selectedDog[1]}`} dog={this.state.selectedDog[1]} />
           {dogs}
         </div >
       )
