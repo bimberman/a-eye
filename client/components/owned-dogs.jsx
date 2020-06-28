@@ -2,6 +2,7 @@ import React from 'react';
 import Accordion from './accordion';
 import Header from './header';
 import Loading from './loading';
+import DeleteModal from './delete-modal';
 
 export default class OwnedDogs extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export default class OwnedDogs extends React.Component {
     this.handleLongPress = this.handleLongPress.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
   }
 
@@ -46,14 +48,36 @@ export default class OwnedDogs extends React.Component {
         .then(response => response.json())
         .then(dog => {
           const dogs = this.state.ownedDogs;
-          this.sortByKey(dogs, 'ownedDogId');
-          dogs.splice(dog.ownedDogId - 1, 1, dog);
+          const dogIndex = dogs.indexOf(dogs.find(object => {
+            return object.ownedDogId === dog.ownedDogId;
+          }));
+          dogs.splice(dogIndex, 1, dog);
           this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
         })
         .catch(err => console.error(err));
     } else {
       this.setState({ selectedDog: null, value: '' });
     }
+  }
+
+  handleDelete(e) {
+    fetch(`/api/owned-dogs/${this.props.userId}`, {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ dogId: this.state.selectedDog[0] })
+    })
+      .then(response => response.json())
+      .then(dog => {
+        const dogs = this.state.ownedDogs;
+        const dogIndex = dogs.indexOf(dogs.find(object => {
+          return object.ownedDogId === dog.ownedDogId;
+        }));
+        dogs.splice(dogIndex, 1);
+        this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
+      })
+      .catch(err => console.error(err));
   }
 
   sortByKey(array, key) {
@@ -98,7 +122,7 @@ export default class OwnedDogs extends React.Component {
 
     return this.state.selectedDog
       ? (
-        <div>
+        <div className='text-center'>
           <div className='d-flex align-items-baseline w-100'>
             <button onClick={this.cancelEdit} className='btn close-button m-1'><i className="fas fa-times"></i></button>
             <label htmlFor='col-8 editInput'>
@@ -106,6 +130,7 @@ export default class OwnedDogs extends React.Component {
             </label>
             <button onClick={this.handleUpdate} className='btn m-1 btn-secondary'>Update</button>
           </div>
+          <DeleteModal buttonLabel={`Delete ${this.state.selectedDog[1]}`} dog={this.state.selectedDog[1]} deleteHandler={this.handleDelete} />
           {dogs}
         </div >
       )
@@ -124,10 +149,6 @@ export default class OwnedDogs extends React.Component {
           <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
             <div className="p-0 text-left col-12">
               <Header pageName="My Dogs" />
-            </div>
-            <div className="main-portrait-container col-9">
-              <img src="./images/user-icon.png" alt=""
-                className='rounded-circle img-thumbnail img-fluid' />
             </div>
             <div className='d-flex flex-column w-100'>
               {this.renderDogInfo()}
