@@ -44,7 +44,7 @@ class ViewClassifyResult extends React.Component {
 
     const predictionText = (
       <div>
-        <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
+        <p>Confidence: {`${(confidence * 100).toFixed(2)}%`}</p>
         <p>{info.shortDescription || noDataText}</p>
       </div>
     );

@@ -150,10 +150,6 @@ export default class OwnedDogs extends React.Component {
             <div className="p-0 text-left col-12">
               <Header pageName="My Dogs" />
             </div>
-            <div className="main-portrait-container col-9">
-              <img src="./images/user-icon.png" alt=""
-                className='rounded-circle img-thumbnail img-fluid' />
-            </div>
             <div className='d-flex flex-column w-100'>
               {this.renderDogInfo()}
             </div>
