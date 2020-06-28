@@ -48,8 +48,10 @@ export default class OwnedDogs extends React.Component {
         .then(response => response.json())
         .then(dog => {
           const dogs = this.state.ownedDogs;
-          this.sortByKey(dogs, 'ownedDogId');
-          dogs.splice(dog.ownedDogId - 1, 1, dog);
+          const dogIndex = dogs.indexOf(dogs.find(object => {
+            return object.ownedDogId === dog.ownedDogId;
+          }));
+          dogs.splice(dogIndex, 1, dog);
           this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
         })
         .catch(err => console.error(err));
@@ -67,6 +69,14 @@ export default class OwnedDogs extends React.Component {
       body: JSON.stringify({ dogId: this.state.selectedDog[0] })
     })
       .then(response => response.json())
+      .then(dog => {
+        const dogs = this.state.ownedDogs;
+        const dogIndex = dogs.indexOf(dogs.find(object => {
+          return object.ownedDogId === dog.ownedDogId;
+        }));
+        dogs.splice(dogIndex, 1);
+        this.setState({ ownedDogs: dogs, selectedDog: null, value: '' });
+      })
       .catch(err => console.error(err));
   }
 
