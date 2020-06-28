@@ -32,10 +32,10 @@ export default function Accordion(props) {
         imageUrl={props.imageUrl}
         title={props.dogName}
         description={
-          <div className='text-center'>
+          <div className='text-center d-flex flex-column'>
             <p>Breed: {props.breedName}</p>
             <p>Short Description: {props.shortDescription}</p>
-            <Link className="btn btn-sm btn-light w-100" to="/ViewInfo"
+            <Link className="btn btn-sm btn-light" to="/ViewInfo"
               onClick={() => props.changeCurrentBreed(props.breedName)}>
               <span>{`Learn more about ${props.breedName}s`}</span>
             </Link>

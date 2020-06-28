@@ -17,7 +17,7 @@ class InfoDropDown extends React.Component {
   }
 
   render() {
-    return <div className="col-11 mb-4">
+    return <div className="col-12 mb-4">
       <Button className="btn my-2 custom-button"
         onClick={this.setIsOpen} type="button">
         <Card className="row bg-transparent border-0 d-flex flex-row">
@@ -28,7 +28,9 @@ class InfoDropDown extends React.Component {
           <h4 className="col-6 p-0 m-0 d-flex align-items-center">
             {this.props.title}
           </h4>
-          <i className="fa fa-chevron-down col-2 d-flex align-items-center"></i>
+          {this.state.isOpen
+            ? <i className="fa fa-chevron-up col-2 d-flex align-items-center"></i>
+            : <i className="fa fa-chevron-down col-2 d-flex align-items-center"></i>}
         </Card>
       </Button>
       <Collapse isOpen={this.state.isOpen}>
