@@ -17,7 +17,6 @@ export default class OwnedDogs extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
   }
 
@@ -59,12 +58,16 @@ export default class OwnedDogs extends React.Component {
     }
   }
 
-  confirmDelete(e) {
-
-  }
-
   handleDelete(e) {
-
+    fetch(`/api/owned-dogs/${this.props.userId}`, {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ dogId: this.state.selectedDog[0] })
+    })
+      .then(response => response.json())
+      .catch(err => console.error(err));
   }
 
   sortByKey(array, key) {
@@ -117,7 +120,7 @@ export default class OwnedDogs extends React.Component {
             </label>
             <button onClick={this.handleUpdate} className='btn m-1 btn-secondary'>Update</button>
           </div>
-          <DeleteModal buttonLabel={`Delete ${this.state.selectedDog[1]}`} dog={this.state.selectedDog[1]} />
+          <DeleteModal buttonLabel={`Delete ${this.state.selectedDog[1]}`} dog={this.state.selectedDog[1]} deleteHandler={this.handleDelete} />
           {dogs}
         </div >
       )

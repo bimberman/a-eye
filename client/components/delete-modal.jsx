@@ -15,7 +15,7 @@ export default function DeleteModal(props) {
           {`Are you sure you want to delete ${props.dog} from your saved dogs?`}
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" onClick={toggle}>Delete</Button>{' '}
+          <Button color="danger" onClick={() => { toggle(); props.deleteHandler(); }}>Delete</Button>{' '}
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
