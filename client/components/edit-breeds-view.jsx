@@ -26,6 +26,7 @@ export default class EditBreedsView extends React.Component {
   }
 
   editBreed(breedId, name) {
+    if (breedId === this.state.classifiedBreedId) return;
     fetch('/api/edit-breed', {
       method: 'POST',
       headers: {
@@ -55,9 +56,10 @@ export default class EditBreedsView extends React.Component {
 
   render() {
     const editBreedsView = this.props.breeds.map(breed => {
+      if (breed.breedId === this.state.classifiedBreedId) return;
       return <EditBreed key={breed.breedId}
         name={breed.name}
-        breedId = {breed.breedId}
+        breedId={breed.breedId}
         imageUrl={breed.imageUrl}
         changeCurrentBreed={this.editBreed}
       ></EditBreed>;
@@ -67,7 +69,7 @@ export default class EditBreedsView extends React.Component {
     }
     return <div className="d-flex align-items-center flex-column">
       <Header pageName="Edit Breeds" />
-      <h5>Please select the correct <br/>breed from the list below</h5>
+      <h5>Please select the correct <br />breed from the list below</h5>
       <div className="col-11">
         {editBreedsView}
       </div>

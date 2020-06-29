@@ -50,7 +50,6 @@ class ViewClassifyResult extends React.Component {
       <div>
         <p>{info.name || noDataText}</p>
         <p>Confidence: {`${(confidence * 100).toFixed(2)}%`}</p>
-        <p>{info.shortDescription || noDataText}</p>
       </div>
     );
 
@@ -105,8 +104,8 @@ class ViewClassifyResult extends React.Component {
           <Header pageName="Prediction"
             hasButton={true}
             buttonText="Edit Breed"
-            buttonCB={() => {}}
-            to={'/edit-breed'}/>
+            buttonCB={() => { }}
+            to={'/edit-breed'} />
         </div>
         {result}
       </div>
