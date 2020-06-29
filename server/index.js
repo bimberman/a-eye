@@ -49,6 +49,7 @@ app.get('/api/breeds/:breed', (req, res, next) => {
   db.query(queryStr, [req.params.breed])
     .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
+
 });
 
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
@@ -103,33 +104,66 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/review', (req, res, next) => {
-  const { userId, classifiedBreedId, suggestedBreedId, imageUrl } = req.body;
+app.post('/api/edit-breed', (req, res, next) => {
+  const { userId, apiKeyWord, classifiedBreedId, suggestedBreedId, imageUrl } = req.body;
 
-  if (!userId) return res.status(404).json({ error: 'A userId is required' });
-  if (!classifiedBreedId) return res.status(404).json({ error: 'A classified breedId is required' });
-  if (!suggestedBreedId) return res.status(404).json({ error: 'A suggested breedId is required' });
-  if (!imageUrl) return res.status(404).json({ error: 'A imageUrl is required' });
+  if (!userId) return next(new ClientError('A userId is required', 400));
+  if (!classifiedBreedId) return next(new ClientError('A classifiedBreedId is required', 400));
+  if (!suggestedBreedId) return next(new ClientError('A suggestedBreedId is required', 400));
+  if (!apiKeyWord) return next(new ClientError('A apiKeyWord is required', 400));
+  if (!imageUrl) return next(new ClientError('An image url is required', 400));
 
   if (isNaN(parseInt(userId)) || userId <= 0) {
-    return res.status(404).json({ error: 'userId must be a positive integer' });
+    return next(new ClientError(`Expected an integer. ${userId} is not a valid user id.`, 400));
   }
   if (isNaN(parseInt(classifiedBreedId)) || classifiedBreedId <= 0) {
-    return res.status(404).json({ error: 'The classified breedId must be a positive integer' });
+    return next(new ClientError(`Expected an integer. ${classifiedBreedId} is not a valid classified breed id.`, 400));
   }
   if (isNaN(parseInt(suggestedBreedId)) || suggestedBreedId <= 0) {
-    return res.status(404).json({ error: 'The suggested breedId must be a positive integer' });
+    return next(new ClientError(`Expected an integer. ${suggestedBreedId} is not a valid suggested breed id.`, 400));
   }
 
-  const sql = `
+  if (classifiedBreedId === suggestedBreedId) {
+    return next(new ClientError('Suggested breed id must be different than the classified breed id.', 400));
+  }
+
+  const updateSql = `
+      UPDATE "ownedDogs"
+      SET "breedId" = $1, "apiKeyWord" = $2
+      WHERE "userId" = $3 AND "breedId" = $4
+      RETURNING *`;
+  const updateValues = [suggestedBreedId, apiKeyWord, userId, classifiedBreedId];
+
+  db.query(updateSql, updateValues)
+    .then(result => result.rowCount)
+    .then(count => {
+      if (!count) {
+        return next(new ClientError(`There is no breed matching your userId ${userId} or suggested BreedId ${suggestedBreedId}`, 404));
+      }
+      const insertSql = `
       INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
       values ($1, $2, $3, $4)
-      returning "reviewId";
-  `;
-  const values = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
-  db.query(sql, values)
-    .then(result => res.json(result.rows[0]))
+      returning "reviewId", "suggestedBreedId"`;
+      const insertValues = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
+
+      return db.query(insertSql, insertValues)
+        .then(result => {
+          return result.rows;
+        })
+        .catch(err => next(err));
+    })
+    .then(result => {
+      const queryStr = `select *
+                    from "breeds"
+                   where "breedId" = $1`;
+      db.query(queryStr, [result[0].suggestedBreedId])
+        .then(innerResult => {
+          res.json(innerResult.rows[0]);
+        })
+        .catch(err => next(err));
+    })
     .catch(err => next(err));
+
 });
 
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
@@ -159,7 +193,6 @@ app.post('/api/classify', upload.single('image'), (req, res, next) => {
               info: result.rows[0]
             });
           } else {
-
             res.status(200).json({
               label: label,
               confidence: confidence,

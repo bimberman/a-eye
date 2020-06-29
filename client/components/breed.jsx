@@ -36,7 +36,6 @@ class Breed extends React.Component {
       </div>
     );
   }
-
 }
 
 export default Breed;
