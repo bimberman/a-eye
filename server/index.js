@@ -135,11 +135,7 @@ app.post('/api/edit-breed', (req, res, next) => {
   const updateValues = [suggestedBreedId, apiKeyWord, userId, classifiedBreedId];
 
   db.query(updateSql, updateValues)
-    .then(result => result.rowCount)
-    .then(count => {
-      if (!count) {
-        return next(new ClientError(`There is no breed matching your userId ${userId} or suggested BreedId ${suggestedBreedId}`, 404));
-      }
+    .then(result => {
       const insertSql = `
       INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
       values ($1, $2, $3, $4)
@@ -163,7 +159,6 @@ app.post('/api/edit-breed', (req, res, next) => {
         .catch(err => next(err));
     })
     .catch(err => next(err));
-
 });
 
 app.post('/api/classify', upload.single('image'), (req, res, next) => {

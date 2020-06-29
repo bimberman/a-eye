@@ -26,14 +26,8 @@ class ViewClassifyResult extends React.Component {
       .then(res => res.json())
       .then(data => this.setState({ imageUrls: data.message }))
       .catch(err => console.error(err));
-
-    if (Object.entries(info).length !== 0) {
-      fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
-        .then(res => res.json())
-        .then(data => this.setState({ imageUrls: data.message }))
-        .catch(err => console.error(err));
-    }
   }
+
   handleChange(e) {
     this.setState({ value: e.currentTarget.value });
 
@@ -54,7 +48,7 @@ class ViewClassifyResult extends React.Component {
     }
     const predictionText = (
       <div>
-        <p>{info.name || noDataText}</p>        
+        <p>{info.name || noDataText}</p>
         <p>Confidence: {`${(confidence * 100).toFixed(2)}%`}</p>
         <p>{info.shortDescription || noDataText}</p>
       </div>
