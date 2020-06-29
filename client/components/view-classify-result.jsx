@@ -19,7 +19,9 @@ class ViewClassifyResult extends React.Component {
     if (Object.entries(info).length !== 0) {
       fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
         .then(res => res.json())
-        .then(data => this.setState({ imageUrls: data.message }))
+        .then(data => this.setState({
+          imageUrls: data.message
+        }))
         .catch(err => console.error(err));
     }
   }
@@ -29,7 +31,8 @@ class ViewClassifyResult extends React.Component {
   }
 
   render() {
-    const { info, confidence, label, imagePath } = this.props.prediction;
+    const { info, confidence, label, imagePath, imageName } = this.props.prediction;
+    console.log(info);
     const noDataText = 'No data found in the database.';
     let relatedImages;
     if (this.state.imageUrls && this.state.imageUrls !== 'Breed not found (master breed does not exist)') {
@@ -42,6 +45,7 @@ class ViewClassifyResult extends React.Component {
       });
     }
 
+    // debugger;
     const predictionText = (
       <div>
         <p>Confidence: {`${(confidence * 100).toFixed(2)}%`}</p>
@@ -63,9 +67,14 @@ class ViewClassifyResult extends React.Component {
             to="/Upload">
             <span>Try new image</span>
           </Link>
-          <form className='d-flex align-items-center'>
+          <form
+            onSubmit={e => e.preventDefault()}
+            className='d-flex align-items-center'>
             <input className='form-control btn-light' type='text' placeholder='Name' onChange={this.handleChange} value={this.state.value} />
-            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} />
+            <Save breedId={info.breedId}
+              name={this.state.value}
+              userId={this.props.userId}
+              imageName={imageName} />
           </form>
         </div>
 
