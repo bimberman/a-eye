@@ -33,12 +33,6 @@ module.exports = {
     historyApiFallback: true,
     host: '0.0.0.0',
     port: process.env.DEV_SERVER_PORT,
-    watchOptions: {
-      ignored: [
-        path.resolve(__dirname, 'server/public/images'),
-        path.resolve(__dirname, 'server/uploads')
-      ]
-    },
     proxy: {
       '/api': `http://localhost:${process.env.PORT}`
     },

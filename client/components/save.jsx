@@ -9,14 +9,11 @@ export default class SaveDog extends React.Component {
     this.addDog = this.addDog.bind(this);
   }
 
-  addDog(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  addDog() {
     if (!this.props.name) return;
     const dog = {
       breedId: this.props.breedId,
       name: this.props.name,
-      imageName: this.props.imageName
       apiKeyWord: this.props.apiKeyWord
     };
     fetch(`/api/owned-dogs/${this.props.userId}`, {
