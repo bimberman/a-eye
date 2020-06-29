@@ -31,9 +31,9 @@ app.get('/api/health-check', (req, res, next) => {
 });
 
 app.get('/api/breeds', (req, res, next) => {
-
   const queryStr = `select *
-                    from "breeds"`;
+                      from "breeds"
+                  order by "name" asc`;
 
   db.query(queryStr)
     .then(result => res.json(result.rows))
@@ -169,7 +169,15 @@ app.post('/api/edit-breed', (req, res, next) => {
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
   classify(path.join(__dirname, `uploads/${req.file.filename}`))
     .then(result => {
-      const label = result.label[0].toUpperCase() + result.label.substring(1);
+      let label;
+      if (result.label.split(' ').length === 1) {
+        label = result.label[0].toUpperCase() + result.label.substring(1);
+      } else {
+        const splitLabel = result.label.split(' ');
+        label = splitLabel.map(word => {
+          return word[0].toUpperCase() + word.substring(1);
+        }).join(' ');
+      }
       const confidence = result.confidences[result.label];
       const sql = `
       select *
@@ -207,6 +215,24 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
                returning *`;
 
   const values = [userId, breedId, name];
+
+  db.query(sql, values)
+    .then(result => res.json(result.rows[0]))
+    .catch(err => next(err));
+});
+
+app.delete('/api/owned-dogs/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const dogId = Number(req.body.dogId);
+
+  const sql = `
+    delete from "ownedDogs"
+          where "ownedDogId" = $1
+            and "userId" = $2
+      returning *;
+  `;
+
+  const values = [dogId, userId];
 
   db.query(sql, values)
     .then(result => res.json(result.rows[0]))

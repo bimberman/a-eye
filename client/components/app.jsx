@@ -73,7 +73,7 @@ export default class App extends React.Component {
             <MainView />
           </Route>
           <Route path="/MyDogs">
-            <OwnedDogs userId={this.state.userId} />
+            <OwnedDogs userId={this.state.userId} changeCurrentBreed={this.changeCurrentBreed} />
           </Route>
           <Route path="/Scan">
             <div>
@@ -87,13 +87,13 @@ export default class App extends React.Component {
           </Route>
           <Route path="/Browse">
             <BreedsView breeds={this.state.breeds}
-              changeCurrentBreed={this.changeCurrentBreed}/>
+              changeCurrentBreed={this.changeCurrentBreed} />
           </Route>
           <Route path="/ViewInfo">
-            <ViewInfo currentBreed={this.state.currentBreed}/>
+            <ViewInfo currentBreed={this.state.currentBreed} />
           </Route>
           <Route path="/ViewClassifyResult">
-            <ViewClassifyResult prediction={this.state.prediction} />
+            <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
           </Route>
           <Route path="/edit-breed">
             <EditBreedsView breeds={this.state.breeds}

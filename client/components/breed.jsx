@@ -1,6 +1,6 @@
 import React from 'react';
-import { Collapse, Button, CardBody, Card } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import InfoDropDown from './info-dropdown';
 
 class Breed extends React.Component {
   constructor(props) {
@@ -19,35 +19,23 @@ class Breed extends React.Component {
 
   render() {
     const { changeCurrentBreed } = this.props;
-
-    return <div>
-      <Button className="btn my-2 custom-button"
-        onClick={this.setIsOpen} type="button">
-        <Card className="row bg-transparent border-0 d-flex flex-row">
-          <div className="col-4">
-            <img src={this.props.imageUrl} alt=""
-              className={'rounded-circle img-thumbnail img-fluid'} />
-          </div>
-          <h4 className="col-6 p-0 m-0 d-flex align-items-center left-text">
-            {this.props.breed}
-          </h4>
-          <i className="fa fa-chevron-down col-2 d-flex align-items-center"></i>
-        </Card>
-      </Button>
-      <Collapse isOpen={this.state.isOpen}>
-        <Card className="custom-shadow">
-          <CardBody>
-            {this.props.shortDescription}
-          </CardBody>
-          <Link className="btn btn-sm btn-light" to="/ViewInfo"
-            onClick={() => changeCurrentBreed(this.props.breed)}>
-            <span>View more</span>
-          </Link>
-        </Card>
-      </Collapse>
-    </div>;
+    return (
+      <div>
+        <InfoDropDown
+          imageUrl={this.props.imageUrl}
+          title={this.props.breed}
+          description={
+            <div className='text-center d-flex flex-column'>
+              {this.props.shortDescription}
+              <Link className="btn btn-sm btn-light" to="/ViewInfo"
+                onClick={() => changeCurrentBreed(this.props.breed)}>
+                <span>View more</span>
+              </Link>
+            </div>
+          } />
+      </div>
+    );
   }
-
 }
 
 export default Breed;

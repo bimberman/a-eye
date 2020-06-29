@@ -2,20 +2,22 @@ import React from 'react';
 import Header from './header';
 import InfoDropDown from './info-dropdown';
 import { Link } from 'react-router-dom';
+import Save from './save';
 
 class ViewClassifyResult extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       imageUrls: '',
-      breedId: props.prediction.info.breedId
+      breedId: props.prediction.info.breedId,
+      value: ''
     };
     this.fetchInfo = this.fetchInfo.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     const { info } = this.props.prediction;
-
     this.fetchInfo(info.apiKeyWord);
   }
 
@@ -24,6 +26,17 @@ class ViewClassifyResult extends React.Component {
       .then(res => res.json())
       .then(data => this.setState({ imageUrls: data.message }))
       .catch(err => console.error(err));
+
+    if (Object.entries(info).length !== 0) {
+      fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
+        .then(res => res.json())
+        .then(data => this.setState({ imageUrls: data.message }))
+        .catch(err => console.error(err));
+    }
+  }
+  handleChange(e) {
+    this.setState({ value: e.currentTarget.value });
+
   }
 
   render() {
@@ -41,8 +54,9 @@ class ViewClassifyResult extends React.Component {
     }
     const predictionText = (
       <div>
-        <p>{info.name || noDataText}</p>
-        <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
+        <p>{info.name || noDataText}</p>        
+        <p>Confidence: {`${(confidence * 100).toFixed(2)}%`}</p>
+        <p>{info.shortDescription || noDataText}</p>
       </div>
     );
 
@@ -59,6 +73,10 @@ class ViewClassifyResult extends React.Component {
             to="/Upload">
             <span>Try new image</span>
           </Link>
+          <form className='d-flex align-items-center'>
+            <input className='form-control btn-light' type='text' placeholder='Name' onChange={this.handleChange} value={this.state.value} />
+            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} />
+          </form>
         </div>
 
         <h2 className="mt-2 gray">
