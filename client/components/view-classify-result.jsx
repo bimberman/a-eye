@@ -32,7 +32,6 @@ class ViewClassifyResult extends React.Component {
 
   render() {
     const { info, confidence, label, imagePath, imageName } = this.props.prediction;
-    console.log(info);
     const noDataText = 'No data found in the database.';
     let relatedImages;
     if (this.state.imageUrls && this.state.imageUrls !== 'Breed not found (master breed does not exist)') {
