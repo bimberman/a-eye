@@ -19,6 +19,7 @@ class Breed extends React.Component {
 
   render() {
     const { changeCurrentBreed } = this.props;
+
     return <div>
       <Button className="btn my-2 custom-button"
         onClick={this.setIsOpen} type="button">

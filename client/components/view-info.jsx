@@ -12,11 +12,11 @@ class ViewInfo extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchInfo();
+    this.fetchInfo(this.props.currentBreed);
   }
 
-  fetchInfo() {
-    fetch(`/api/breeds/${this.props.currentBreed}`)
+  fetchInfo(breed) {
+    fetch(`/api/breeds/${breed}`)
       .then(res => res.json())
       .then(data => {
         this.setState({ info: data });
@@ -29,6 +29,7 @@ class ViewInfo extends React.Component {
 
   render() {
     const { info, imageUrls } = this.state;
+    this.fetchInfo(info.name);
     const noDataText = 'No data found on the database.';
     let currentBreedImages;
     if (imageUrls) {

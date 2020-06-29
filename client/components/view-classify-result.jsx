@@ -7,13 +7,20 @@ class ViewClassifyResult extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageUrls: ''
+      imageUrls: '',
+      breedId: props.prediction.info.breedId
     };
+    this.fetchInfo = this.fetchInfo.bind(this);
   }
 
   componentDidMount() {
     const { info } = this.props.prediction;
-    fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
+
+    this.fetchInfo(info.apiKeyWord);
+  }
+
+  fetchInfo(breed) {
+    fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`)
       .then(res => res.json())
       .then(data => this.setState({ imageUrls: data.message }))
       .catch(err => console.error(err));
@@ -32,11 +39,10 @@ class ViewClassifyResult extends React.Component {
         );
       });
     }
-
     const predictionText = (
       <div>
+        <p>{info.name || noDataText}</p>
         <p>Confidence: {`%${(confidence * 100).toFixed(2)}`}</p>
-        <p>{info.shortDescription || noDataText}</p>
       </div>
     );
 
@@ -50,14 +56,17 @@ class ViewClassifyResult extends React.Component {
 
         <div className="col-12 text-center">
           <Link className="btn btn-sm btn-light"
-            onClick={this.resetImage}
             to="/Upload">
             <span>Try new image</span>
           </Link>
         </div>
 
+        <h2 className="mt-2 gray">
+          {predictionText}
+        </h2>
+
         <InfoDropDown title={label}
-          description={predictionText}
+          description={info.shortDescription}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
 
@@ -81,7 +90,11 @@ class ViewClassifyResult extends React.Component {
     return (
       <div className="container p-0 d-flex flex-wrap justify-content-center">
         <div className="back-to-main p-0 text-left col-12">
-          <Header pageName="Result" />
+          <Header pageName="Prediction"
+            hasButton={true}
+            buttonText="Edit Breed"
+            buttonCB={() => {}}
+            to={'/edit-breed'}/>
         </div>
         {result}
       </div>
