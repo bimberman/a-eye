@@ -26,7 +26,6 @@ export default class EditBreedsView extends React.Component {
   }
 
   editBreed(breedId, name) {
-    if (breedId === this.state.classifiedBreedId) return;
     fetch('/api/edit-breed', {
       method: 'POST',
       headers: {
