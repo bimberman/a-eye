@@ -9,12 +9,10 @@ p, i{
 
 .gray{
   color:gray;
-  text-shadow: 2px 2px lightgray
 }
 
 .lightgray{
   color:lightgray;
-  text-shadow: 2px 2px gray
 }
 
 .italic{
