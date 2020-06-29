@@ -135,11 +135,7 @@ app.post('/api/edit-breed', (req, res, next) => {
   const updateValues = [suggestedBreedId, apiKeyWord, userId, classifiedBreedId];
 
   db.query(updateSql, updateValues)
-    .then(result => result.rowCount)
-    .then(count => {
-      if (!count) {
-        return next(new ClientError(`There is no breed matching your userId ${userId} or suggested BreedId ${suggestedBreedId}`, 404));
-      }
+    .then(result => {
       const insertSql = `
       INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
       values ($1, $2, $3, $4)
@@ -163,7 +159,6 @@ app.post('/api/edit-breed', (req, res, next) => {
         .catch(err => next(err));
     })
     .catch(err => next(err));
-
 });
 
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
@@ -209,12 +204,13 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = Number(req.params.userId);
   const breedId = Number(req.body.breedId);
   const name = req.body.name;
+  const apiKeyWord = req.body.apiKeyWord;
 
-  const sql = `insert into "ownedDogs" ("userId","breedId", "name")
-               values ($1, $2, $3)
+  const sql = `insert into "ownedDogs" ("userId","breedId", "name", "apiKeyWord")
+               values ($1, $2, $3, $4)
                returning *`;
 
-  const values = [userId, breedId, name];
+  const values = [userId, breedId, name, apiKeyWord];
 
   db.query(sql, values)
     .then(result => res.json(result.rows[0]))

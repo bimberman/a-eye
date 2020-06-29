@@ -10,6 +10,7 @@ export default class EditBreedsView extends React.Component {
       userId: null,
       classifiedBreedId: null,
       imageUrl: null,
+      apiKeyWord: null,
       redirect: null
     };
     this.editBreed = this.editBreed.bind(this);
@@ -19,7 +20,8 @@ export default class EditBreedsView extends React.Component {
     this.setState({
       userId: this.props.userId,
       classifiedBreedId: this.props.prediction.info.breedId,
-      imageUrl: this.props.prediction.info.imageUrl
+      imageUrl: this.props.prediction.info.imageUrl,
+      apiKeyWord: this.props.prediction.info.apiKeyWord
     });
   }
 
@@ -30,11 +32,11 @@ export default class EditBreedsView extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        userId: 1,
+        userId: this.state.userId,
         classifiedBreedId: this.state.classifiedBreedId,
         suggestedBreedId: breedId,
-        imageUrl: 'dalmatian.jpg',
-        apiKeyWord: 'pug'
+        imageUrl: this.state.imageUrl,
+        apiKeyWord: this.state.apiKeyWord
       })
     })
       .then(res => res.json())

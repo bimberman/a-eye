@@ -29,7 +29,6 @@ class ViewInfo extends React.Component {
 
   render() {
     const { info, imageUrls } = this.state;
-    this.fetchInfo(info.name);
     const noDataText = 'No data found on the database.';
     let currentBreedImages;
     if (imageUrls) {
@@ -52,7 +51,7 @@ class ViewInfo extends React.Component {
           description={info.historicalUsage || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-        <InfoDropDown title={'Temper'}
+        <InfoDropDown title={'Temperament'}
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>

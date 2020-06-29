@@ -96,7 +96,9 @@ export default class App extends React.Component {
             <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
           </Route>
           <Route path="/edit-breed">
-            <EditBreedsView breeds={this.state.breeds}
+            <EditBreedsView
+              breeds={this.state.breeds}
+              userId={this.state.userId}
               prediction={this.state.prediction}
               changeCurrentBreed={this.changeCurrentBreed}
               changePredictionState={this.changePredictionState}/>

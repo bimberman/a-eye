@@ -26,14 +26,8 @@ class ViewClassifyResult extends React.Component {
       .then(res => res.json())
       .then(data => this.setState({ imageUrls: data.message }))
       .catch(err => console.error(err));
-
-    if (Object.entries(info).length !== 0) {
-      fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
-        .then(res => res.json())
-        .then(data => this.setState({ imageUrls: data.message }))
-        .catch(err => console.error(err));
-    }
   }
+
   handleChange(e) {
     this.setState({ value: e.currentTarget.value });
 
@@ -54,7 +48,7 @@ class ViewClassifyResult extends React.Component {
     }
     const predictionText = (
       <div>
-        <p>{info.name || noDataText}</p>        
+        <p>{info.name || noDataText}</p>
         <p>Confidence: {`${(confidence * 100).toFixed(2)}%`}</p>
         <p>{info.shortDescription || noDataText}</p>
       </div>
@@ -75,7 +69,7 @@ class ViewClassifyResult extends React.Component {
           </Link>
           <form className='d-flex align-items-center'>
             <input className='form-control btn-light' type='text' placeholder='Name' onChange={this.handleChange} value={this.state.value} />
-            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} />
+            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} apiKeyWord={info.apiKeyWord} />
           </form>
         </div>
 
@@ -93,7 +87,7 @@ class ViewClassifyResult extends React.Component {
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
 
-        <InfoDropDown title={'Temper'}
+        <InfoDropDown title={'Temperament'}
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
