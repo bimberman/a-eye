@@ -16,7 +16,7 @@ export default class SaveDog extends React.Component {
     const dog = {
       breedId: this.props.breedId,
       name: this.props.name,
-      imageName: this.props.imageName
+      imageName: this.props.imageName,
       apiKeyWord: this.props.apiKeyWord
     };
     fetch(`/api/owned-dogs/${this.props.userId}`, {

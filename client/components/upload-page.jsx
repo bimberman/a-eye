@@ -38,9 +38,7 @@ class UploadPage extends React.Component {
       .then(result => result.json())
       .then(prediction => {
         prediction.imagePath = this.state.imagePath;
-        prediction.imageName = imageToUpload.name;
         changePredictionState(prediction);
-        console.log(prediction);
       })
       .catch(err => {
         console.error(err);
@@ -53,6 +51,7 @@ class UploadPage extends React.Component {
 
   render() {
     const { imagePath, gotResult } = this.state;
+
     const redirect = gotResult
       ? <Redirect to="/ViewClassifyResult" />
       : '';

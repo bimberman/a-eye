@@ -25,12 +25,12 @@ class ViewClassifyResult extends React.Component {
   }
 
   fetchInfo(breed) {
-    fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
-        .then(res => res.json())
-        .then(data => this.setState({
-          imageUrls: data.message
-        }))
-        .catch(err => console.error(err));
+    fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`)
+      .then(res => res.json())
+      .then(data => this.setState({
+        imageUrls: data.message
+      }))
+      .catch(err => console.error(err));
   }
 
   handleChange(e) {
@@ -80,7 +80,7 @@ class ViewClassifyResult extends React.Component {
             <Save breedId={info.breedId}
               name={this.state.value}
               userId={this.props.userId}
-              imageName={imageName} 
+              imageName={imageName}
               apiKeyWord={info.apiKeyWord}/>
 
           </form>

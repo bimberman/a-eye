@@ -92,20 +92,14 @@ img{
   width: 100%;
 }
 
-.input:focus{
+.input:focus{  
   outline: 0;
 }
 
 .close-button{
-  background-color: rgb(225, 75, 75);
+  background-color: rgb(225, 75, 75);  
 }
 
 .close-button:focus{
-  background-color: rgb(150, 50, 50);
-}
-
-.dropdown-img{
-  object-fit: contain;
-  height: 10vh;
-  width: 10vh
+  background-color: rgb(150, 50, 50);  
 }
