@@ -102,12 +102,13 @@ export default class OwnedDogs extends React.Component {
       const breedWords = breed.split(' ');
       const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
       const capitalizedBreed = capitalizedWords.join(' ');
+      const defaultImg = './images/default.jpg';
       return (
         <Accordion
           key={dog.ownedDogId}
           callback={this.handleLongPress}
           getDogName={this.getDogName}
-          imageUrl={dog.imageUrl}
+          imageUrl={dog.imageUrl || defaultImg}
           dogName={dog.name}
           dogId={dog.ownedDogId}
           breedId={dog.breedId}

@@ -18,14 +18,19 @@ class ViewClassifyResult extends React.Component {
 
   componentDidMount() {
     const { info } = this.props.prediction;
-    this.fetchInfo(info.apiKeyWord);
+
+    if (Object.entries(info).length !== 0) {
+      this.fetchInfo(info.apiKeyWord);
+    }
   }
 
   fetchInfo(breed) {
-    fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`)
-      .then(res => res.json())
-      .then(data => this.setState({ imageUrls: data.message }))
-      .catch(err => console.error(err));
+    fetch(`https://dog.ceo/api/breed/${info.apiKeyWord}/images/random/3`)
+        .then(res => res.json())
+        .then(data => this.setState({
+          imageUrls: data.message
+        }))
+        .catch(err => console.error(err));
   }
 
   handleChange(e) {
@@ -34,7 +39,7 @@ class ViewClassifyResult extends React.Component {
   }
 
   render() {
-    const { info, confidence, label, imagePath } = this.props.prediction;
+    const { info, confidence, label, imagePath, imageName } = this.props.prediction;
     const noDataText = 'No data found in the database.';
     let relatedImages;
     if (this.state.imageUrls && this.state.imageUrls !== 'Breed not found (master breed does not exist)') {
@@ -46,6 +51,7 @@ class ViewClassifyResult extends React.Component {
         );
       });
     }
+
     const predictionText = (
       <div>
         <p>{info.name || noDataText}</p>
@@ -66,9 +72,17 @@ class ViewClassifyResult extends React.Component {
             to="/Upload">
             <span>Try new image</span>
           </Link>
-          <form className='d-flex align-items-center'>
+          <form
+            onSubmit={e => e.preventDefault()}
+            className='d-flex align-items-center'>
             <input className='form-control btn-light' type='text' placeholder='Name' onChange={this.handleChange} value={this.state.value} />
-            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} apiKeyWord={info.apiKeyWord} />
+
+            <Save breedId={info.breedId}
+              name={this.state.value}
+              userId={this.props.userId}
+              imageName={imageName} 
+              apiKeyWord={info.apiKeyWord}/>
+
           </form>
         </div>
 

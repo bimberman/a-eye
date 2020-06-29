@@ -18,12 +18,12 @@ class InfoDropDown extends React.Component {
 
   render() {
     return <div className="col-12 mb-4">
-      <Button className="btn my-2 custom-button"
+      <Button className="btn my-2 custom-button col-12"
         onClick={this.setIsOpen} type="button">
         <Card className="row bg-transparent border-0 d-flex flex-row">
-          <div className="col-4">
+          <div className="col-4 dropdown-img-container">
             <img src={this.props.imageUrl} alt=""
-              className={'rounded-circle img-thumbnail img-fluid'} />
+              className={'rounded-circle img-thumbnail img-fluid dropdown-img'} />
           </div>
           <h4 className="col-6 p-0 m-0 d-flex align-items-center">
             {this.props.title}
