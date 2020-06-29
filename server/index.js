@@ -6,6 +6,7 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
 const classify = require('./classify');
+const fs = require('fs');
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -56,7 +57,7 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = [Number(req.params.userId)];
   const sql = `
     select "breeds"."name" as "breed",
-           "imageUrl",
+           "portraitUrl" as "imageUrl",
            "shortDescription",
            "longDescription",
            "temperament",
@@ -162,7 +163,8 @@ app.post('/api/edit-breed', (req, res, next) => {
 });
 
 app.post('/api/classify', upload.single('image'), (req, res, next) => {
-  classify(path.join(__dirname, `uploads/${req.file.filename}`))
+  const imageToClassify = path.join(__dirname, `uploads/${req.file.filename}`);
+  classify(imageToClassify)
     .then(result => {
       let label;
       if (result.label.split(' ').length === 1) {
@@ -206,11 +208,24 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
   const name = req.body.name;
   const apiKeyWord = req.body.apiKeyWord;
 
-  const sql = `insert into "ownedDogs" ("userId","breedId", "name", "apiKeyWord")
-               values ($1, $2, $3, $4)
+  const portraitUrl = `/images/ownedDogs/${req.body.imageName}`;
+  const sourcePath = path.join(__dirname, `/uploads/${req.body.imageName}`);
+  const destinationPath = path.join(__dirname, `public/images/ownedDogs/${req.body.imageName}`);
+
+  fs.readFile(sourcePath, (err, data) => {
+    if (err) throw err;
+    fs.writeFile(destinationPath, data, 'base64', err => {
+      if (err) throw err;
+      console.log('It\'s saved!');
+    });
+  });
+
+  const sql = `insert into "ownedDogs" ("userId","breedId", "name", "apiKeyWord", "portraitUrl")
+               values ($1, $2, $3, $4, $5)
                returning *`;
 
-  const values = [userId, breedId, name, apiKeyWord];
+  const values = [userId, breedId, name, apiKeyWord, portraitUrl];
+
 
   db.query(sql, values)
     .then(result => res.json(result.rows[0]))
