@@ -69,7 +69,7 @@ class ViewClassifyResult extends React.Component {
           </Link>
           <form className='d-flex align-items-center'>
             <input className='form-control btn-light' type='text' placeholder='Name' onChange={this.handleChange} value={this.state.value} />
-            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} />
+            <Save breedId={this.props.prediction.info.breedId} name={this.state.value} userId={this.props.userId} apiKeyWord={info.apiKeyWord} />
           </form>
         </div>
 
@@ -87,7 +87,7 @@ class ViewClassifyResult extends React.Component {
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
 
-        <InfoDropDown title={'Temper'}
+        <InfoDropDown title={'Temperament'}
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
