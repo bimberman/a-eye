@@ -12,11 +12,11 @@ class ViewInfo extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchInfo();
+    this.fetchInfo(this.props.currentBreed);
   }
 
-  fetchInfo() {
-    fetch(`/api/breeds/${this.props.currentBreed}`)
+  fetchInfo(breed) {
+    fetch(`/api/breeds/${breed}`)
       .then(res => res.json())
       .then(data => {
         this.setState({ info: data });
@@ -51,7 +51,7 @@ class ViewInfo extends React.Component {
           description={info.historicalUsage || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-        <InfoDropDown title={'Temper'}
+        <InfoDropDown title={'Temperament'}
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>

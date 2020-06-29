@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-
 import Header from './header';
 
 class UploadPage extends React.Component {

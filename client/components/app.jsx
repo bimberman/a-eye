@@ -6,6 +6,7 @@ import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 import ViewInfo from './view-info';
 import ViewClassifyResult from './view-classify-result';
+import EditBreedsView from './edit-breeds-view';
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,7 +31,9 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.getBreeds();
-    this.setState({ isLoading: false });
+    this.setState({
+      isLoading: false
+    });
   }
 
   changePredictionState(prediction) {
@@ -66,7 +69,6 @@ export default class App extends React.Component {
     return (
       <Router>
         <Switch>
-
           <Route exact path="/">
             <MainView />
           </Route>
@@ -92,6 +94,14 @@ export default class App extends React.Component {
           </Route>
           <Route path="/ViewClassifyResult">
             <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
+          </Route>
+          <Route path="/edit-breed">
+            <EditBreedsView
+              breeds={this.state.breeds}
+              userId={this.state.userId}
+              prediction={this.state.prediction}
+              changeCurrentBreed={this.changeCurrentBreed}
+              changePredictionState={this.changePredictionState}/>
           </Route>
         </Switch>
       </Router>

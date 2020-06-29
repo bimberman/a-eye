@@ -17,6 +17,7 @@ export default class SaveDog extends React.Component {
       breedId: this.props.breedId,
       name: this.props.name,
       imageName: this.props.imageName
+      apiKeyWord: this.props.apiKeyWord
     };
     fetch(`/api/owned-dogs/${this.props.userId}`, {
       method: 'POST',
