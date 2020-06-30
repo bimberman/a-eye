@@ -1,18 +1,27 @@
 import React from 'react';
 import InfoDropDown from './info-dropdown';
 import Header from './header';
+import Loading from './loading';
 
 class ViewInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       info: '',
-      imageUrls: ''
+      imageUrls: '',
+      isLoading: false
     };
+    this.fetchPhotos = this.fetchPhotos.bind(this);
   }
 
   componentDidMount() {
     this.fetchInfo(this.props.currentBreed);
+  }
+
+  toggleOpen() {
+    this.setState({
+      isOpen: !this.setState.isOpen
+    });
   }
 
   fetchInfo(breed) {
@@ -20,11 +29,19 @@ class ViewInfo extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ info: data });
-        fetch(`https://dog.ceo/api/breed/${data.apiKeyWord}/images/random/3`)
-          .then(res => res.json())
-          .then(data => this.setState({ imageUrls: data.message }));
+        this.fetchPhotos(data.apiKeyWord);
       })
       .catch(err => console.error(err));
+  }
+
+  fetchPhotos(keyword) {
+    this.setState({ isLoading: true });
+    fetch(`https://dog.ceo/api/breed/${keyword}/images/random/3`)
+      .then(res => res.json())
+      .then(data => this.setState({ imageUrls: data.message }))
+      .then(setTimeout(() => {
+        this.setState({ isLoading: false });
+      }, 1000));
   }
 
   render() {
@@ -40,6 +57,17 @@ class ViewInfo extends React.Component {
         );
       });
     }
+    const photoDisplay = this.state.isLoading
+      ? <Loading />
+      : (
+        <div className="text-center">
+          <button className="btn btn-sm btn-light"
+            onClick={() => this.fetchInfo(this.props.currentBreed)}>
+            <span>Fetch new photos</span>
+          </button>
+          { currentBreedImages }
+        </div >
+      );
     return (
       <div className="d-flex flex-column align-items-center">
         <Header pageName={`${info.name} Info`} />
@@ -60,7 +88,7 @@ class ViewInfo extends React.Component {
           </InfoDropDown>
           <i className="fas fa-paw text-center pb-3"></i>
           <InfoDropDown title={'Photos'}
-            description={ currentBreedImages }
+            description={photoDisplay}
             imageUrl={info.imageUrl || './images/user-icon.png'}>
           </InfoDropDown>
         </div>
