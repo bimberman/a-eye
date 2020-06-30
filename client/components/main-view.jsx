@@ -41,7 +41,23 @@ class MainView extends React.Component {
           </div>
         </div>
 
-        <div className='d-none d-lg-block'>
+        <div className='d-none d-lg-block container mt-2'>
+          <div className='row d-flex align-items-center'>
+            <div className='col'>
+              <img className='card-img-top' src='./images/UploadDog.png' />
+              <p>Upload an image of your dog</p>
+            </div>
+            <i className="col fa fa-arrow-right" aria-hidden="true"></i>
+            <div className='col'>
+              <img className='card-img-top' src='./images/ClassifiedDog.png' />
+              <p>{"Classify your dog's breed"}</p>
+            </div>
+            <i className="col fa fa-arrow-right" aria-hidden="true"></i>
+            <div className='col'>
+              <img className='card-img-top' src='./images/SavedDog.png' />
+              <p>Keep track of all your dogs</p>
+            </div>
+          </div>
           <h1>Try classifying your dog now</h1>
         </div>
       </div>
