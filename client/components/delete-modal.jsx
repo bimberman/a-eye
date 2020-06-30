@@ -12,10 +12,10 @@ export default function DeleteModal(props) {
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Delete Confirmation</ModalHeader>
         <ModalBody>
-          {`Are you sure you want to delete ${props.dog} from your saved dogs?`}
+          {`Are you sure you want to delete ${props.dog[1]} from your saved dogs?`}
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" onClick={() => { toggle(); props.deleteHandler(); }}>Delete</Button>{' '}
+          <Button color="danger" onClick={() => { toggle(); props.deleteHandler(props.dog[0]); }}>Delete</Button>{' '}
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>

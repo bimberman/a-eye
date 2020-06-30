@@ -61,13 +61,13 @@ export default class OwnedDogs extends React.Component {
     }
   }
 
-  handleDelete(e) {
+  handleDelete(dog) {
     fetch(`/api/owned-dogs/${this.props.userId}`, {
       method: 'delete',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ dogId: this.state.selectedDog[0] })
+      body: JSON.stringify({ dogId: dog })
     })
       .then(response => response.json())
       .then(dog => {
@@ -156,13 +156,15 @@ export default class OwnedDogs extends React.Component {
           < div className='d-flex m-2 align-items-center' >
             <img src={dog.imageUrl} className='col' />
             <div className='col'>
-              <p>{capitalizedBreed}</p>
+              <h4>{dog.name}</h4>
               <div className='text-center'>
-                <p>{dog.shortDescription}</p>
-                <Link className="btn btn-sm btn-light" to="/ViewInfo"
+                <p>Breed: {capitalizedBreed}</p>
+                <p>Short Description: {dog.shortDescription}</p>
+                <Link className="btn btn-sm btn-light mb-4" to="/ViewInfo"
                   onClick={() => this.props.changeCurrentBreed(dog.breed)}>
-                  <span>View more</span>
+                  <span>Learn more about {capitalizedBreed}s</span>
                 </Link>
+                <DeleteModal buttonLabel={`Delete ${dog.name}`} dog={[dog.ownedDogId, dog.name]} deleteHandler={this.handleDelete} />
               </div>
             </div>
           </div>
@@ -199,7 +201,7 @@ export default class OwnedDogs extends React.Component {
           </div>
         )
         : <div>
-          <div className="p-0 text-left col-12">
+          <div className="p-0 text-left col-12 mb-2">
             <Header pageName="My Dogs" />
           </div>
           <h1>No Saved Dogs</h1>;

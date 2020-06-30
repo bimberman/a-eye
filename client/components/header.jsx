@@ -31,11 +31,13 @@ const Header = props => {
       <div className='d-none d-lg-block'>
         <header className='d-flex flex-nowrap align-items-baseline justify-content-between desktop-header'>
           <div>
-            <img
-              src="./images/user-icon.png"
-              alt="Muscular gray dog cartoon standing up in front of red shield background"
-              className='rounded-circle img-thumbnail img-fluid header-image m-2'
-            />
+            <Link to='/'>
+              <img
+                src="./images/user-icon.png"
+                alt="Muscular gray dog cartoon standing up in front of red shield background"
+                className='rounded-circle img-thumbnail img-fluid header-image m-2'
+              />
+            </Link>
           </div>
           <div className='d-flex justify-content-around align-items-center col-11'>
             <Link to='/MyDogs'>

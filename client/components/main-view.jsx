@@ -40,6 +40,10 @@ class MainView extends React.Component {
             </Link>
           </div>
         </div>
+
+        <div className='d-none d-lg-block'>
+          <h1>Try classifying your dog now</h1>
+        </div>
       </div>
     );
 
