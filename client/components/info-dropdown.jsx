@@ -25,9 +25,9 @@ class InfoDropDown extends React.Component {
             <img src={this.props.imageUrl} alt=""
               className={'rounded-circle img-thumbnail img-fluid dropdown-img'} />
           </div>
-          <h4 className="col-6 p-0 m-0 d-flex align-items-center">
+          <h5 className="col-6 p-0 m-0 d-flex align-items-center">
             {this.props.title}
-          </h4>
+          </h5>
           {this.state.isOpen
             ? <i className="fa fa-chevron-up col-2 d-flex align-items-center"></i>
             : <i className="fa fa-chevron-down col-2 d-flex align-items-center"></i>}

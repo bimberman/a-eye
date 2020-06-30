@@ -207,7 +207,6 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
   const breedId = Number(req.body.breedId);
   const name = req.body.name;
   const apiKeyWord = req.body.apiKeyWord;
-
   const portraitUrl = `/images/ownedDogs/${req.body.imageName}`;
   const sourcePath = path.join(__dirname, `/uploads/${req.body.imageName}`);
   const destinationPath = path.join(__dirname, `public/images/ownedDogs/${req.body.imageName}`);
@@ -216,7 +215,8 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
     if (err) throw err;
     fs.writeFile(destinationPath, data, 'base64', err => {
       if (err) throw err;
-      console.log('It\'s saved!');
+      // eslint-disable-next-line no-console
+      console.log(`${req.body.imageName} is saved!`);
     });
   });
 
@@ -225,7 +225,6 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
                returning *`;
 
   const values = [userId, breedId, name, apiKeyWord, portraitUrl];
-
 
   db.query(sql, values)
     .then(result => res.json(result.rows[0]))

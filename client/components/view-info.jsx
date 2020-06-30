@@ -41,25 +41,29 @@ class ViewInfo extends React.Component {
       });
     }
     return (
-      <div>
-        <Header pageName="Breeds" />
-        <InfoDropDown title={ info.name }
-          description={info.shortDescription}
-          imageUrl={info.imageUrl || './images/user-icon.png'}>
-        </InfoDropDown>
-        <InfoDropDown title={'History'}
-          description={info.historicalUsage || noDataText}
-          imageUrl={info.imageUrl || './images/user-icon.png'}>
-        </InfoDropDown>
-        <InfoDropDown title={'Temperament'}
-          description={info.temperament || noDataText}
-          imageUrl={info.imageUrl || './images/user-icon.png'}>
-        </InfoDropDown>
-        <InfoDropDown title={'Photos'}
-          description={ currentBreedImages }
-          imageUrl={info.imageUrl || './images/user-icon.png'}>
-        </InfoDropDown>
-
+      <div className="d-flex flex-column align-items-center">
+        <Header pageName={`${info.name} Info`} />
+        <div className="d-flex flex-column justify-content-center col-11">
+          <InfoDropDown title={ info.name }
+            description={info.shortDescription}
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
+          </InfoDropDown>
+          <i className="fas fa-paw text-center pb-3"></i>
+          <InfoDropDown title={'History'}
+            description={info.historicalUsage || noDataText}
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
+          </InfoDropDown>
+          <i className="fas fa-paw text-center pb-3"></i>
+          <InfoDropDown title={'Temperament'}
+            description={info.temperament || noDataText}
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
+          </InfoDropDown>
+          <i className="fas fa-paw text-center pb-3"></i>
+          <InfoDropDown title={'Photos'}
+            description={ currentBreedImages }
+            imageUrl={info.imageUrl || './images/user-icon.png'}>
+          </InfoDropDown>
+        </div>
       </div>
     );
   }
