@@ -3,6 +3,7 @@ import Accordion from './accordion';
 import Header from './header';
 import Loading from './loading';
 import DeleteModal from './delete-modal';
+import { Link } from 'react-router-dom';
 
 export default class OwnedDogs extends React.Component {
   constructor(props) {
@@ -140,6 +141,37 @@ export default class OwnedDogs extends React.Component {
       : dogs;
   }
 
+  renderDogInfoDesktop() {
+    const dogs = this.state.ownedDogs.map((dog, index) => {
+      const breed = dog.breed;
+      const breedWords = breed.split(' ');
+      const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
+      const capitalizedBreed = capitalizedWords.join(' ');
+      const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
+      return (
+        <div className="d-flex flex-column justify-content-center" key={dog.ownedDogId}>
+          <div className='text-center'>
+            {pawprint}
+          </div>
+          < div className='d-flex m-2 align-items-center' >
+            <img src={dog.imageUrl} className='col' />
+            <div className='col'>
+              <p>{capitalizedBreed}</p>
+              <div className='text-center'>
+                <p>{dog.shortDescription}</p>
+                <Link className="btn btn-sm btn-light" to="/ViewInfo"
+                  onClick={() => this.props.changeCurrentBreed(dog.breed)}>
+                  <span>View more</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    });
+    return dogs;
+  }
+
   handleLongPress(dogId, dogName, breedId) {
     this.setState({ selectedDog: [dogId, dogName, breedId] });
   }
@@ -149,12 +181,20 @@ export default class OwnedDogs extends React.Component {
       ? <Loading />
       : this.state.ownedDogs.length > 0
         ? (
-          <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
-            <div className="p-0 text-left col-12">
-              <Header pageName="My Dogs" />
+          <div>
+            <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between d-lg-none'>
+              <div className="p-0 text-left col-12">
+                <Header pageName="My Dogs" />
+              </div>
+              <div className='d-flex flex-column w-100'>
+                {this.renderDogInfo()}
+              </div>
             </div>
-            <div className='d-flex flex-column w-100'>
-              {this.renderDogInfo()}
+            <div className='d-none d-lg-block'>
+              <Header />
+              <div className='d-flex flex-column w-100'>
+                {this.renderDogInfoDesktop()}
+              </div>
             </div>
           </div>
         )
