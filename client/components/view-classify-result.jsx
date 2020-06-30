@@ -60,7 +60,7 @@ class ViewClassifyResult extends React.Component {
     );
 
     const result = (
-      <div className="d-flex flex-wrap justify-content-center">
+      <div className="d-flex flex-wrap justify-content-center col-11">
         <div className="preview-image-container text-center">
           <img src={imagePath}
             className={`rounded-circle img-thumbnail
@@ -82,7 +82,6 @@ class ViewClassifyResult extends React.Component {
               userId={this.props.userId}
               imageName={imageName}
               apiKeyWord={info.apiKeyWord}/>
-
           </form>
         </div>
 
@@ -90,25 +89,27 @@ class ViewClassifyResult extends React.Component {
           {predictionText}
         </h2>
 
+        {/* <div className="d-flex flex-column justify-content-center col-11"> */}
         <InfoDropDown title={label}
           description={info.shortDescription}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-
+        <i className="fas fa-paw text-center pb-3"></i>
         <InfoDropDown title={'History'}
           description={info.historicalUsage || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-
+        <i className="fas fa-paw text-center pb-3"></i>
         <InfoDropDown title={'Temperament'}
           description={info.temperament || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-
+        <i className="fas fa-paw text-center pb-3"></i>
         <InfoDropDown title={'Photos'}
           description={relatedImages || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
+        {/* </div> */}
 
       </div>
     );

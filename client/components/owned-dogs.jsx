@@ -97,24 +97,27 @@ export default class OwnedDogs extends React.Component {
   }
 
   renderDogInfo() {
-    let dogs = this.state.ownedDogs.map(dog => {
+    let dogs = this.state.ownedDogs.map((dog, index) => {
       const breed = dog.breed;
       const breedWords = breed.split(' ');
       const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
       const capitalizedBreed = capitalizedWords.join(' ');
+      const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
       return (
-        <Accordion
-          key={dog.ownedDogId}
-          callback={this.handleLongPress}
-          getDogName={this.getDogName}
-          imageUrl={dog.imageUrl}
-          dogName={dog.name}
-          dogId={dog.ownedDogId}
-          breedId={dog.breedId}
-          breedName={capitalizedBreed}
-          shortDescription={dog.shortDescription}
-          changeCurrentBreed={this.props.changeCurrentBreed}
-        />
+        <div className="d-flex flex-column justify-content-center" key={dog.ownedDogId}>
+          {pawprint}
+          <Accordion
+            callback={this.handleLongPress}
+            getDogName={this.getDogName}
+            imageUrl={dog.imageUrl}
+            dogName={dog.name}
+            dogId={dog.ownedDogId}
+            breedId={dog.breedId}
+            breedName={capitalizedBreed}
+            shortDescription={dog.shortDescription}
+            changeCurrentBreed={this.props.changeCurrentBreed}
+          />
+        </div>
       );
     });
 
@@ -155,6 +158,11 @@ export default class OwnedDogs extends React.Component {
             </div>
           </div>
         )
-        : <h1>No Saved Dogs</h1>;
+        : <div>
+          <div className="p-0 text-left col-12">
+            <Header pageName="My Dogs" />
+          </div>
+          <h1>No Saved Dogs</h1>;
+        </div>;
   }
 }

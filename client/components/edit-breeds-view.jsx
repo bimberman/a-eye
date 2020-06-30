@@ -54,14 +54,20 @@ export default class EditBreedsView extends React.Component {
   }
 
   render() {
-    const editBreedsView = this.props.breeds.map(breed => {
+    const editBreedsView = this.props.breeds.map((breed, index) => {
       if (breed.breedId === this.state.classifiedBreedId) return;
-      return <EditBreed key={breed.breedId}
-        name={breed.name}
-        breedId={breed.breedId}
-        imageUrl={breed.imageUrl}
-        changeCurrentBreed={this.editBreed}
-      ></EditBreed>;
+      const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
+      return (
+        <div className="d-flex flex-column justify-content-center" key={breed.breedId}>
+          {pawprint}
+          <EditBreed
+            name={breed.name}
+            breedId={breed.breedId}
+            imageUrl={breed.imageUrl}
+            changeCurrentBreed={this.editBreed}>
+          </EditBreed>
+        </div>
+      );
     });
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;

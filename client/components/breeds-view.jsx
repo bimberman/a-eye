@@ -19,20 +19,26 @@ class BreedsView extends React.Component {
 
   render() {
     const { changeCurrentBreed } = this.props;
-    const breedsView = this.state.breeds.map(breed => {
-      return <InfoDropDown key={breed.breedId}
-        title={breed.name}
-        description={
-          <div className='text-center d-flex flex-column'>
-            {breed.shortDescription}
-            <Link className="btn btn-sm btn-light" to="/ViewInfo"
-              onClick={() => changeCurrentBreed(breed.name)}>
-              <span>View more</span>
-            </Link>
-          </div>
-        }
-        imageUrl={breed.imageUrl}
-      ></InfoDropDown>;
+    const breedsView = this.state.breeds.map((breed, index) => {
+      const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
+      return (
+        <div className="d-flex flex-column justify-content-center" key={breed.breedId}>
+          {pawprint}
+          <InfoDropDown
+            title={breed.name}
+            description={
+              <div className='text-center d-flex flex-column'>
+                {breed.shortDescription}
+                <Link className="btn btn-sm btn-light" to="/ViewInfo"
+                  onClick={() => changeCurrentBreed(breed.name)}>
+                  <span>View more</span>
+                </Link>
+              </div>
+            }
+            imageUrl={breed.imageUrl}
+          ></InfoDropDown>
+        </div>
+      );
     });
     return <div className="d-flex align-items-center flex-column">
       <Header pageName="Breeds"/>

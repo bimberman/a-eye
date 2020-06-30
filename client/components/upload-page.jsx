@@ -38,6 +38,7 @@ class UploadPage extends React.Component {
       .then(result => result.json())
       .then(prediction => {
         prediction.imagePath = this.state.imagePath;
+        prediction.imageName = imageToUpload.name;
         changePredictionState(prediction);
       })
       .catch(err => {
