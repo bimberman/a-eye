@@ -109,3 +109,11 @@ img{
   height: 10vh;
   width: 10vh
 }
+
+.desktop-header{
+  background-color: #93F0E5;
+}
+
+.header-image{
+  height: 10vh;
+}
