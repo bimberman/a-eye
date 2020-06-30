@@ -158,6 +158,21 @@ class ViewClassifyResult extends React.Component {
                 </form>
               </div>
             </div>
+            <div className="text-center">
+              <button className="btn btn-sm btn-light m-2"
+                onClick={() => this.fetchInfo(info.apiKeyWord)}>
+                <span>Fetch new photos</span>
+              </button>
+
+              <div>
+                {relatedImages}
+              </div>
+
+              <button className="btn btn-sm btn-light m-2"
+                onClick={() => this.fetchInfo(info.apiKeyWord)}>
+                <span>Fetch new photos</span>
+              </button>
+            </div >
           </div>
         </div>
       </div>
