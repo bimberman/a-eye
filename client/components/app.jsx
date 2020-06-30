@@ -5,6 +5,7 @@ import Loading from './loading';
 import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 import ViewInfo from './view-info';
+import UserView from './user-view';
 import ViewClassifyResult from './view-classify-result';
 import EditBreedsView from './edit-breeds-view';
 import {
@@ -94,6 +95,9 @@ export default class App extends React.Component {
           </Route>
           <Route path="/ViewClassifyResult">
             <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
+          </Route>
+          <Route path="/user-view">
+            <UserView userId={this.state.userId} />
           </Route>
           <Route path="/edit-breed">
             <EditBreedsView
