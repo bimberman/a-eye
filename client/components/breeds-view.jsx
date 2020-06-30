@@ -1,6 +1,7 @@
 import React from 'react';
-import Breed from './breed';
 import Header from './header';
+import { Link } from 'react-router-dom';
+import InfoDropDown from './info-dropdown';
 
 class BreedsView extends React.Component {
   constructor(props) {
@@ -19,15 +20,19 @@ class BreedsView extends React.Component {
   render() {
     const { changeCurrentBreed } = this.props;
     const breedsView = this.state.breeds.map(breed => {
-      return <Breed key={breed.breedId}
-        breed={breed.name}
-        shortDescription={breed.shortDescription}
-        longDescription={breed.longDescription}
+      return <InfoDropDown key={breed.breedId}
+        title={breed.name}
+        description={
+          <div className='text-center d-flex flex-column'>
+            {breed.shortDescription}
+            <Link className="btn btn-sm btn-light" to="/ViewInfo"
+              onClick={() => changeCurrentBreed(breed.name)}>
+              <span>View more</span>
+            </Link>
+          </div>
+        }
         imageUrl={breed.imageUrl}
-        temperament={breed.temperament}
-        historicalUsage={breed.historicalUsage}
-        changeCurrentBreed={changeCurrentBreed}
-      ></Breed>;
+      ></InfoDropDown>;
     });
     return <div className="d-flex align-items-center flex-column">
       <Header pageName="Breeds"/>
