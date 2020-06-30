@@ -48,9 +48,27 @@ app.get('/api/breeds/:breed', (req, res, next) => {
                    where "name" = $1`;
 
   db.query(queryStr, [req.params.breed])
+    .then(result => res.json(result))
+    .catch(err => next(err));
+});
+
+app.get('/api/users', (req, res, next) => {
+  const queryStr = `select *
+                    from "users"`;
+
+  db.query(queryStr)
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
+});
+
+app.get('/api/users/:userId', (req, res, next) => {
+  const queryStr = `select *
+                    from "users"
+                   where "userId" = $1`;
+
+  db.query(queryStr, [req.params.userId])
     .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
-
 });
 
 app.get('/api/owned-dogs/:userId', (req, res, next) => {
