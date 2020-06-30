@@ -3,6 +3,7 @@ import Accordion from './accordion';
 import Header from './header';
 import Loading from './loading';
 import DeleteModal from './delete-modal';
+import { Link } from 'react-router-dom';
 
 export default class OwnedDogs extends React.Component {
   constructor(props) {
@@ -60,13 +61,13 @@ export default class OwnedDogs extends React.Component {
     }
   }
 
-  handleDelete(e) {
+  handleDelete(dog) {
     fetch(`/api/owned-dogs/${this.props.userId}`, {
       method: 'delete',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ dogId: this.state.selectedDog[0] })
+      body: JSON.stringify({ dogId: dog })
     })
       .then(response => response.json())
       .then(dog => {
@@ -140,6 +141,39 @@ export default class OwnedDogs extends React.Component {
       : dogs;
   }
 
+  renderDogInfoDesktop() {
+    const dogs = this.state.ownedDogs.map((dog, index) => {
+      const breed = dog.breed;
+      const breedWords = breed.split(' ');
+      const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
+      const capitalizedBreed = capitalizedWords.join(' ');
+      const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
+      return (
+        <div className="d-flex flex-column justify-content-center" key={dog.ownedDogId}>
+          <div className='text-center'>
+            {pawprint}
+          </div>
+          < div className='d-flex m-2 align-items-center' >
+            <img src={dog.imageUrl} className='col' />
+            <div className='col'>
+              <h4>{dog.name}</h4>
+              <div className='text-center'>
+                <p>Breed: {capitalizedBreed}</p>
+                <p>Short Description: {dog.shortDescription}</p>
+                <Link className="btn btn-sm btn-light mb-4" to="/ViewInfo"
+                  onClick={() => this.props.changeCurrentBreed(dog.breed)}>
+                  <span>Learn more about {capitalizedBreed}s</span>
+                </Link>
+                <DeleteModal buttonLabel={`Delete ${dog.name}`} dog={[dog.ownedDogId, dog.name]} deleteHandler={this.handleDelete} />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    });
+    return dogs;
+  }
+
   handleLongPress(dogId, dogName, breedId) {
     this.setState({ selectedDog: [dogId, dogName, breedId] });
   }
@@ -149,17 +183,25 @@ export default class OwnedDogs extends React.Component {
       ? <Loading />
       : this.state.ownedDogs.length > 0
         ? (
-          <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between'>
-            <div className="p-0 text-left col-12">
-              <Header pageName="My Dogs" />
+          <div>
+            <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between d-lg-none'>
+              <div className="p-0 text-left col-12">
+                <Header pageName="My Dogs" />
+              </div>
+              <div className='d-flex flex-column w-100'>
+                {this.renderDogInfo()}
+              </div>
             </div>
-            <div className='d-flex flex-column w-100'>
-              {this.renderDogInfo()}
+            <div className='d-none d-lg-block'>
+              <Header />
+              <div className='d-flex flex-column w-100'>
+                {this.renderDogInfoDesktop()}
+              </div>
             </div>
           </div>
         )
         : <div>
-          <div className="p-0 text-left col-12">
+          <div className="p-0 text-left col-12 mb-2">
             <Header pageName="My Dogs" />
           </div>
           <h1>No Saved Dogs</h1>;

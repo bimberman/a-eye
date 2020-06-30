@@ -48,7 +48,7 @@ app.get('/api/breeds/:breed', (req, res, next) => {
                    where "name" = $1`;
 
   db.query(queryStr, [req.params.breed])
-    .then(result => res.json(result))
+    .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
 });
 

@@ -65,36 +65,75 @@ class ViewInfo extends React.Component {
             onClick={() => this.fetchInfo(this.props.currentBreed)}>
             <span>Fetch new photos</span>
           </button>
-          { currentBreedImages }
+          {currentBreedImages}
         </div >
       );
     return (
-      <div className="d-flex flex-column align-items-center">
-        <Header pageName={`${info.name} Info`} />
-        <div className="d-flex flex-column justify-content-center col-11">
-          <InfoDropDown title={ info.name }
-            description={info.shortDescription}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
-          <i className="fas fa-paw text-center pb-3"></i>
-          <InfoDropDown title={'History'}
-            description={info.historicalUsage || noDataText}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
-          <i className="fas fa-paw text-center pb-3"></i>
-          <InfoDropDown title={'Temperament'}
-            description={info.temperament || noDataText}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
-          <i className="fas fa-paw text-center pb-3"></i>
-          <InfoDropDown title={'Photos'}
-            description={photoDisplay}
-            imageUrl={info.imageUrl || './images/user-icon.png'}>
-          </InfoDropDown>
+      <div>
+        <div className="d-flex flex-column align-items-center d-lg-none">
+          <Header pageName={`${info.name} Info`} />
+          <div className="d-flex flex-column justify-content-center col-11">
+            <InfoDropDown title={info.name}
+              description={info.shortDescription}
+              imageUrl={info.imageUrl || './images/user-icon.png'}>
+            </InfoDropDown>
+            <i className="fas fa-paw text-center pb-3"></i>
+            <InfoDropDown title={'History'}
+              description={info.historicalUsage || noDataText}
+              imageUrl={info.imageUrl || './images/user-icon.png'}>
+            </InfoDropDown>
+            <i className="fas fa-paw text-center pb-3"></i>
+            <InfoDropDown title={'Temperament'}
+              description={info.temperament || noDataText}
+              imageUrl={info.imageUrl || './images/user-icon.png'}>
+            </InfoDropDown>
+            <i className="fas fa-paw text-center pb-3"></i>
+            <InfoDropDown title={'Photos'}
+              description={photoDisplay}
+              imageUrl={info.imageUrl || './images/user-icon.png'}>
+            </InfoDropDown>
+          </div>
+        </div>
+        <div className='d-none d-lg-block'>
+          <Header />
+
+          <div className='container'>
+            <div className='row d-flex m-2'>
+              <img src={info.imageUrl} className='col' />
+              <div className='col container text-center'>
+                <div className='row d-flex flex-column'>
+                  <h4>{info.name}</h4>
+                  <p>{info.shortDescription}</p>
+                </div>
+                <div className='row d-flex flex-column'>
+                  <h4>Temperament</h4>
+                  <p>{info.temperament}</p>
+                </div>
+                <div className='row d-flex flex-column'>
+                  <h4>Historical Usage</h4>
+                  <p>{info.historicalUsage}</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-center">
+              <button className="btn btn-sm btn-light m-2"
+                onClick={() => this.fetchInfo(this.props.currentBreed)}>
+                <span>Fetch new photos</span>
+              </button>
+
+              <div>
+                {currentBreedImages}
+              </div>
+
+              <button className="btn btn-sm btn-light m-2"
+                onClick={() => this.fetchInfo(this.props.currentBreed)}>
+                <span>Fetch new photos</span>
+              </button>
+            </div >
+          </div>
         </div>
       </div>
     );
   }
 }
-
 export default ViewInfo;

@@ -81,7 +81,7 @@ class ViewClassifyResult extends React.Component {
               name={this.state.value}
               userId={this.props.userId}
               imageName={imageName}
-              apiKeyWord={info.apiKeyWord}/>
+              apiKeyWord={info.apiKeyWord} />
           </form>
         </div>
 
@@ -114,17 +114,68 @@ class ViewClassifyResult extends React.Component {
       </div>
     );
     return (
-      <div className="container p-0 d-flex flex-wrap justify-content-center">
-        <div className="back-to-main p-0 text-left col-12">
-          <Header pageName="Prediction"
-            hasButton={true}
-            buttonText="Edit Breed"
-            buttonCB={() => { }}
-            to={'/edit-breed'} />
+      <div>
+        <div className="container p-0 d-flex flex-wrap justify-content-center d-lg-none">
+          <div className="back-to-main p-0 text-left col-12">
+            <Header pageName="Prediction"
+              hasButton={true}
+              buttonText="Edit Breed"
+              buttonCB={() => { }}
+              to={'/edit-breed'} />
+          </div>
+          {result}
         </div>
-        {result}
-      </div>
 
+        <div className='d-none d-lg-block'>
+          <Header />
+          <div className='container'>
+            <div className='row d-flex m-2'>
+              <img src={info.imageUrl} className='col' />
+              <div className='col container text-center'>
+                <div className='row d-flex flex-column'>
+                  <h4>{info.name}</h4>
+                  <p>{info.shortDescription}</p>
+                </div>
+                <div className='row d-flex flex-column'>
+                  <h4>Temperament</h4>
+                  <p>{info.temperament}</p>
+                </div>
+                <div className='row d-flex flex-column'>
+                  <h4>Historical Usage</h4>
+                  <p>{info.historicalUsage}</p>
+                </div>
+                <form
+                  onSubmit={e => e.preventDefault()}
+                  className='row d-flex flex-nowrap align-items-center'
+                >
+                  <input className='form-control btn-light' type='text' placeholder='Name' onChange={this.handleChange} value={this.state.value} />
+
+                  <Save breedId={info.breedId}
+                    name={this.state.value}
+                    userId={this.props.userId}
+                    imageName={imageName}
+                    apiKeyWord={info.apiKeyWord} />
+                </form>
+              </div>
+            </div>
+            <div className="text-center">
+              <button className="btn btn-sm btn-light m-2"
+                onClick={() => this.fetchInfo(info.apiKeyWord)}>
+                <span>Fetch new photos</span>
+              </button>
+
+              <div>
+                {relatedImages}
+              </div>
+
+              <button className="btn btn-sm btn-light m-2"
+                onClick={() => this.fetchInfo(info.apiKeyWord)}>
+                <span>Fetch new photos</span>
+              </button>
+            </div >
+          </div>
+        </div>
+      </div>
     );
   }
 }
