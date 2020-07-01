@@ -267,8 +267,18 @@ app.delete('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('api/gallery/:ownedDogId', (req, res, next) => {
+app.get('/api/gallery/:dogId', (req, res, next) => {
+  const dogId = Number(req.params.dogId);
 
+  const sql = `
+    select "uploadedPhotos"
+      from "ownedDogs"
+     where "ownedDogId" = $1
+  `;
+
+  db.query(sql, [dogId])
+    .then(result => res.json(result.rows))
+    .catch(err => next(err));
 });
 
 app.use('/api', (req, res, next) => {

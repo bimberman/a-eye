@@ -29,6 +29,7 @@ export default class App extends React.Component {
     this.toggleLoading = this.toggleLoading.bind(this);
     this.changePredictionState = this.changePredictionState.bind(this);
     this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
+    this.changeCurrentDog = this.changeCurrentDog.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +47,10 @@ export default class App extends React.Component {
 
   changeCurrentBreed(breed) {
     this.setState({ currentBreed: breed });
+  }
+
+  changeCurrentDog(ownedDogId) {
+    this.setState({ currentDog: ownedDogId });
   }
 
   toggleLoading(status) {
@@ -75,7 +80,10 @@ export default class App extends React.Component {
             <MainView />
           </Route>
           <Route path="/MyDogs">
-            <OwnedDogs userId={this.state.userId} changeCurrentBreed={this.changeCurrentBreed} />
+            <OwnedDogs userId={this.state.userId}
+              changeCurrentBreed={this.changeCurrentBreed}
+              changeCurrentDog={this.changeCurrentDog}
+            />
           </Route>
           <Route path="/Scan">
             <div>
@@ -106,7 +114,7 @@ export default class App extends React.Component {
               changePredictionState={this.changePredictionState}/>
           </Route>
           <Route path="/ViewPhotos">
-            <ViewPhotos />
+            <ViewPhotos currentDog={this.state.currentDog}/>
           </Route>
         </Switch>
       </Router>

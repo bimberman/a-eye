@@ -40,7 +40,7 @@ export default function Accordion(props) {
               <span>{`Learn more about ${props.breedName}s`}</span>
             </Link>
             <Link className="btn btn-sm btn-light" to="/ViewPhotos"
-              onClick={() => props.changeCurrentDog()}>
+              onClick={() => props.changeCurrentDog(props.dogId)}>
               <span>{`View photos of ${props.dogName}`}</span>
             </Link>
           </div>}
