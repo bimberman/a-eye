@@ -5,9 +5,10 @@ import Loading from './loading';
 import UploadPage from './upload-page';
 import BreedsView from './breeds-view';
 import ViewInfo from './view-info';
-import UserView from './user-view';
+import EditUserView from './edit-user-view';
 import ViewClassifyResult from './view-classify-result';
 import EditBreedsView from './edit-breeds-view';
+import ChangeUserView from './change-user-view';
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,6 +29,7 @@ export default class App extends React.Component {
     this.toggleLoading = this.toggleLoading.bind(this);
     this.changePredictionState = this.changePredictionState.bind(this);
     this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
+    this.changeUser = this.changeUser.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,10 @@ export default class App extends React.Component {
 
   changeCurrentBreed(breed) {
     this.setState({ currentBreed: breed });
+  }
+
+  changeUser(userId) {
+    this.setState({ userId: userId });
   }
 
   toggleLoading(status) {
@@ -96,8 +102,11 @@ export default class App extends React.Component {
           <Route path="/ViewClassifyResult">
             <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
           </Route>
-          <Route path="/user-view">
-            <UserView userId={this.state.userId} />
+          <Route path="/edit-user">
+            <EditUserView userId={this.state.userId} />
+          </Route>
+          <Route path="/change-user">
+            <ChangeUserView changeUser={this.changeUser}/>
           </Route>
           <Route path="/edit-breed">
             <EditBreedsView

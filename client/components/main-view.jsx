@@ -7,9 +7,9 @@ class MainView extends React.Component {
     return (
       <div className={`container-fluid d-flex justify-content-center
       flex-wrap align-content-between`}>
-        <h2 className="m-2 p-2">Dog Scanner 3000</h2>
+        <h2 className="m-2 p-2">Doginator 3000</h2>
         <div className="main-portrait-container col-9">
-          <Link type="button" to="/user-view">
+          <Link type="button" to="/edit-user">
             <img src="./images/frenchie.jpg" alt=""
               className={`rounded-circle img-thumbnail
             img-fluid main-portrait`} />

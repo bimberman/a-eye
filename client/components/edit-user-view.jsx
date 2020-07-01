@@ -1,8 +1,9 @@
 import React from 'react';
 import Header from './header';
 import EditableButton from './editable-button';
+import { Link } from 'react-router-dom';
 
-class UserView extends React.Component {
+class EditUserView extends React.Component {
 
   constructor(props) {
     super(props);
@@ -21,7 +22,8 @@ class UserView extends React.Component {
   getUser(userId) {
     fetch(`/api/users/${userId}`)
       .then(response => response.json())
-      .then(user => this.setState(user));
+      .then(user => this.setState(user))
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -43,10 +45,15 @@ class UserView extends React.Component {
           <EditableButton text={username}/>
           <i className="fas fa-paw"></i>
           <EditableButton text={email}/>
+          <i className="fas fa-paw"></i>
+          <Link type="button" to="/change-user"
+            className={'btn btn-lg btn-block my-4 button'}>
+            <p className="p-0 m-0 my-dogs-view">Change User</p>
+          </Link>
         </div>
       </div>
     );
   }
 }
 
-export default UserView;
+export default EditUserView;
