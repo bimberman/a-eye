@@ -68,7 +68,9 @@ class BreedsView extends React.Component {
     return (
       <div>
         <div className="d-flex align-items-center flex-column d-lg-none">
-          <Header pageName="Breeds" />
+          <div className="p-0 text-left col-12">
+            <Header pageName="Breeds" />
+          </div>
           <div className="col-11">
             {breedsView}
           </div>

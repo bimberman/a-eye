@@ -54,6 +54,7 @@ export default class App extends React.Component {
 
   changeCurrentDog(ownedDogId) {
     this.setState({ currentDog: ownedDogId });
+  }
 
   changeUser(userId) {
     this.setState({ userId: userId });
