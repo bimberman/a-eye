@@ -33,7 +33,6 @@ export default class App extends React.Component {
     this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
     this.changeCurrentDog = this.changeCurrentDog.bind(this);
     this.changeUser = this.changeUser.bind(this);
-    this.fetchUploadedPhotos = this.fetchUploadedPhotos.bind(this);
   }
 
   componentDidMount() {
@@ -73,12 +72,6 @@ export default class App extends React.Component {
           return { ...prevState, breeds: data };
         }));
     }
-  }
-
-  fetchUploadedPhotos() {
-    fetch(`/api/gallery/${this.state.currentDog}`)
-      .then(res => res.json())
-      .then(data => { return data; });
   }
 
   render() {
@@ -134,8 +127,7 @@ export default class App extends React.Component {
               changePredictionState={this.changePredictionState}/>
           </Route>
           <Route path="/ViewPhotos">
-            <ViewPhotos currentDog={this.state.currentDog}
-              fetchUploadedPhotos = {this.fetchUploadedPhotos} />
+            <ViewPhotos currentDog={this.state.currentDog}/>
           </Route>
         </Switch>
       </Router>
