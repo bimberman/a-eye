@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './header';
-import { Card, CardBody } from 'reactstrap';
+import { Card } from 'reactstrap';
 
 class ViewPhotos extends React.Component {
   constructor(props) {
@@ -37,7 +37,6 @@ class ViewPhotos extends React.Component {
   }
 
   deletePhoto(url) {
-    console.log(url);
     fetch('/api/gallery', {
       method: 'DELETE',
       headers: {
@@ -47,7 +46,12 @@ class ViewPhotos extends React.Component {
         imageUrl: url,
         dogId: this.props.currentDog
       })
-    });
+    })
+      .then(result => result.json())
+      .then(data => this.setState({
+        dog: data,
+        imageToUpload: ''
+      }));
   }
 
   render() {
@@ -60,7 +64,6 @@ class ViewPhotos extends React.Component {
       photos = dog.uploadedPhotos.map((url, index) => {
         return (
           <Card key={index}>
-
             <img src={url}
               className={'img-fluid'} />
             <button className="btn btn-sm btn-light text-red m-2"

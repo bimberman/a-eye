@@ -305,7 +305,6 @@ app.post('/api/gallery/:dogId', galleryUpload.single('image'), (req, res, next) 
 });
 
 app.delete('/api/gallery', (req, res, next) => {
-  console.log(req.body);
   const sql = `
   update "ownedDogs"
   set "uploadedPhotos" = array_remove("uploadedPhotos", $1)
@@ -313,7 +312,8 @@ app.delete('/api/gallery', (req, res, next) => {
   returning *
  `;
   const params = [req.body.imageUrl, req.body.dogId];
-
+  db.query(sql, params)
+    .then(result => res.json(result.rows[0]));
 });
 
 app.use('/api', (req, res, next) => {
