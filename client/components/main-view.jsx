@@ -12,10 +12,13 @@ class MainView extends React.Component {
         </div>
         <div className={`container-fluid d-flex justify-content-center
       flex-wrap align-content-between d-lg-none`}>
+          <h2 className="m-2 p-2">Doginator 3000</h2>
           <div className="main-portrait-container col-9">
+            <Link type="button" to="/edit-user">
             <img src="./images/frenchie.jpg" alt=""
               className={`rounded-circle img-thumbnail
             img-fluid main-portrait`} />
+          </Link>
           </div>
 
           <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>

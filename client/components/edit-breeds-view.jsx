@@ -74,7 +74,7 @@ export default class EditBreedsView extends React.Component {
     }
     return <div className="d-flex align-items-center flex-column">
       <Header pageName="Edit Breeds" />
-      <h5>Please select the correct <br />breed from the list below</h5>
+      <h5>Please select<br/>a breed from the list below</h5>
       <div className="col-11">
         {editBreedsView}
       </div>
