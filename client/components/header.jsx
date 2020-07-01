@@ -16,15 +16,45 @@ const Header = props => {
     </Link>
     : null;
   return (
-    <div className="d-flex justify-content-start col-12">
-      <Button className="btn m-2 bg-transparent border-0 col-2"
-        onClick={() => history.goBack()} type="button">
-        <i className="fa fa-chevron-left fa-2x col-2 d-flex align-items-center"></i>
-      </Button>
-      <h4 className="col-5 p-0 m-0 d-flex align-items-center text-center">
-        {props.pageName}
-      </h4>
-      {actionButton}
+    <div>
+      <div className="d-flex justify-content-start col-12 d-lg-none">
+        <Button className="btn m-2 bg-transparent border-0 col-2"
+          onClick={() => history.goBack()} type="button">
+          <i className="fa fa-chevron-left fa-2x col-2 d-flex align-items-center"></i>
+        </Button>
+        <h4 className="col-5 p-0 m-0 d-flex align-items-center">
+          {props.pageName}
+        </h4>
+        {actionButton}
+      </div>
+
+      <div className='d-none d-lg-block'>
+        <header className='d-flex flex-nowrap align-items-baseline justify-content-between desktop-header'>
+          <div>
+            <Link to='/'>
+              <img
+                src="./images/user-icon.png"
+                alt="Muscular gray dog cartoon standing up in front of red shield background"
+                className='rounded-circle img-thumbnail img-fluid header-image m-2'
+              />
+            </Link>
+          </div>
+          <div className='d-flex justify-content-around align-items-center col-11'>
+            <Link to='/MyDogs'>
+              <p>My Dogs</p>
+            </Link>
+            <Link to='/Scan'>
+              <p>Scan</p>
+            </Link>
+            <Link to='/Upload'>
+              <p>Upload</p>
+            </Link>
+            <Link to='/Browse'>
+              <p>Browse</p>
+            </Link>
+          </div>
+        </header>
+      </div>
     </div>
   );
 };

@@ -69,25 +69,46 @@ class UploadPage extends React.Component {
       : '';
 
     return (
-      <div className="container p-0 d-flex flex-wrap justify-content-center">
-        <div className="back-to-main p-0 text-left col-12">
-          <Header pageName="Upload"/>
-          {redirect}
-        </div>
-        <div className="preview-image-container text-center">
-          {imagePreview}
-        </div>
-        <div className="col-md-4 col-lg-2">
-          <input type="file" accept="image/*"
-            ref={this.uploadImageRef}
-            onChange={this.previewImage}
-            name="image"
-            className="image-input" />
+      <div>
+        <div className="container p-0 d-flex flex-wrap justify-content-center d-lg-none">
+          <div className="back-to-main p-0 text-left col-12">
+            <Header pageName="Upload" />
+            {redirect}
+          </div>
+          <div className="preview-image-container text-center">
+            {imagePreview}
+          </div>
+          <div className="col-md-4 col-lg-2">
+            <input type="file" accept="image/*"
+              ref={this.uploadImageRef}
+              onChange={this.previewImage}
+              name="image"
+              className="image-input" />
 
-          <button className="btn btn-block button"
-            disabled={!imagePath}
-            onClick={this.uploadImage}> Classify Image
-          </button>
+            <button className="btn btn-block button"
+              disabled={!imagePath}
+              onClick={this.uploadImage}> Classify Image
+            </button>
+          </div>
+        </div>
+        <div className='d-none d-lg-block'>
+          <Header />
+          <div className="preview-image-container my-2 mx-auto">
+            {imagePreview}
+          </div>
+          <div className="col-md-4 col-lg-2 mx-auto">
+            <input type="file" accept="image/*"
+              ref={this.uploadImageRef}
+              onChange={this.previewImage}
+              name="image"
+              className="image-input my-2 mx-auto"
+            />
+
+            <button className="btn btn-block button"
+              disabled={!imagePath}
+              onClick={this.uploadImage}> Classify Image
+            </button>
+          </div>
         </div>
       </div>
     );

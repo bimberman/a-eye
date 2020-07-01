@@ -6,6 +6,7 @@ const path = require('path');
 
 const fs = require('fs');
 const jpeg = require('jpeg-js');
+const Jimp = require('jimp');
 
 const NUMBER_OF_CHANNELS = 3;
 
@@ -40,6 +41,16 @@ const image2Input = (image, numChannels) => {
 const datasetPath = path.join(__dirname, 'dataset.json');
 
 const classify = async path => {
+  if (path.split('.').includes('png')) {
+    Jimp.read(path, function (err, image) {
+      if (err) {
+        console.error(err);
+      } else {
+        path = path.split('.')[0] + '.jpg';
+        image.write(path);
+      }
+    });
+  }
   const mobilenetModel = await mobilenet.load();
   const img = readImage(path);
   const input = image2Input(img, NUMBER_OF_CHANNELS);
