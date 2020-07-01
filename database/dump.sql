@@ -16,15 +16,22 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public.review DROP CONSTRAINT review_fk2;
+ALTER TABLE ONLY public.review DROP CONSTRAINT review_fk1;
+ALTER TABLE ONLY public.review DROP CONSTRAINT review_fk0;
 ALTER TABLE ONLY public."ownedDogs" DROP CONSTRAINT "ownedDogs_fk1";
 ALTER TABLE ONLY public."ownedDogs" DROP CONSTRAINT "ownedDogs_fk0";
 ALTER TABLE ONLY public.users DROP CONSTRAINT users_pk;
+ALTER TABLE ONLY public.review DROP CONSTRAINT review_pk;
 ALTER TABLE ONLY public.breeds DROP CONSTRAINT "dogBreeds_pk";
 ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
+ALTER TABLE public.review ALTER COLUMN "reviewId" DROP DEFAULT;
 ALTER TABLE public."ownedDogs" ALTER COLUMN "ownedDogId" DROP DEFAULT;
 ALTER TABLE public.breeds ALTER COLUMN "breedId" DROP DEFAULT;
 DROP SEQUENCE public."users_userId_seq";
 DROP TABLE public.users;
+DROP SEQUENCE public."review_reviewId_seq";
+DROP TABLE public.review;
 DROP SEQUENCE public."ownedDogs_ownedDogId_seq";
 DROP TABLE public."ownedDogs";
 DROP SEQUENCE public."dogBreeds_breedId_seq";
@@ -107,7 +114,10 @@ CREATE TABLE public."ownedDogs" (
     "ownedDogId" integer NOT NULL,
     "userId" integer NOT NULL,
     "breedId" integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    "portraitUrl" text,
+    "apiKeyWord" text,
+    "uploadedPhotos" text[]
 );
 
 
@@ -129,6 +139,39 @@ CREATE SEQUENCE public."ownedDogs_ownedDogId_seq"
 --
 
 ALTER SEQUENCE public."ownedDogs_ownedDogId_seq" OWNED BY public."ownedDogs"."ownedDogId";
+
+
+--
+-- Name: review; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.review (
+    "reviewId" integer NOT NULL,
+    "userId" integer NOT NULL,
+    "classifiedBreedId" integer NOT NULL,
+    "suggestedBreedId" integer NOT NULL,
+    "imageUrl" text NOT NULL
+);
+
+
+--
+-- Name: review_reviewId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."review_reviewId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: review_reviewId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."review_reviewId_seq" OWNED BY public.review."reviewId";
 
 
 --
@@ -177,6 +220,13 @@ ALTER TABLE ONLY public."ownedDogs" ALTER COLUMN "ownedDogId" SET DEFAULT nextva
 
 
 --
+-- Name: review reviewId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.review ALTER COLUMN "reviewId" SET DEFAULT nextval('public."review_reviewId_seq"'::regclass);
+
+
+--
 -- Name: users userId; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -201,11 +251,24 @@ COPY public.breeds ("breedId", name, "shortDescription", "longDescription", "ima
 -- Data for Name: ownedDogs; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public."ownedDogs" ("ownedDogId", "userId", "breedId", name) FROM stdin;
-8	1	1	Dogmation
-9	1	4	Goldie
-10	1	5	Coco
-11	1	3	Gucci
+COPY public."ownedDogs" ("ownedDogId", "userId", "breedId", name, "portraitUrl", "apiKeyWord", "uploadedPhotos") FROM stdin;
+40	1	5	coco	/images/ownedDogs/husky.jpg	husky	{/images/dalmatian.jpg}
+\.
+
+
+--
+-- Data for Name: review; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.review ("reviewId", "userId", "classifiedBreedId", "suggestedBreedId", "imageUrl") FROM stdin;
+1	1	3	6	/images/frenchie.jpg
+2	1	3	6	/images/frenchie.jpg
+3	1	3	6	/images/frenchie.jpg
+4	1	2	6	/images/pug.jpg
+5	1	2	6	/images/pug.jpg
+6	1	3	1	/images/frenchie.jpg
+7	1	2	1	/images/pug.jpg
+8	1	2	1	/images/pug.jpg
 \.
 
 
@@ -215,6 +278,7 @@ COPY public."ownedDogs" ("ownedDogId", "userId", "breedId", name) FROM stdin;
 
 COPY public.users ("userId", username, email) FROM stdin;
 1	Serin	serin@email.com
+2	Marc	marcnicdao@email.com
 \.
 
 
@@ -229,14 +293,21 @@ SELECT pg_catalog.setval('public."dogBreeds_breedId_seq"', 6, true);
 -- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."ownedDogs_ownedDogId_seq"', 11, true);
+SELECT pg_catalog.setval('public."ownedDogs_ownedDogId_seq"', 40, true);
+
+
+--
+-- Name: review_reviewId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."review_reviewId_seq"', 8, true);
 
 
 --
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 2, true);
 
 
 --
@@ -245,6 +316,14 @@ SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
 
 ALTER TABLE ONLY public.breeds
     ADD CONSTRAINT "dogBreeds_pk" PRIMARY KEY ("breedId");
+
+
+--
+-- Name: review review_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT review_pk PRIMARY KEY ("reviewId");
 
 
 --
@@ -269,6 +348,30 @@ ALTER TABLE ONLY public."ownedDogs"
 
 ALTER TABLE ONLY public."ownedDogs"
     ADD CONSTRAINT "ownedDogs_fk1" FOREIGN KEY ("breedId") REFERENCES public.breeds("breedId");
+
+
+--
+-- Name: review review_fk0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT review_fk0 FOREIGN KEY ("userId") REFERENCES public.users("userId");
+
+
+--
+-- Name: review review_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT review_fk1 FOREIGN KEY ("classifiedBreedId") REFERENCES public.breeds("breedId");
+
+
+--
+-- Name: review review_fk2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.review
+    ADD CONSTRAINT review_fk2 FOREIGN KEY ("suggestedBreedId") REFERENCES public.breeds("breedId");
 
 
 --
