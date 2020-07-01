@@ -22,7 +22,7 @@ const Header = props => {
           onClick={() => history.goBack()} type="button">
           <i className="fa fa-chevron-left fa-2x col-2 d-flex align-items-center"></i>
         </Button>
-        <h4 className="col-5 p-0 m-0 d-flex align-items-center">
+        <h4 className="col-12 p-0 m-0 d-flex align-items-center">
           {props.pageName}
         </h4>
         {actionButton}

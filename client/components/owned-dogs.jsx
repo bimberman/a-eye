@@ -61,13 +61,13 @@ export default class OwnedDogs extends React.Component {
     }
   }
 
-  handleDelete(dog) {
+  handleDelete() {
     fetch(`/api/owned-dogs/${this.props.userId}`, {
       method: 'delete',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ dogId: dog })
+      body: JSON.stringify({ dogId: this.state.selectedDog[0] })
     })
       .then(response => response.json())
       .then(dog => {
@@ -81,13 +81,6 @@ export default class OwnedDogs extends React.Component {
       .catch(err => console.error(err));
   }
 
-  sortByKey(array, key) {
-    return array.sort(function (a, b) {
-      var x = a[key]; var y = b[key];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
-  }
-
   getDogInfo() {
     fetch(`/api/owned-dogs/${this.props.userId}`)
       .then(response => response.json())
@@ -98,7 +91,7 @@ export default class OwnedDogs extends React.Component {
   }
 
   renderDogInfo() {
-    let dogs = this.state.ownedDogs.map((dog, index) => {
+    const dogs = this.state.ownedDogs.map((dog, index) => {
       const breed = dog.breed;
       const breedWords = breed.split(' ');
       const capitalizedWords = breedWords.map(word => word[0].toUpperCase() + word.slice(1));
@@ -122,8 +115,6 @@ export default class OwnedDogs extends React.Component {
         </div>
       );
     });
-
-    dogs = this.sortByKey(dogs, 'key');
 
     return this.state.selectedDog
       ? (

@@ -85,7 +85,8 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
            "breedId"
       from "ownedDogs"
       join "breeds" using ("breedId")
-     where "userId" = $1;
+     where "userId" = $1
+  order by lower("ownedDogs"."name") asc
   `;
   db.query(sql, userId)
     .then(result => res.json(result.rows))
@@ -234,7 +235,7 @@ app.post('/api/owned-dogs/:userId', (req, res, next) => {
     fs.writeFile(destinationPath, data, 'base64', err => {
       if (err) throw err;
       // eslint-disable-next-line no-console
-      console.log(`${req.body.imageName} is saved!`);
+      process.stdout.write(`${req.body.imageName} is saved!`);
     });
   });
 
