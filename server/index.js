@@ -271,13 +271,13 @@ app.get('/api/gallery/:dogId', (req, res, next) => {
   const dogId = Number(req.params.dogId);
 
   const sql = `
-    select "uploadedPhotos"
+    select *
       from "ownedDogs"
      where "ownedDogId" = $1
   `;
 
   db.query(sql, [dogId])
-    .then(result => res.json(result.rows))
+    .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
 });
 
