@@ -8,6 +8,14 @@ const sessionMiddleware = require('./session-middleware');
 const classify = require('./classify');
 const fs = require('fs');
 const multer = require('multer');
+const ownedDogStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'public/images/ownedDogs'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, 'uploads'));
@@ -17,6 +25,7 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage });
+const galleryUpload = multer({ storage: ownedDogStorage });
 
 const app = express();
 
@@ -280,6 +289,19 @@ app.get('/api/gallery/:dogId', (req, res, next) => {
   db.query(sql, [dogId])
     .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
+});
+
+app.post('/api/gallery/:dogId', galleryUpload.single('image'), (req, res, next) => {
+  const ownedDogId = Number(req.params.dogId);
+  const sql = `
+  update "ownedDogs"
+  set "uploadedPhotos" = array_cat("uploadedPhotos", $1)
+  where "ownedDogId" = $2
+  returning *
+  `;
+  const params = [`{/images/${req.file.filename}}`, ownedDogId];
+  db.query(sql, params)
+    .then(result => res.json(result.rows[0]));
 });
 
 app.use('/api', (req, res, next) => {
