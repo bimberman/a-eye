@@ -14,6 +14,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import ViewPhotos from './view-photos';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,11 +25,13 @@ export default class App extends React.Component {
       view: 'main',
       userId: 1,
       currentBreed: 'Pug',
-      prediction: ''
+      prediction: '',
+      currentDog: ''
     };
     this.toggleLoading = this.toggleLoading.bind(this);
     this.changePredictionState = this.changePredictionState.bind(this);
     this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
+    this.changeCurrentDog = this.changeCurrentDog.bind(this);
     this.changeUser = this.changeUser.bind(this);
   }
 
@@ -48,6 +51,9 @@ export default class App extends React.Component {
   changeCurrentBreed(breed) {
     this.setState({ currentBreed: breed });
   }
+
+  changeCurrentDog(ownedDogId) {
+    this.setState({ currentDog: ownedDogId });
 
   changeUser(userId) {
     this.setState({ userId: userId });
@@ -80,7 +86,10 @@ export default class App extends React.Component {
             <MainView />
           </Route>
           <Route path="/MyDogs">
-            <OwnedDogs userId={this.state.userId} changeCurrentBreed={this.changeCurrentBreed} />
+            <OwnedDogs userId={this.state.userId}
+              changeCurrentBreed={this.changeCurrentBreed}
+              changeCurrentDog={this.changeCurrentDog}
+            />
           </Route>
           <Route path="/Scan">
             <div>
@@ -115,6 +124,9 @@ export default class App extends React.Component {
               prediction={this.state.prediction}
               changeCurrentBreed={this.changeCurrentBreed}
               changePredictionState={this.changePredictionState}/>
+          </Route>
+          <Route path="/ViewPhotos">
+            <ViewPhotos currentDog={this.state.currentDog}/>
           </Route>
         </Switch>
       </Router>
