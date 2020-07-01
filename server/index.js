@@ -293,12 +293,11 @@ app.get('/api/gallery/:dogId', (req, res, next) => {
 
 app.post('/api/gallery/:dogId', galleryUpload.single('image'), (req, res, next) => {
   const ownedDogId = Number(req.params.dogId);
-  console.log(req.file.filename);
   const sql = `
   update "ownedDogs"
   set "uploadedPhotos" = array_cat("uploadedPhotos", $1)
   where "ownedDogId" = $2
-  returning "uploadedPhotos"
+  returning *
   `;
   const params = [`{/images/${req.file.filename}}`, ownedDogId];
   db.query(sql, params)

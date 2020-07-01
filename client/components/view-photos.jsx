@@ -29,19 +29,21 @@ class ViewPhotos extends React.Component {
       body: imageData
     })
       .then(result => result.json())
-      .then(result => console.log(result));
+      .then(data => this.setState({
+        dog: data,
+        imageToUpload: ''
+      }));
   }
 
   render() {
-    console.log(this.state.imageToUpload);
     const { dog } = this.state;
     let photos;
     let buttonText;
     let cancelButton;
     let uploadButton;
     if (dog.uploadedPhotos) {
-      photos = dog.uploadedPhotos.map(url => {
-        return <img src={url} key={url}
+      photos = dog.uploadedPhotos.map((url, index) => {
+        return <img src={url} key={index}
           className={`img-thumbnail
              img-fluid`} />;
       });
