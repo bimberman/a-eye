@@ -12,6 +12,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import ViewPhotos from './view-photos';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export default class App extends React.Component {
       view: 'main',
       userId: 1,
       currentBreed: 'Pug',
-      prediction: ''
+      prediction: '',
+      currentDog: ''
     };
     this.toggleLoading = this.toggleLoading.bind(this);
     this.changePredictionState = this.changePredictionState.bind(this);
@@ -102,6 +104,9 @@ export default class App extends React.Component {
               prediction={this.state.prediction}
               changeCurrentBreed={this.changeCurrentBreed}
               changePredictionState={this.changePredictionState}/>
+          </Route>
+          <Route path="/ViewPhotos">
+            <ViewPhotos />
           </Route>
         </Switch>
       </Router>

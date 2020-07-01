@@ -267,6 +267,10 @@ app.delete('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('api/gallery/:ownedDogId', (req, res, next) => {
+
+});
+
 app.use('/api', (req, res, next) => {
   next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
