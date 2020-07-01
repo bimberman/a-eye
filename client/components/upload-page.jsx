@@ -10,6 +10,7 @@ class UploadPage extends React.Component {
       prediction: ''
     };
     this.uploadImageRef = React.createRef();
+    this.uploadImageRefDesktop = React.createRef();
     this.displayImageRef = React.createRef();
     this.previewImage = this.previewImage.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
@@ -28,7 +29,11 @@ class UploadPage extends React.Component {
     const { toggleLoading, changePredictionState } = this.props;
     const imageData = new FormData();
     const imageToUpload = this.uploadImageRef.current.files[0];
-    imageData.append('image', imageToUpload, imageToUpload.name);
+    const imageToUploadDesktop = this.uploadImageRefDesktop.current.files[0];
+
+    imageToUploadDesktop
+      ? imageData.append('image', imageToUploadDesktop, imageToUploadDesktop.name)
+      : imageData.append('image', imageToUpload, imageToUpload.name);
 
     toggleLoading(true);
     fetch('/api/classify', {
@@ -38,7 +43,9 @@ class UploadPage extends React.Component {
       .then(result => result.json())
       .then(prediction => {
         prediction.imagePath = this.state.imagePath;
-        prediction.imageName = imageToUpload.name;
+        prediction.imageName = imageToUploadDesktop
+          ? imageToUploadDesktop.name
+          : imageToUpload.name;
         changePredictionState(prediction);
       })
       .catch(err => {
@@ -98,7 +105,7 @@ class UploadPage extends React.Component {
           </div>
           <div className="col-md-4 col-lg-2 mx-auto">
             <input type="file" accept="image/*"
-              ref={this.uploadImageRef}
+              ref={this.uploadImageRefDesktop}
               onChange={this.previewImage}
               name="image"
               className="image-input my-2 mx-auto"
