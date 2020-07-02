@@ -61,9 +61,7 @@ class EditUserView extends React.Component {
         {/* Normal display */}
         <div className="container-fluid d-flex justify-content-center
       flex-wrap align-content-between d-lg-none">
-          <div className="p-0 text-left col-12">
-            <Header pageName="Edit User" />
-          </div>
+          <Header pageName="Edit User" />
           <div
             className={`container-fluid d-flex justify-content-center
           flex-wrap align-content-between`}>
