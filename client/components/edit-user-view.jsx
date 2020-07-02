@@ -86,7 +86,9 @@ class EditUserView extends React.Component {
         </div>
         {/* Large display */}
         <div className="d-none d-lg-block">
-          <Header pageName="Edit User" />
+          <div className="p-0 text-left col-12">
+            <Header pageName="Edit User" />
+          </div>
           <div className='
           main-buttons-container
           d-flex
