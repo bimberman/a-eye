@@ -22,12 +22,12 @@ class MainView extends React.Component {
           </div>
 
           <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>
-            <Link type="button" to="/Help"
+            <Link to="/Help"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 scan-view">Get started</p>
             </Link>
             <i className="fas fa-paw mx-lg-2"></i>
-            <Link type="button" to="/Upload"
+            <Link to="/Upload"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 upload-view">Upload</p>
             </Link>
