@@ -16,7 +16,7 @@ const Header = props => {
     </Link>
     : null;
   return (
-    <div className='row w-100'>
+    <div className='row w-100 m-0'>
       <div className="d-flex d-lg-none">
         <Button className="btn m-2 bg-transparent border-0"
           onClick={() => history.goBack()} type="button">
@@ -28,7 +28,7 @@ const Header = props => {
         {actionButton}
       </div>
 
-      <div className='d-none d-lg-block'>
+      <div className='d-none d-lg-block w-100'>
         <header className='d-flex flex-nowrap align-items-baseline justify-content-between desktop-header'>
           <div>
             <Link to='/'>

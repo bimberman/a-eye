@@ -76,24 +76,26 @@ class UploadPage extends React.Component {
       : '';
 
     return (
-      <div className='container'>
-        <div className="p-0 d-flex flex-wrap justify-content-center d-lg-none">
-          <Header pageName="Upload" />
-          {redirect}
-          <div className="preview-image-container text-center">
-            {imagePreview}
-          </div>
-          <div className="col-md-4 col-lg-2">
-            <input type="file" accept="image/*"
-              ref={this.uploadImageRef}
-              onChange={this.previewImage}
-              name="image"
-              className="image-input" />
+      <div>
+        <div className='container'>
+          <div className="p-0 d-flex flex-wrap justify-content-center d-lg-none">
+            <Header pageName="Upload" />
+            {redirect}
+            <div className="preview-image-container text-center">
+              {imagePreview}
+            </div>
+            <div className="col-md-4 col-lg-2">
+              <input type="file" accept="image/*"
+                ref={this.uploadImageRef}
+                onChange={this.previewImage}
+                name="image"
+                className="image-input" />
 
-            <button className="btn btn-block button"
-              disabled={!imagePath}
-              onClick={this.uploadImage}> Classify Image
-            </button>
+              <button className="btn btn-block button"
+                disabled={!imagePath}
+                onClick={this.uploadImage}> Classify Image
+              </button>
+            </div>
           </div>
         </div>
         <div className='d-none d-lg-block'>
