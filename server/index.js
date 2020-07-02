@@ -327,7 +327,19 @@ app.post('/api/gallery/:dogId', galleryUpload.single('image'), (req, res, next) 
   where "ownedDogId" = $2
   returning *
   `;
-  const params = [`{/images/${req.file.filename}}`, ownedDogId];
+  const params = [`{/images/ownedDogs/${req.file.filename}}`, ownedDogId];
+  db.query(sql, params)
+    .then(result => res.json(result.rows[0]));
+});
+
+app.delete('/api/gallery', (req, res, next) => {
+  const sql = `
+  update "ownedDogs"
+  set "uploadedPhotos" = array_remove("uploadedPhotos", $1)
+  where "ownedDogId" = $2
+  returning *
+ `;
+  const params = [req.body.imageUrl, req.body.dogId];
   db.query(sql, params)
     .then(result => res.json(result.rows[0]));
 });
