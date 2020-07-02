@@ -76,8 +76,8 @@ class UploadPage extends React.Component {
       : '';
 
     return (
-      <div>
-        <div className="container p-0 d-flex flex-wrap justify-content-center d-lg-none">
+      <div className='container'>
+        <div className="p-0 d-flex flex-wrap justify-content-center d-lg-none">
           <Header pageName="Upload" />
           {redirect}
           <div className="preview-image-container text-center">

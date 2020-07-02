@@ -98,7 +98,7 @@ export default class OwnedDogs extends React.Component {
       const capitalizedBreed = capitalizedWords.join(' ');
       const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
       return (
-        <div className="d-flex flex-column justify-content-center container" key={dog.ownedDogId}>
+        <div className="d-flex flex-column justify-content-center" key={dog.ownedDogId}>
           {pawprint}
           <Accordion
             callback={this.handleLongPress}

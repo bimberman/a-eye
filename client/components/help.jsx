@@ -6,9 +6,7 @@ class Help extends React.Component {
   render() {
     return (
       <div className="d-flex flex-column align-items-center container-fluid">
-        <div className="p-0 text-left col-12">
-          <Header pageName="Get started" />
-        </div>
+        <Header pageName="Get started" />
         <div className="d-flex flex-column justify-content-center col-11">
           <Card >
             <CardImg src={'/images/UploadDog.png'}
