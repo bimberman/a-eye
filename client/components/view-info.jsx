@@ -128,10 +128,6 @@ class ViewInfo extends React.Component {
                 {currentBreedImages}
               </div>
 
-              <button className="btn btn-sm btn-light m-2"
-                onClick={() => this.fetchInfo(this.props.currentBreed)}>
-                <span>Fetch new photos</span>
-              </button>
             </div >
           </div>
         </div>
