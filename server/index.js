@@ -150,11 +150,7 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
   const values = [dogName, userId, dogId, dogBreed];
 
   db.query(sql, values)
-    .then(result => {
-      const response = result.rows[0];
-      response.imageUrl = req.body.imageUrl;
-      res.json(response);
-    })
+    .then(result => res.json(result.rows[0]))
     .catch(err => next(err));
 });
 
