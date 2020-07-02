@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from './header';
+import { Card } from 'reactstrap';
 
 class ViewPhotos extends React.Component {
   constructor(props) {
@@ -35,17 +36,42 @@ class ViewPhotos extends React.Component {
       }));
   }
 
+  deletePhoto(url) {
+    fetch('/api/gallery', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        imageUrl: url,
+        dogId: this.props.currentDog
+      })
+    })
+      .then(result => result.json())
+      .then(data => this.setState({
+        dog: data,
+        imageToUpload: ''
+      }));
+  }
+
   render() {
     const { dog } = this.state;
     let photos;
     let buttonText;
     let cancelButton;
     let uploadButton;
-    if (dog.uploadedPhotos) {
+    if (dog.uploadedPhotos && dog.uploadedPhotos[0]) {
       photos = dog.uploadedPhotos.map((url, index) => {
-        return <img src={url} key={index}
-          className={`img-thumbnail
-             img-fluid`} />;
+        return (
+          <Card key={index}>
+            <img src={url}
+              className={'img-fluid'} />
+            <button className="btn btn-sm btn-light text-red m-2"
+              onClick={() => this.deletePhoto(url)}>
+              <i className="far fa-trash-alt"></i>
+            </button>
+          </Card>
+        );
       });
     }
     if (this.state.imageToUpload) {
