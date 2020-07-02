@@ -13,10 +13,38 @@ class EditUserView extends React.Component {
       email: ''
     };
     this.getUser = this.getUser.bind(this);
+    this.changeUsername = this.changeUsername.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
   }
 
   componentDidMount() {
     this.getUser(this.props.userId);
+  }
+
+  componentWillUnmount() {
+    this.updateUser();
+  }
+
+  updateUser() {
+    fetch(`api/users/${this.state.userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        email: this.state.email
+      })
+    })
+      .catch(err => console.error(err));
+  }
+
+  changeUsername(newUsername) {
+    this.setState({ username: newUsername });
+  }
+
+  changeEmail(newEmail) {
+    this.setState({ email: newEmail });
   }
 
   getUser(userId) {
@@ -44,9 +72,9 @@ class EditUserView extends React.Component {
           </div>
         </div>
         <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>
-          <EditableButton text={username}/>
+          <EditableButton changeProp={this.changeUsername} text={username}/>
           <i className="fas fa-paw"></i>
-          <EditableButton text={email}/>
+          <EditableButton changeProp={this.changeEmail} text={email}/>
           <i className="fas fa-paw"></i>
           <Link type="button" to="/change-user"
             className={'btn btn-lg btn-block my-4 button'}>

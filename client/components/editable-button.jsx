@@ -37,6 +37,7 @@ export default class EditableButton extends React.Component {
 
   handleBlur(e) {
     this.setState({ isEdit: false });
+    this.props.changeProp(this.state.text);
   }
 
   handleButtonRelease() {
@@ -49,8 +50,6 @@ export default class EditableButton extends React.Component {
     return this.state.isEdit
       ? (
         <Button className="btn btn-lg custom-button col-12 my-4"
-          type="button"
-          name="email"
           onTouchStart={this.handleButtonPress}
           onTouchEnd={this.handleButtonRelease}
           onMouseDown={this.handleButtonPress}
@@ -64,8 +63,6 @@ export default class EditableButton extends React.Component {
       )
       : (
         <Button className="btn btn-lg custom-button col-12 my-4"
-          type="button"
-          name="email"
           onTouchStart={this.handleButtonPress}
           onTouchEnd={this.handleButtonRelease}
           onMouseDown={this.handleButtonPress}
