@@ -102,6 +102,27 @@ app.get('/api/owned-dogs/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/users/:userId', (req, res, next) => {
+  const userId = Number(req.params.userId);
+  const { username, email } = req.body;
+
+  if (!userId) return next(new ClientError('A userId is required', 400));
+
+  if (isNaN(parseInt(userId)) || userId <= 0) {
+    return next(new ClientError(`Expected a positive integer. ${userId} is not a valid user id.`, 400));
+  }
+
+  const sql = `
+    UPDATE "users"
+    SET "username"=$1, "email"=$2
+    WHERE "userId"=$3
+    `;
+  const values = [username, email, userId];
+  db.query(sql, values)
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
+});
+
 app.put('/api/owned-dogs/:userId', (req, res, next) => {
   const userId = Number(req.params.userId);
   const dogId = Number(req.body.dogId);
@@ -150,13 +171,13 @@ app.post('/api/edit-breed', (req, res, next) => {
   if (!imageUrl) return next(new ClientError('An image url is required', 400));
 
   if (isNaN(parseInt(userId)) || userId <= 0) {
-    return next(new ClientError(`Expected an integer. ${userId} is not a valid user id.`, 400));
+    return next(new ClientError(`Expected a positive integer. ${userId} is not a valid user id.`, 400));
   }
   if (isNaN(parseInt(classifiedBreedId)) || classifiedBreedId <= 0) {
-    return next(new ClientError(`Expected an integer. ${classifiedBreedId} is not a valid classified breed id.`, 400));
+    return next(new ClientError(`Expected a positive integer. ${classifiedBreedId} is not a valid classified breed id.`, 400));
   }
   if (isNaN(parseInt(suggestedBreedId)) || suggestedBreedId <= 0) {
-    return next(new ClientError(`Expected an integer. ${suggestedBreedId} is not a valid suggested breed id.`, 400));
+    return next(new ClientError(`Expected a positive integer. ${suggestedBreedId} is not a valid suggested breed id.`, 400));
   }
 
   if (classifiedBreedId === suggestedBreedId) {
