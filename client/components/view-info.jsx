@@ -53,7 +53,7 @@ class ViewInfo extends React.Component {
         return (
           <img src={url} key={index}
             className={`img-thumbnail
-             img-fluid view-info-image`} />
+             img-fluid view-info-image col-12 col-lg-4`} />
         );
       });
     }
