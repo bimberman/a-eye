@@ -16,19 +16,19 @@ const Header = props => {
     </Link>
     : null;
   return (
-    <div>
-      <div className="d-flex justify-content-start col-12 d-lg-none">
-        <Button className="btn m-2 bg-transparent border-0 col-2"
+    <div className='row w-100 m-0'>
+      <div className="d-flex d-lg-none">
+        <Button className="btn m-2 bg-transparent border-0"
           onClick={() => history.goBack()} type="button">
-          <i className="fa fa-chevron-left fa-2x col-2 d-flex align-items-center"></i>
+          <i className="fa fa-chevron-left fa-2x"></i>
         </Button>
-        <h4 className="col-12 p-0 m-0 d-flex align-items-center">
+        <h4 className="col p-0 m-0 d-flex align-items-center">
           {props.pageName}
         </h4>
         {actionButton}
       </div>
 
-      <div className='d-none d-lg-block'>
+      <div className='d-none d-lg-block w-100'>
         <header className='d-flex flex-nowrap align-items-baseline justify-content-between desktop-header'>
           <div>
             <Link to='/edit-user'>

@@ -119,7 +119,7 @@ export default class OwnedDogs extends React.Component {
     return this.state.selectedDog
       ? (
         <div className='text-center'>
-          <div className='d-flex align-items-baseline w-100'>
+          <div className='d-flex align-items-baseline'>
             <button onClick={this.cancelEdit} className='btn close-button m-1'><i className="fas fa-times"></i></button>
             <label htmlFor='col-8 editInput'>
               <input className='form-control btn-light' onChange={this.handleChange} value={this.state.value} id='editInput' type='text' placeholder={this.state.selectedDog[1]} />
@@ -128,7 +128,7 @@ export default class OwnedDogs extends React.Component {
           </div>
           <DeleteModal
             buttonLabel={`Delete ${this.state.selectedDog[1]}`}
-            dog={this.state.selectedDog[0]}
+            dog={this.state.selectedDog}
             deleteHandler={this.handleDelete} />
           {dogs}
         </div >
@@ -186,9 +186,7 @@ export default class OwnedDogs extends React.Component {
         ? (
           <div>
             <div className='container-fluid d-flex justify-content-center flex-wrap align-content-between d-lg-none'>
-              <div className="p-0 text-left col-12">
-                <Header pageName="My Dogs" />
-              </div>
+              <Header pageName="My Dogs" />
               <div className='d-flex flex-column w-100'>
                 {this.renderDogInfo()}
               </div>

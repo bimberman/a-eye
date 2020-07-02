@@ -138,14 +138,14 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
           and "ownedDogId" = $3
           and "breeds"."breedId" = $4
     returning "breeds"."name" as "breed",
-              "imageUrl",
+              "ownedDogs"."portraitUrl" as "imageUrl",
               "shortDescription",
               "longDescription",
               "temperament",
               "ownedDogs"."name",
               "historicalUsage",
-              "breeds"."breedId",
-              "ownedDogId";
+              "ownedDogId",
+              "breeds"."breedId";
   `;
   const values = [dogName, userId, dogId, dogBreed];
 
