@@ -60,7 +60,7 @@ class ViewPhotos extends React.Component {
     let buttonText;
     let cancelButton;
     let uploadButton;
-    if (dog.uploadedPhotos) {
+    if (dog.uploadedPhotos && dog.uploadedPhotos[0]) {
       photos = dog.uploadedPhotos.map((url, index) => {
         return (
           <Card key={index}>
@@ -72,7 +72,6 @@ class ViewPhotos extends React.Component {
             </button>
           </Card>
         );
-
       });
     }
     if (this.state.imageToUpload) {
