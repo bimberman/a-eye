@@ -22,9 +22,9 @@ class MainView extends React.Component {
           </div>
 
           <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>
-            <Link to="/MyDogs"
+            <Link type="button" to="/Help"
               className={'btn btn-lg btn-block my-4 button'}>
-              <p className="p-0 m-0 my-dogs-view">My Dogs</p>
+              <p className="p-0 m-0 scan-view">Get started</p>
             </Link>
             <i className="fas fa-paw mx-lg-2"></i>
             <Link type="button" to="/Upload"
@@ -32,18 +32,18 @@ class MainView extends React.Component {
               <p className="p-0 m-0 upload-view">Upload</p>
             </Link>
             <i className="fas fa-paw mx-lg-2"></i>
+            <Link to="/MyDogs"
+              className={'btn btn-lg btn-block my-4 button'}>
+              <p className="p-0 m-0 my-dogs-view">My Dogs</p>
+            </Link>
+            <i className="fas fa-paw mx-lg-2"></i>
             <Link to="/Browse"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 browse-view">Browse</p>
             </Link>
-            <i className="fas fa-paw mx-lg-2"></i>
-            <Link type="button" to="/Help"
-              className={'btn btn-lg btn-block my-4 button'}>
-              <p className="p-0 m-0 scan-view">Get started</p>
-            </Link>
+
           </div>
         </div>
-
         <div className='d-none d-lg-block container mt-2'>
           <div className='row d-flex align-items-center'>
             <div className='col'>
