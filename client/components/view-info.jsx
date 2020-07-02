@@ -100,7 +100,7 @@ class ViewInfo extends React.Component {
 
         <div className='d-none d-lg-block'>
           <Header />
-          <div className='container'>
+          <div className='container-fluid'>
             <div className='row d-flex m-2'>
               <img src={info.imageUrl} className='col' />
               <div className='col container text-center'>
@@ -124,7 +124,7 @@ class ViewInfo extends React.Component {
                 <span>Fetch new photos</span>
               </button>
 
-              <div className="d-flex col-12">
+              <div className="d-flex col-12 justify-content-around card flex-row">
                 {currentBreedImages}
               </div>
 
