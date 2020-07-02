@@ -134,7 +134,14 @@ app.put('/api/owned-dogs/:userId', (req, res, next) => {
 });
 
 app.post('/api/edit-breed', (req, res, next) => {
-  const { userId, apiKeyWord, classifiedBreedId, suggestedBreedId, imageUrl } = req.body;
+  const {
+    userId,
+    apiKeyWord,
+    currentOwnedDogId,
+    classifiedBreedId,
+    suggestedBreedId,
+    imageUrl
+  } = req.body;
 
   if (!userId) return next(new ClientError('A userId is required', 400));
   if (!classifiedBreedId) return next(new ClientError('A classifiedBreedId is required', 400));
@@ -156,38 +163,59 @@ app.post('/api/edit-breed', (req, res, next) => {
     return next(new ClientError('Suggested breed id must be different than the classified breed id.', 400));
   }
 
-  const updateSql = `
+  if (currentOwnedDogId) {
+    const updateSql = `
       UPDATE "ownedDogs"
       SET "breedId" = $1, "apiKeyWord" = $2
-      WHERE "userId" = $3 AND "breedId" = $4
+      WHERE "ownedDogId" = $3
       RETURNING *`;
-  const updateValues = [suggestedBreedId, apiKeyWord, userId, classifiedBreedId];
+    const updateValues = [suggestedBreedId, apiKeyWord, currentOwnedDogId];
+    db.query(updateSql, updateValues)
+      .then(result => {
+        const insertSql = `
+        INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
+        values ($1, $2, $3, $4)
+        returning "reviewId", "suggestedBreedId"`;
+        const insertValues = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
 
-  db.query(updateSql, updateValues)
-    .then(result => {
-      const insertSql = `
-      INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
-      values ($1, $2, $3, $4)
-      returning "reviewId", "suggestedBreedId"`;
-      const insertValues = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
+        return db.query(insertSql, insertValues)
+          .then(result => {
+            return result.rows;
+          })
+          .catch(err => next(err));
+      })
+      .then(result => {
+        const queryStr = `select *
+                      from "breeds"
+                     where "breedId" = $1`;
+        db.query(queryStr, [result[0].suggestedBreedId])
+          .then(innerResult => {
+            res.json(innerResult.rows[0]);
+          })
+          .catch(err => next(err));
+      })
+      .catch(err => next(err));
+  } else {
+    const insertSql = `
+        INSERT INTO "review" ("userId", "classifiedBreedId", "suggestedBreedId", "imageUrl")
+        values ($1, $2, $3, $4)
+        returning "reviewId", "suggestedBreedId"`;
+    const insertValues = [userId, classifiedBreedId, suggestedBreedId, imageUrl];
 
-      return db.query(insertSql, insertValues)
-        .then(result => {
-          return result.rows;
-        })
-        .catch(err => next(err));
-    })
-    .then(result => {
-      const queryStr = `select *
-                    from "breeds"
-                   where "breedId" = $1`;
-      db.query(queryStr, [result[0].suggestedBreedId])
-        .then(innerResult => {
-          res.json(innerResult.rows[0]);
-        })
-        .catch(err => next(err));
-    })
-    .catch(err => next(err));
+    db.query(insertSql, insertValues)
+      .then(result => {
+        const queryStr = `select *
+                      from "breeds"
+                     where "breedId" = $1`;
+        db.query(queryStr, [suggestedBreedId])
+          .then(innerResult => {
+            res.json(innerResult.rows[0]);
+          })
+          .catch(err => next(err));
+      })
+      .catch(err => next(err));
+  }
+
 });
 
 app.post('/api/classify', upload.single('image'), (req, res, next) => {

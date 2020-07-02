@@ -8,9 +8,8 @@ export default class EditBreedsView extends React.Component {
     super(props);
     this.state = {
       userId: null,
-      classifiedBreedId: null,
-      imageUrl: null,
-      apiKeyWord: null,
+      classifiedBreedInfo: null,
+      currentOwnedDogId: null,
       redirect: null
     };
     this.editBreed = this.editBreed.bind(this);
@@ -19,13 +18,12 @@ export default class EditBreedsView extends React.Component {
   componentDidMount() {
     this.setState({
       userId: this.props.userId,
-      classifiedBreedId: this.props.prediction.info.breedId,
-      imageUrl: this.props.prediction.info.imageUrl,
-      apiKeyWord: this.props.prediction.info.apiKeyWord
+      classifiedBreedInfo: this.props.prediction.info,
+      currentOwnedDogId: this.props.currentOwnedDogId
     });
   }
 
-  editBreed(breedId, name) {
+  editBreed(breedId, name, apiKeyWord) {
     fetch('/api/edit-breed', {
       method: 'POST',
       headers: {
@@ -33,10 +31,11 @@ export default class EditBreedsView extends React.Component {
       },
       body: JSON.stringify({
         userId: this.state.userId,
-        classifiedBreedId: this.state.classifiedBreedId,
+        classifiedBreedId: this.state.classifiedBreedInfo.breedId,
+        currentOwnedDogId: this.state.currentOwnedDogId,
         suggestedBreedId: breedId,
-        imageUrl: this.state.imageUrl,
-        apiKeyWord: this.state.apiKeyWord
+        imageUrl: this.state.classifiedBreedInfo.imageUrl,
+        apiKeyWord: apiKeyWord
       })
     })
       .then(res => res.json())
@@ -55,7 +54,7 @@ export default class EditBreedsView extends React.Component {
 
   render() {
     const editBreedsView = this.props.breeds.map((breed, index) => {
-      if (breed.breedId === this.state.classifiedBreedId) return;
+      if (breed.breedId === this.props.prediction.info.breedId) return;
       const pawprint = index ? <i className="fas fa-paw text-center pb-3"></i> : '';
       return (
         <div className="d-flex flex-column justify-content-center" key={breed.breedId}>
@@ -64,6 +63,7 @@ export default class EditBreedsView extends React.Component {
             name={breed.name}
             breedId={breed.breedId}
             imageUrl={breed.imageUrl}
+            apiKeyWord={breed.apiKeyWord}
             changeCurrentBreed={this.editBreed}>
           </EditBreed>
         </div>
