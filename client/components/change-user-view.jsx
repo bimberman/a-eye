@@ -31,7 +31,9 @@ export default class ChangeUserView extends React.Component {
         key={user.userId}/>;
     });
     return <div className="d-flex align-items-center flex-column">
-      <Header pageName="Change User" />
+      <div className="p-0 text-left col-12">
+        <Header pageName="Change User" />
+      </div>
       <h5>Please select<br />a user from the list below</h5>
       <div className="col-11">
         {editUsersView}
