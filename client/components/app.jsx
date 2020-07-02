@@ -25,6 +25,7 @@ export default class App extends React.Component {
       view: 'main',
       userId: 1,
       currentBreed: 'Pug',
+      currentOwnedDogId: '',
       prediction: '',
       currentDog: ''
     };
@@ -33,6 +34,7 @@ export default class App extends React.Component {
     this.changeCurrentBreed = this.changeCurrentBreed.bind(this);
     this.changeCurrentDog = this.changeCurrentDog.bind(this);
     this.changeUser = this.changeUser.bind(this);
+    this.currentOwnedDogId = this.currentOwnedDogId.bind(this);
   }
 
   componentDidMount() {
@@ -52,8 +54,13 @@ export default class App extends React.Component {
     this.setState({ currentBreed: breed });
   }
 
+  currentOwnedDogId(newOwnedDogId) {
+    this.setState({ currentOwnedDogId: newOwnedDogId });
+  }
+
   changeCurrentDog(ownedDogId) {
     this.setState({ currentDog: ownedDogId });
+  }
 
   changeUser(userId) {
     this.setState({ userId: userId });
@@ -109,7 +116,10 @@ export default class App extends React.Component {
             <ViewInfo currentBreed={this.state.currentBreed} />
           </Route>
           <Route path="/ViewClassifyResult">
-            <ViewClassifyResult prediction={this.state.prediction} userId={this.state.userId} />
+            <ViewClassifyResult
+              prediction={this.state.prediction}
+              userId={this.state.userId}
+              currentOwnedDogId={this.currentOwnedDogId} />
           </Route>
           <Route path="/edit-user">
             <EditUserView userId={this.state.userId} />
@@ -123,7 +133,8 @@ export default class App extends React.Component {
               userId={this.state.userId}
               prediction={this.state.prediction}
               changeCurrentBreed={this.changeCurrentBreed}
-              changePredictionState={this.changePredictionState}/>
+              changePredictionState={this.changePredictionState}
+              currentOwnedDogId={this.state.currentOwnedDogId}/>
           </Route>
           <Route path="/ViewPhotos">
             <ViewPhotos currentDog={this.state.currentDog}/>

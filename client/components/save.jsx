@@ -27,7 +27,10 @@ export default class SaveDog extends React.Component {
       body: JSON.stringify(dog)
     })
       .then(result => result.json())
-      .then(data => this.setState({ data }))
+      .then(data => {
+        this.props.currentOwnedDogId(data.ownedDogId);
+        this.setState({ data });
+      })
       .catch(err => console.error(err));
   }
 

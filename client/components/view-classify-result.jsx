@@ -10,10 +10,13 @@ class ViewClassifyResult extends React.Component {
     this.state = {
       imageUrls: '',
       breedId: props.prediction.info.breedId,
-      value: ''
+      value: '',
+      // ownedDogId: '',
+      savedDog: null
     };
     this.fetchInfo = this.fetchInfo.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    // this.setOwnedDogId = this.setOwnedDogId.bind(this);
   }
 
   componentDidMount() {
@@ -23,6 +26,10 @@ class ViewClassifyResult extends React.Component {
       this.fetchInfo(info.apiKeyWord);
     }
   }
+
+  // setOwnedDogId(newOwnedDogId) {
+  //   this.setState({ ownedDogId: newOwnedDogId });
+  // }
 
   fetchInfo(breed) {
     fetch(`https://dog.ceo/api/breed/${breed}/images/random/3`)
@@ -35,7 +42,6 @@ class ViewClassifyResult extends React.Component {
 
   handleChange(e) {
     this.setState({ value: e.currentTarget.value });
-
   }
 
   render() {
@@ -81,7 +87,8 @@ class ViewClassifyResult extends React.Component {
               name={this.state.value}
               userId={this.props.userId}
               imageName={imageName}
-              apiKeyWord={info.apiKeyWord} />
+              apiKeyWord={info.apiKeyWord}
+              currentOwnedDogId={this.props.currentOwnedDogId} />
           </form>
         </div>
 
@@ -89,7 +96,6 @@ class ViewClassifyResult extends React.Component {
           {predictionText}
         </h2>
 
-        {/* <div className="d-flex flex-column justify-content-center col-11"> */}
         <InfoDropDown title={label}
           description={info.shortDescription}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
@@ -109,7 +115,6 @@ class ViewClassifyResult extends React.Component {
           description={relatedImages || noDataText}
           imageUrl={info.imageUrl || './images/user-icon.png'}>
         </InfoDropDown>
-        {/* </div> */}
 
       </div>
     );
@@ -120,14 +125,12 @@ class ViewClassifyResult extends React.Component {
             <Header pageName="Prediction"
               hasButton={true}
               buttonText="Edit Breed"
-              buttonCB={() => { }}
               to={'/edit-breed'} />
           </div>
           {result}
         </div>
 
         <div className='d-none d-lg-block'>
-          <Header />
           <div className='container'>
             <div className='row d-flex m-2'>
               <img src={info.imageUrl} className='col' />
@@ -154,7 +157,8 @@ class ViewClassifyResult extends React.Component {
                     name={this.state.value}
                     userId={this.props.userId}
                     imageName={imageName}
-                    apiKeyWord={info.apiKeyWord} />
+                    apiKeyWord={info.apiKeyWord}
+                    currentOwnedDogId={this.props.currentOwnedDogId}/>
                 </form>
               </div>
             </div>

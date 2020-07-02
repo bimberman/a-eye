@@ -135,7 +135,10 @@ export default class OwnedDogs extends React.Component {
             </label>
             <button onClick={this.handleUpdate} className='btn m-1 btn-secondary'>Update</button>
           </div>
-          <DeleteModal buttonLabel={`Delete ${this.state.selectedDog[1]}`} dog={this.state.selectedDog[1]} deleteHandler={this.handleDelete} />
+          <DeleteModal
+            buttonLabel={`Delete ${this.state.selectedDog[1]}`}
+            dog={this.state.selectedDog[0]}
+            deleteHandler={this.handleDelete} />
           {dogs}
         </div >
       )
