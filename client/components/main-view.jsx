@@ -27,12 +27,7 @@ class MainView extends React.Component {
               <p className="p-0 m-0 my-dogs-view">My Dogs</p>
             </Link>
             <i className="fas fa-paw mx-lg-2"></i>
-            <Link to="/Scan"
-              className={'btn btn-lg btn-block my-4 button'}>
-              <p className="p-0 m-0 scan-view">Scan</p>
-            </Link>
-            <i className="fas fa-paw mx-lg-2"></i>
-            <Link to="/Upload"
+            <Link type="button" to="/Upload"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 upload-view">Upload</p>
             </Link>
@@ -40,6 +35,11 @@ class MainView extends React.Component {
             <Link to="/Browse"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 browse-view">Browse</p>
+            </Link>
+            <i className="fas fa-paw mx-lg-2"></i>
+            <Link type="button" to="/Help"
+              className={'btn btn-lg btn-block my-4 button'}>
+              <p className="p-0 m-0 scan-view">Get started</p>
             </Link>
           </div>
         </div>
