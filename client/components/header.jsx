@@ -43,9 +43,6 @@ const Header = props => {
             <Link to='/MyDogs'>
               <p>My Dogs</p>
             </Link>
-            <Link to='/Scan'>
-              <p>Scan</p>
-            </Link>
             <Link to='/Upload'>
               <p>Upload</p>
             </Link>

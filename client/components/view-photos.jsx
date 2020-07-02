@@ -63,7 +63,7 @@ class ViewPhotos extends React.Component {
     if (dog.uploadedPhotos && dog.uploadedPhotos[0]) {
       photos = dog.uploadedPhotos.map((url, index) => {
         return (
-          <Card key={index}>
+          <Card key={index} className="col-lg-4 flex-wrap">
             <img src={url}
               className={'img-fluid'} />
             <button className="btn btn-sm btn-light text-red m-2"
@@ -76,49 +76,35 @@ class ViewPhotos extends React.Component {
     }
     if (this.state.imageToUpload) {
       buttonText = 'Change photo';
+
       cancelButton =
       <button className="btn btn-sm btn-light m-2"
         onClick={() => { this.setState({ imageToUpload: '' }); }}>
         <span>Cancel</span>
       </button>;
+
       uploadButton =
         <button className="btn btn-sm btn-light m-2"
           onClick={() => this.uploadPhoto()}>
           <span>Upload</span>
         </button>;
+
     } else {
       buttonText = 'Add a photo';
       cancelButton = '';
       uploadButton = '';
     }
 
-    return photos
+    const content = photos
       ? (
-        <div className="d-flex justify-content-center col-12 flex-wrap">
-          <div className="p-0 text-left col-12">
-            <Header pageName={`${dog.name}'s photos`} />
-          </div>
-          <input type="file" accept="image/*"
-            ref={this.uploadImageRef}
-            name="image"
-            className="my-2 mx-auto d-none"
-            // value={this.state.imageToUpload}
-            onChange={() => this.setState({ imageToUpload: this.uploadImageRef.current.value })}
-          />
-          <div className="button-container col-12 d-flex justify-content-center">
-            <button className="btn btn-sm btn-light m-2"
-              onClick={() => this.uploadImageRef.current.click()}>
-              <span>{buttonText}</span>
-            </button>
-            {uploadButton}
-            {cancelButton}
-          </div>
-          <div className="col-11 card">
-            {photos}
-          </div>
+        <div className="col-lg-11 card d-lg-flex flex-lg-row flex-wrap">
+          {photos}
         </div>
       )
-      : <div className="d-flex justify-content-center col-12 flex-wrap">
+      : (<h3>No photos saved</h3>);
+
+    return (
+      <div className="d-flex justify-content-center col-12 flex-wrap">
         <div className="p-0 text-left col-12">
           <Header pageName={`${dog.name}'s photos`} />
         </div>
@@ -126,7 +112,9 @@ class ViewPhotos extends React.Component {
           ref={this.uploadImageRef}
           name="image"
           className="my-2 mx-auto d-none"
-          onChange={() => this.setState({ imageToUpload: this.uploadImageRef })}
+          onChange={() => this.setState({
+            imageToUpload: this.uploadImageRef.current.value
+          })}
         />
         <div className="button-container col-12 d-flex justify-content-center">
           <button className="btn btn-sm btn-light m-2"
@@ -136,8 +124,9 @@ class ViewPhotos extends React.Component {
           {uploadButton}
           {cancelButton}
         </div>
-        <h3>No photos saved</h3>
-      </div>;
+        {content}
+      </div>
+    );
   }
 }
 

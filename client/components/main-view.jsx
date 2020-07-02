@@ -14,7 +14,7 @@ class MainView extends React.Component {
       flex-wrap align-content-between d-lg-none`}>
           <h2 className="m-2 p-2">Doginator 3000</h2>
           <div className="main-portrait-container col-9">
-            <Link type="button" to="/edit-user">
+            <Link to="/edit-user">
               <img src="./images/frenchie.jpg" alt=""
                 className={`rounded-circle img-thumbnail
             img-fluid main-portrait`} />
@@ -27,11 +27,6 @@ class MainView extends React.Component {
               <p className="p-0 m-0 my-dogs-view">My Dogs</p>
             </Link>
             <i className="fas fa-paw mx-lg-2"></i>
-            <Link type="button" to="/Scan"
-              className={'btn btn-lg btn-block my-4 button'}>
-              <p className="p-0 m-0 scan-view">Scan</p>
-            </Link>
-            <i className="fas fa-paw mx-lg-2"></i>
             <Link type="button" to="/Upload"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 upload-view">Upload</p>
@@ -40,6 +35,11 @@ class MainView extends React.Component {
             <Link type="button" to="/Browse"
               className={'btn btn-lg btn-block my-4 button'}>
               <p className="p-0 m-0 browse-view">Browse</p>
+            </Link>
+            <i className="fas fa-paw mx-lg-2"></i>
+            <Link type="button" to="/Help"
+              className={'btn btn-lg btn-block my-4 button'}>
+              <p className="p-0 m-0 scan-view">Get started</p>
             </Link>
           </div>
         </div>

@@ -71,7 +71,10 @@ class ViewInfo extends React.Component {
     return (
       <div>
         <div className="d-flex flex-column align-items-center d-lg-none">
-          <Header pageName={`${info.name} Info`} />
+          <div className="p-0 text-left col-12">
+            <Header pageName={`${info.name} Info`} />
+          </div>
+
           <div className="d-flex flex-column justify-content-center col-11">
             <InfoDropDown title={info.name}
               description={info.shortDescription}
@@ -94,9 +97,9 @@ class ViewInfo extends React.Component {
             </InfoDropDown>
           </div>
         </div>
+
         <div className='d-none d-lg-block'>
           <Header />
-
           <div className='container'>
             <div className='row d-flex m-2'>
               <img src={info.imageUrl} className='col' />
@@ -121,7 +124,7 @@ class ViewInfo extends React.Component {
                 <span>Fetch new photos</span>
               </button>
 
-              <div>
+              <div className="d-flex col-12">
                 {currentBreedImages}
               </div>
 

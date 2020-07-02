@@ -9,6 +9,7 @@ import EditUserView from './edit-user-view';
 import ViewClassifyResult from './view-classify-result';
 import EditBreedsView from './edit-breeds-view';
 import ChangeUserView from './change-user-view';
+import Help from './help';
 import {
   BrowserRouter as Router,
   Switch,
@@ -98,10 +99,8 @@ export default class App extends React.Component {
               changeCurrentDog={this.changeCurrentDog}
             />
           </Route>
-          <Route path="/Scan">
-            <div>
-              <h2>Scan</h2>
-            </div>
+          <Route path="/Help">
+            <Help />
           </Route>
           <Route path="/Upload">
             <UploadPage changePredictionState={this.changePredictionState}

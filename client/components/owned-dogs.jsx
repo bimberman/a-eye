@@ -155,10 +155,16 @@ export default class OwnedDogs extends React.Component {
               <div className='text-center'>
                 <p>Breed: {capitalizedBreed}</p>
                 <p>Short Description: {dog.shortDescription}</p>
-                <Link className="btn btn-sm btn-light mb-4" to="/ViewInfo"
-                  onClick={() => this.props.changeCurrentBreed(dog.breed)}>
-                  <span>Learn more about {capitalizedBreed}s</span>
-                </Link>
+                <div className="d-flex flex-column align-items-center">
+                  <Link className="btn btn-sm btn-light mb-1" to="/ViewInfo"
+                    onClick={() => this.props.changeCurrentBreed(dog.breed)}>
+                    <span>Learn more about {capitalizedBreed}s</span>
+                  </Link>
+                  <Link className="btn btn-sm btn-light mb-1" to="/ViewPhotos"
+                    onClick={() => this.props.changeCurrentDog(dog.ownedDogId)}>
+                    <span>{`View photos of ${dog.name}`}</span>
+                  </Link>
+                </div>
                 <DeleteModal buttonLabel={`Delete ${dog.name}`} dog={[dog.ownedDogId, dog.name]} deleteHandler={this.handleDelete} />
               </div>
             </div>
