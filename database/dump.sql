@@ -244,6 +244,7 @@ COPY public.breeds ("breedId", name, "shortDescription", "longDescription", "ima
 4	Golden Retriever	The Golden Retriever is a medium-large, strongly built breed with a dense, water-repellant wavy coat.	The Golden Retriever is a medium-large gun dog that was bred to retrieve shot waterfowl, such as ducks and upland game birds, during hunting and shooting parties. The name "retriever" refers to the breeds ability to retrieve shot game undamaged due to their soft mouth. Golden retrievers have an instinctive love of water, and are easy to train to basic or advanced obedience standards. They are a long-coated breed, with a dense inner coat that provides them with adequate warmth in the outdoors, and an outer coat that lies flat against their bodies and repels water. Golden retrievers are well suited to residency in suburban or country environments	/images/golden.jpg	Intelligent, Kind, Reliable, Friendly, Trustworthy, Confident	The Golden Retriever was originally bred in Scotland in the mid-19th century. The breed is a prominent participant in conformation shows for purebred dogs. The Golden Retriever is popular as a disability assistance dog, such as being a guide dog for the blind and a hearing dog for the deaf.	retriever/golden
 5	Husky	The graceful, medium-sized Siberian Husky’s almond-shaped eyes can be either brown or blue—and sometimes one of each—and convey a keen but amiable and even mischievous expression. Quick and nimble-footed, Siberians are known for their powerful but seemingly effortless gait		/images/husky.jpg	Outgoing, Friendly, Alert, Gentle, Intelligent	The original Siberian Huskies were bred by the Chukchi people — whose hunter-gatherer culture relied on their help. It is an active, energetic, resilient breed, whose ancestors lived in the extremely cold and harsh environment of the Siberian Arctic.	husky
 6	Boxer	Square-jawed and muscular, this breed is the George Clooney of the dog world–a looker with a sense of humor and an underlying sweetness. They adore their families and will also appreciate consistent training that doesn’t rely on harsh reprimands.		/images/boxer.jpg	Devoted, Fearless, Friendly, Cheerful, Energetic, Loyal, Playful, Confident, Intelligent, Bright, Brave, Calm	Boxer dogs were originally bred to be medium-size guard dogs. Today, although they are a part of the AKCs Working Group, Boxers mostly find homes as loving family companions. That said, they still retain their high energy levels and need plenty of exercise.	boxer
+8	Uzair	The most awesome project in LFZ history, sorry everyone else		images/Uzair.jpg	Chill AF	Uzair was a car Mechanic before joining the LFZ team as an instructor	chow
 \.
 
 
@@ -252,7 +253,8 @@ COPY public.breeds ("breedId", name, "shortDescription", "longDescription", "ima
 --
 
 COPY public."ownedDogs" ("ownedDogId", "userId", "breedId", name, "portraitUrl", "apiKeyWord", "uploadedPhotos") FROM stdin;
-40	1	5	coco	/images/ownedDogs/husky.jpg	husky	{/images/dalmatian.jpg}
+42	1	2	Puggy	/images/ownedDogs/pug.jpg	pug	\N
+43	1	8	PM	/images/ownedDogs/uzair10.jpg	chow	\N
 \.
 
 
@@ -269,6 +271,7 @@ COPY public.review ("reviewId", "userId", "classifiedBreedId", "suggestedBreedId
 6	1	3	1	/images/frenchie.jpg
 7	1	2	1	/images/pug.jpg
 8	1	2	1	/images/pug.jpg
+9	1	5	6	/images/husky.jpg
 \.
 
 
@@ -277,8 +280,8 @@ COPY public.review ("reviewId", "userId", "classifiedBreedId", "suggestedBreedId
 --
 
 COPY public.users ("userId", username, email) FROM stdin;
-1	Serin	serin@email.com
 2	Marc	marcnicdao@email.com
+1	Serin	serin@email.com
 \.
 
 
@@ -286,21 +289,21 @@ COPY public.users ("userId", username, email) FROM stdin;
 -- Name: dogBreeds_breedId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."dogBreeds_breedId_seq"', 6, true);
+SELECT pg_catalog.setval('public."dogBreeds_breedId_seq"', 8, true);
 
 
 --
 -- Name: ownedDogs_ownedDogId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."ownedDogs_ownedDogId_seq"', 40, true);
+SELECT pg_catalog.setval('public."ownedDogs_ownedDogId_seq"', 43, true);
 
 
 --
 -- Name: review_reviewId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."review_reviewId_seq"', 8, true);
+SELECT pg_catalog.setval('public."review_reviewId_seq"', 9, true);
 
 
 --
