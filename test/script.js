@@ -30,13 +30,6 @@ const imageByteArray = (image, numChannels) => {
 };
 let classifier;
 let mobilenetModel;
-// const imageToInput = (image, numChannels) => {
-//   const values = imageByteArray(image, numChannels);
-//   const outShape = [image.height, image.width, numChannels];
-//   const input = tf.tensor3d(values, outShape, 'int32');
-
-//   return input;
-// };
 
 const image2Input = (image, numChannels) => {
   const values = imageByteArray(image, numChannels);
@@ -75,16 +68,17 @@ async function trainModel() {
     const img = readImage(path.join(__dirname, `/images/dog/image${index}.jpg`));
     const input = image2Input(img, NUMBER_OF_CHANNELS);
     const logits = mobilenetModel.infer(input, 'conv_preds');
-    classifier.addExample(logits, 'boxer');
+    classifier.addExample(logits, 'Uzair');
+    // eslint-disable-next-line no-console
     console.log(`image${index} added`);
     index++;
   }
 
   const str = JSON.stringify(Object.entries(classifier.getClassifierDataset()).map(([label, data]) => [label, Array.from(data.dataSync()), data.shape]));
+  // eslint-disable-next-line no-console
   console.log(classifier.getClassifierDataset());
-  fs.writeFile('./dataset.json', str, 'utf8', err => {
+  fs.writeFile(path.join(__dirname, './dataset.json'), str, 'utf8', err => {
     if (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
     }
   });
@@ -111,6 +105,7 @@ async function predict(imgUrl) {
   } catch (err) {
     process.stdout.write(err);
   }
+  // eslint-disable-next-line no-console
   console.log(predictions);
 }
 

@@ -18,6 +18,7 @@ function getPic(url, index, breed) {
     dest: path.join(__dirname, `/images/dog/image${index}.jpg`)
   })
     .then(({ filename }) => {
+      // eslint-disable-next-line no-console
       console.log('Saved to', filename); // saved to /path/to/dest/image.jpg
     })
     .catch(err => console.error(err));
