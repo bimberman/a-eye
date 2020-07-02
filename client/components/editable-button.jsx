@@ -31,7 +31,7 @@ export default class EditableButton extends React.Component {
 
   handleChange(e) {
     this.setState({
-      text: e.target.value
+      text: e.target.value || this.props.text
     });
   }
 
@@ -49,7 +49,7 @@ export default class EditableButton extends React.Component {
 
     return this.state.isEdit
       ? (
-        <Button className="btn btn-lg custom-button col-12 my-4"
+        <Button className="btn btn-lg custom-button col-12 col-lg-3 my-4"
           onTouchStart={this.handleButtonPress}
           onTouchEnd={this.handleButtonRelease}
           onMouseDown={this.handleButtonPress}
@@ -62,7 +62,7 @@ export default class EditableButton extends React.Component {
         </Button>
       )
       : (
-        <Button className="btn btn-lg custom-button col-12 my-4"
+        <Button className="btn btn-lg custom-button col-12 col-lg-3 my-4"
           onTouchStart={this.handleButtonPress}
           onTouchEnd={this.handleButtonRelease}
           onMouseDown={this.handleButtonPress}

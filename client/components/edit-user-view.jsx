@@ -57,29 +57,53 @@ class EditUserView extends React.Component {
   render() {
     const { username, email } = this.state;
     return (
-      <div className="container-fluid d-flex justify-content-center
-      flex-wrap align-content-between">
-        <div className="p-0 text-left col-12">
-          <Header pageName="Edit User" />
-        </div>
-        <div
-          className={`container-fluid d-flex justify-content-center
-                      flex-wrap align-content-between`}>
-          <div className="main-portrait-container col-9 btn btn-lg btn-block">
-            <img src="./images/frenchie.jpg" alt=""
-              className={`rounded-circle img-thumbnail
-            img-fluid main-portrait`} />
+      <div>
+        {/* Normal display */}
+        <div className="container-fluid d-flex justify-content-center
+      flex-wrap align-content-between d-lg-none">
+          <div className="p-0 text-left col-12">
+            <Header pageName="Edit User" />
+          </div>
+          <div
+            className={`container-fluid d-flex justify-content-center
+          flex-wrap align-content-between`}>
+            <div className="main-portrait-container col-9 btn btn-lg btn-block">
+              <img src="./images/frenchie.jpg" alt=""
+                className={`rounded-circle img-thumbnail
+              img-fluid main-portrait`} />
+            </div>
+          </div>
+          <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>
+            <EditableButton changeProp={this.changeUsername} text={username}/>
+            <i className="fas fa-paw"></i>
+            <EditableButton changeProp={this.changeEmail} text={email}/>
+            <i className="fas fa-paw"></i>
+            <Link type="button" to="/change-user"
+              className={'btn btn-lg btn-block my-4 button'}>
+              <p className="p-0 m-0 my-dogs-view">Change User</p>
+            </Link>
           </div>
         </div>
-        <div className='main-buttons-container d-flex justify-content-center flex-wrap col-11'>
-          <EditableButton changeProp={this.changeUsername} text={username}/>
-          <i className="fas fa-paw"></i>
-          <EditableButton changeProp={this.changeEmail} text={email}/>
-          <i className="fas fa-paw"></i>
-          <Link type="button" to="/change-user"
-            className={'btn btn-lg btn-block my-4 button'}>
-            <p className="p-0 m-0 my-dogs-view">Change User</p>
-          </Link>
+        {/* Large display */}
+        <div className="d-none d-lg-block">
+          <Header pageName="Edit User" />
+          <div className='
+          main-buttons-container
+          d-flex
+          flex-column
+          align-items-center
+          flex-wrap
+          col-12
+          mt-5'>
+            <EditableButton changeProp={this.changeUsername} text={username} />
+            <i className="fas fa-paw"></i>
+            <EditableButton changeProp={this.changeEmail} text={email} />
+            <i className="fas fa-paw"></i>
+            <Link type="button" to="/change-user"
+              className={'btn btn-lg btn-block my-4 col-lg-3 button'}>
+              <p className="p-0 m-0 my-dogs-view">Change User</p>
+            </Link>
+          </div>
         </div>
       </div>
     );
