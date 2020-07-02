@@ -100,7 +100,7 @@ class ViewInfo extends React.Component {
 
         <div className='d-none d-lg-block'>
           <Header />
-          <div className='container-fluid'>
+          <div className='container'>
             <div className='row d-flex m-2'>
               <img src={info.imageUrl} className='col' />
               <div className='col container text-center'>
