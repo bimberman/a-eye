@@ -117,3 +117,9 @@ img{
 .header-image{
   height: 10vh;
 }
+
+.view-info-image{
+  max-width: 25vw;
+  min-width: 25vw;
+  object-position: 50% 50%;
+}
