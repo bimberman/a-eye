@@ -53,7 +53,7 @@ class ViewClassifyResult extends React.Component {
         return (
           <img src={url} key={index}
             className={`img-thumbnail
-             img-fluid view-info-image`} />
+             img-fluid view-info-image col-12 col-lg-4`} />
         );
       });
     }
@@ -131,6 +131,10 @@ class ViewClassifyResult extends React.Component {
         </div>
 
         <div className='d-none d-lg-block'>
+          <Header pageName="Prediction"
+            hasButton={true}
+            buttonText="Edit Breed"
+            to={'/edit-breed'} />
           <div className='container'>
             <div className='row d-flex m-2'>
               <img src={info.imageUrl} className='col' />
@@ -168,14 +172,10 @@ class ViewClassifyResult extends React.Component {
                 <span>Fetch new photos</span>
               </button>
 
-              <div>
+              <div className="d-flex col-12 justify-content-around card flex-row">
                 {relatedImages}
               </div>
 
-              <button className="btn btn-sm btn-light m-2"
-                onClick={() => this.fetchInfo(info.apiKeyWord)}>
-                <span>Fetch new photos</span>
-              </button>
             </div >
           </div>
         </div>
