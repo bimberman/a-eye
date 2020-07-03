@@ -48,9 +48,9 @@ class BreedsView extends React.Component {
           <div className='text-center'>
             {pawprint}
           </div>
-          < div className='d-flex m-2 align-items-center' >
-            <img src={breed.imageUrl} className='col' />
-            <div className='col'>
+          < div className='d-flex m-2 align-items-center justify-content-center' >
+            <img src={breed.imageUrl} className='col-5' />
+            <div className='col-5'>
               <p>{breed.name}</p>
               <div className='text-center'>
                 <p>{breed.shortDescription}</p>

@@ -148,9 +148,9 @@ export default class OwnedDogs extends React.Component {
           <div className='text-center'>
             {pawprint}
           </div>
-          < div className='d-flex m-2 align-items-center' >
-            <img src={dog.imageUrl} className='col' />
-            <div className='col'>
+          < div className='d-flex m-2 align-items-center justify-content-center' >
+            <img src={dog.imageUrl} className='col-5' />
+            <div className='col-5'>
               <h4>{dog.name}</h4>
               <div className='text-center'>
                 <p>Breed: {capitalizedBreed}</p>
