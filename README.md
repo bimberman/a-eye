@@ -14,6 +14,7 @@ This app uses machine learning to infer the dog breed from an image using a trai
 ![Express.js](https://icongr.am/devicon/express-original-wordmark.svg?size=128&color=currentColor) 
 ![Bootstrap](https://icongr.am/devicon/bootstrap-plain-wordmark.svg?size=128&color=563d7c)
 ![AWS](https://icongr.am/devicon/amazonwebservices-original-wordmark.svg?size=128&color=563d7c)
+![TensorFlow](https://github.com/bimberman/a-eye/blob/master/TF_FullColor_Stacked.png)
 
 ## Live Demo
 
