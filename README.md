@@ -21,7 +21,7 @@ This app uses machine learning to infer the dog breed from an image using a trai
 Try the application live at: [a-eye.benimberman.com](https://a-eye.benimberman.com)
 
 ## Preview
-![Live demo](https://raw.githubusercontent.com/bimberman/om/master/live-demo.gif)
+![Live demo](https://raw.githubusercontent.com/bimberman/a-eye/master/live-demo.gif)
 
 ## Development
 
