@@ -32,7 +32,7 @@ Try the application live at: [a-eye.benimberman.com](https://a-eye.benimberman.c
 
 1. Clone the repository
     ```shell
-    git clone https://github.com/bimberman/om.git
+    git clone https://github.com/bimberman/a-eye.git
     cd om
     ```
 2. Make a copy of the .env.example file, name the new file .env, and edit the file
