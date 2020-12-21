@@ -43,6 +43,13 @@ export default class App extends React.Component {
     this.setState({
       isLoading: false
     });
+
+    fetch('/api/health-check')
+      .then(res => res.json())
+      .then(data => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+      });
   }
 
   changePredictionState(prediction) {

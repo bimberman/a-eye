@@ -35,8 +35,11 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 app.get('/api/health-check', (req, res, next) => {
+  // eslint-disable-next-line no-console
+  console.log('health-check');
+
   db.query('select \'successfully connected\' as "message"')
-    .then(result => res.status(200).json(result.rows[0]))
+    .then(result => res.status(404).json(result.rows[0]))
     .catch(err => next(err));
 });
 
@@ -44,14 +47,16 @@ app.get('/api/breeds', (req, res, next) => {
   const queryStr = `select *
                       from "breeds"
                   order by "name" asc`;
-
+  // eslint-disable-next-line no-console
+  console.log('breeds1');
   db.query(queryStr)
     .then(result => res.json(result.rows))
     .catch(err => next(err));
 });
 
 app.get('/api/breeds/:breed', (req, res, next) => {
-
+  // eslint-disable-next-line no-console
+  console.log('breeds2');
   const queryStr = `select *
                     from "breeds"
                    where "name" = $1`;
